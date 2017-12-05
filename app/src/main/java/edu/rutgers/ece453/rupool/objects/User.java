@@ -1,5 +1,8 @@
 package edu.rutgers.ece453.rupool.objects;
 
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
@@ -14,21 +17,30 @@ import java.util.Map;
  */
 
 public class User{
-    private String id;
-    private String name;
-    private String email;
-    private boolean status = false;
-    private List<Map<String, Object>> activities = new ArrayList<>();
+    private String gender;
+    private List<String> activities = new ArrayList<>();
 
-    public User(){
+    public User(){}
+
+    public User(String gender){
+        this.gender = gender;
     }
 
-    public User(String id, String name, String email){
-        this.name = name;
-        this.email = email;
+    public String getGender() {
+        return gender;
+    }
+    
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
+    public List<String> getActivities() {
+        return activities;
+    }
 
+    public void updateActivities(String activity_id) {
+        activities.add(activity_id);
+    }
 
 
 }
