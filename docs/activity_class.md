@@ -21,6 +21,9 @@ id String id
 默认构造函数为空
 
 一般构造函数为传入名字，发起人id，最大参与人数，时间，地点和每人需要多少钱
+
+```java
 PoolActivity(String name, String sponsorId, int maxMember,  String Date, String location, double moneyPerPerson){}
+```
 
 提供了类的大部分成员的set与get函数。
