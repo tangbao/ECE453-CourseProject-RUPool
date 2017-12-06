@@ -27,16 +27,18 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,EventFragment.OnFragmentInteractionListener ,
         MainFragment.OnFragmentInteractionListener,PreferenceFragment.OnFragmentInteractionListener{
 
-
-
-
+    ListView listview;
+    ArrayAdapter<String> searchResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ArrayList<String> searchContent=new ArrayList<>();
+        searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
 
+        searchResult=new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,searchContent);
 
         MainFragment mainFragment=new MainFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                searchResult.getFilter().filter(newText);
                 return false;
 
             }

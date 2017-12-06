@@ -2,5 +2,7 @@
 <searchable
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:label="RUpool"
-    android:hint="Search event here" >
+    android:hint="Search event here"
+    android:searchMode="queryRewriteFromText"
+    >
 </searchable>
