@@ -1,10 +1,11 @@
-package edu.rutgers.ece453.rupool.objects;
+package edu.rutgers.ece453.rupool;
 
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,9 +17,9 @@ import java.util.Map;
  *
  */
 
-public class User{
+public class User implements Serializable{
     private String gender;
-    private List<String> activities = new ArrayList<>();
+    private List<String> activities;
 
     public User(){}
 
@@ -36,6 +37,10 @@ public class User{
 
     public List<String> getActivities() {
         return activities;
+    }
+
+    public void setActivities(List<String> activities){
+        this.activities = activities;
     }
 
     public void updateActivities(String activity_id) {

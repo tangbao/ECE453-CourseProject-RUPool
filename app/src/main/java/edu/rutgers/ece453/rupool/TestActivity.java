@@ -3,6 +3,7 @@ package edu.rutgers.ece453.rupool;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,14 +13,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
-import edu.rutgers.ece453.rupool.objects.User;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class TestActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Interface.OnGetUserListener {
 
+    TextView gen ;
+    EditText egen ;
+    Button add ;
+    Button read ;
+    DatabaseUtils du;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +55,35 @@ public class TestActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        gen = findViewById(R.id.gen);
+        egen = findViewById(R.id.inputgen);
+        add = findViewById(R.id.adduser);
+        read = findViewById(R.id.readuser);
+
+        du = new DatabaseUtils(this);
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                User user = new User(egen.getText().toString());
+                du.addUser("123", user);
+
+                PoolActivity pa = new PoolActivity("test","123",5,"today",
+                        "NJ",5.5);
+                du.addActivity(pa);
+            }
+        });
+
+        read.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                du.getUser("123");
+            }
+        });
+
+
     }
 
     @Override
@@ -102,4 +142,9 @@ public class TestActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void onGetUser(User user){
+        gen.setText(user.getGender());
+    }
+
 }
