@@ -23,8 +23,9 @@ public class User implements Serializable{
 
     public User(){}
 
-    public User(String gender){
+    public User(String gender, List<String> activities){
         this.gender = gender;
+        this.activities = activities;
     }
 
     public String getGender() {
