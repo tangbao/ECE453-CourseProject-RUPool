@@ -23,9 +23,8 @@ public class User implements Serializable{
 
     public User(){}
 
-    public User(String gender, List<String> activities){
+    public User(String gender){
         this.gender = gender;
-        this.activities = activities;
     }
 
     public String getGender() {
@@ -44,8 +43,12 @@ public class User implements Serializable{
         this.activities = activities;
     }
 
-    public void updateActivities(String activity_id) {
+    public void joinActivity(String activity_id) {
         activities.add(activity_id);
+    }
+
+    public void quitActivity(String activity_id) {
+        activities.remove(activity_id);
     }
 
 

@@ -50,19 +50,43 @@ public class PoolActivity implements Serializable {
         return maxMember;
     }
 
+    public void setMaxMember(int maxMember) {
+        this.maxMember = maxMember;
+    }
+
     public String getDate() {
         return Date;
+    }
+
+    public void setDate(String date) {
+        Date = date;
     }
 
     public String getLocation() {
         return location;
     }
 
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     public double getMoneyPerPerson() {
         return moneyPerPerson;
     }
 
+    public void setMoneyPerPerson(double moneyPerPerson) {
+        this.moneyPerPerson = moneyPerPerson;
+    }
+
     public List<String> getMembers() {
         return members;
+    }
+
+    public void addMember(String uid) {
+        this.members.add(uid);
+    }
+
+    public void removeMember(String uid){
+        this.members.remove(uid);
     }
 }
