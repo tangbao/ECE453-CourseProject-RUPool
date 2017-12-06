@@ -9,4 +9,16 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="eventList">
+        <item>Event1</item>
+        <item>Event2</item>
+        <item>Event3</item>
+        <item>Event4</item>
+        <item>Event5</item>
+        <item>Event6</item>
+        <item>Event7</item>
+        <item>Event8</item>
+    </string-array>
+
 </resources>
