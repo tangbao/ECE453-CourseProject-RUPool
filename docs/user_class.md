@@ -43,9 +43,17 @@ public void setActivities(List<String> activities){
 }
 ```
 
-将一个活动id添加到活动列表里去
+将一个活动id添加到用户活动列表里去
 
 ```java
-public void updateActivities(String activity_id) {
+public void addActivity(String activity_id) {
+}
+```
+
+
+将一个活动id从用户活动列表中移除
+
+```java
+public void quitActivity(String activity_id) {
 }
 ```

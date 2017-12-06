@@ -20,10 +20,10 @@ id String id
 
 默认构造函数为空
 
-一般构造函数为传入名字，发起人id，最大参与人数，时间，地点和每人需要多少钱
+一般构造函数为传入名字，发起人id，最大参与人数，时间，地点和每人需要多少钱。会将发起人自动添加到成员列表中。
 
 ```java
 PoolActivity(String name, String sponsorId, int maxMember,  String Date, String location, double moneyPerPerson){}
 ```
 
-提供了类的大部分成员的set与get函数。
+提供了除了members之外所有成员的set与get函数。members提供了getMembers函数，addMember(String uid)与removeMember(String uid)函数，分别用来获得所有成员列表，添加一名成员和删除一名成员。
