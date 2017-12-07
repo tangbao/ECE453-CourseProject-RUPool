@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String email, String password) {
-        Log.d(TAG, "login: login " + email + password);
+        Log.d(TAG, "login: login " + email + "\t" + password);
         if (!validateForm())
             return;
 
@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login Success.", Toast.LENGTH_SHORT).show();
                         } else {
+                            Log.d(TAG, "onComplete: " + task.getException());
                             Toast.makeText(LoginActivity.this, "Login failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
