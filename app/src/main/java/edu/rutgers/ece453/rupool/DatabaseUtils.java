@@ -64,6 +64,7 @@ class DatabaseUtils {
 
     String addActivity(PoolActivity pa){
         String activityId = mActivRef.push().getKey();
+        pa.setId(activityId);
         mActivRef.child(activityId).setValue(pa);
         return activityId;
     }
