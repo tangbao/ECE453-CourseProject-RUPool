@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,10 +26,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,EventFragment.OnFragmentInteractionListener ,
-        MainFragment.OnFragmentInteractionListener,PreferenceFragment.OnFragmentInteractionListener{
+        MainFragment.OnFragmentInteractionListener,PreferenceFragment.OnFragmentInteractionListener,NewEventFragment.OnFragmentInteractionListener{
 
-    ListView listview;
-    ArrayAdapter<String> searchResult;
+
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +38,6 @@ public class MainActivity extends AppCompatActivity
 
         ArrayList<String> searchContent=new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
-
-        searchResult=new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,searchContent);
 
         MainFragment mainFragment=new MainFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
@@ -49,12 +48,20 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                NewEventFragment newEventFragmentventFragment=new NewEventFragment();
+                getSupportFragmentManager().popBackStack();
+                android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container,newEventFragmentventFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+
             }
         });
 
@@ -94,7 +101,6 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                searchResult.getFilter().filter(newText);
                 return false;
 
             }
@@ -133,7 +139,9 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
+
         } else if(id==R.id.nav_preference) {
+            fab.show();
             PreferenceFragment preferenceFragment=new PreferenceFragment();
             getSupportFragmentManager().popBackStack();
             android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
@@ -157,6 +165,13 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void myIcon(View view){
+        Toast.makeText(this,"Pop a dialog for users to change his Icon",Toast.LENGTH_SHORT).show();
+    }
+
+    public void myProfile(View view){
+        Toast.makeText(this,"Pop a dialog for users to change his Email Address",Toast.LENGTH_SHORT).show();
+    }
 
 }
 
