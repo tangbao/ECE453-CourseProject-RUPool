@@ -24,14 +24,26 @@ DatabaseUtils du = new DatabaseUtils(this);
   void getUser(String uid){}
 ```
 
-- 添加活动
+- 更新用户到数据库
 
 ```java
-  void addActivity(PoolActivity pa){}
+  void updateUser(User user){}
+```
+
+- 添加活动, 返回PoolActivity的id，请使用setId()存入PoolActivity中。
+
+```java
+  String addActivity(PoolActivity pa){}
 ```
 
 - 获得活动，需实现 Interface.OnGetActivityListener
 
 ```java
   void getActivity(String aid){}
+```
+
+- 更新活动到数据库
+
+```java
+  void updateActivity(PoolActivity pa){}
 ```

@@ -4,15 +4,21 @@
 
 看一下[这里](https://firebase.google.com/docs/auth/android/manage-users?authuser=0)就可以了解最基本的使用了。
 
-另一个类是我们自己实现的User类，主要是为了存性别（String gender）和用户参与的活动列表（List<String> activities，其中String为activities的id）
+另一个类是我们自己实现的User类，主要是为了存uid, 性别（String gender）和用户参与的活动列表（List<String> activities，其中String为activities的id）
 
 默认构造函数为空（为了可以dataSnapshot.getValue())
 
-构造函数，传入性别即可（新建用户的时候默认用户没有参加活动）
+构造函数，传入uid和性别即可（新建用户的时候默认用户没有参加活动）
 
 ```java
-public User(String gender){
+public User(String uid, String gender){
 }
+```
+
+其中uid从FirebaseUser中获得
+
+```java
+String uid = FirebaseAuth.getInstance().getCurrentUser().getId();
 ```
 
 获得性别
