@@ -3,6 +3,7 @@ package edu.rutgers.ece453.rupool;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.util.Pools;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,13 +25,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class TestActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Interface.OnGetUserListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Interface.OnGetUserListener ,
+        Interface.OnGetActivityListener{
 
     TextView gen ;
     EditText egen ;
     Button add ;
     Button read ;
     DatabaseUtils du;
+    PoolActivity poolActivity;
+    User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,12 +72,16 @@ public class TestActivity extends AppCompatActivity
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                User user = new User(egen.getText().toString());
-                du.addUser("123", user);
+                String uid = "1234";
+                user = new User(uid, egen.getText().toString());
+                du.addUser(user);
 
-                PoolActivity pa = new PoolActivity("test","123",5,"today",
-                        "NJ",5.5);
-                du.addActivity(pa);
+                user.setGender("asdasd");
+                du.updateUser(user);
+
+                String paid = "-L-dECk0Sh8h1os_ErKV";
+
+                du.getActivity(paid);
             }
         });
 
@@ -145,6 +154,13 @@ public class TestActivity extends AppCompatActivity
 
     public void onGetUser(User user){
         gen.setText(user.getGender());
+    }
+
+    public void onGetActivity(PoolActivity pa){
+        poolActivity = pa;
+        pa.setId("-L-dECk0Sh8h1os_ErKV");
+        pa.addMember(user.getUid());
+        du.updateActivity(pa);
     }
 
 }

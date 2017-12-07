@@ -22,6 +22,8 @@ public class PoolActivity implements Serializable {
     private double moneyPerPerson; //the money per person should pay
     private List<String> members= new ArrayList<>();; //the ids of the members who join the activity
 
+    PoolActivity(){}
+
     PoolActivity(String name, String sponsorId, int maxMember,  String Date, String location,
              double moneyPerPerson){
         this.members.add(sponsorId);
