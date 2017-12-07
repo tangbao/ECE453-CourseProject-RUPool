@@ -38,8 +38,8 @@ class DatabaseUtils {
         mGetActivityListener = (OnGetActivityListener) context;
     }
 
-    void addUser(String uid, User user){
-        mUsersRef.child(uid).setValue(user);
+    void addUser(User user){
+        mUsersRef.child(user.getUid()).setValue(user);
     }
 
     void getUser(String uid){
@@ -58,9 +58,14 @@ class DatabaseUtils {
         });
     }
 
-    void addActivity(PoolActivity pa){
+    void updateUser(User user){
+        mUsersRef.child(user.getUid()).setValue(user);
+    }
+
+    String addActivity(PoolActivity pa){
         String activityId = mActivRef.push().getKey();
         mActivRef.child(activityId).setValue(pa);
+        return activityId;
     }
 
     void getActivity(String aid){
@@ -77,6 +82,10 @@ class DatabaseUtils {
                 Log.w(TAG, "loadActivity:onCancelled", databaseError.toException());
             }
         });
+    }
+
+    void updateActivity(PoolActivity pa){
+        mActivRef.child(pa.getId()).setValue(pa);
     }
 
 }

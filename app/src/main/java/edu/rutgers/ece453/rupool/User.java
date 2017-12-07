@@ -18,13 +18,23 @@ import java.util.Map;
  */
 
 public class User implements Serializable{
+    private String uid;
     private String gender;
     private List<String> activities;
 
     public User(){}
 
-    public User(String gender){
+    public User(String uid, String gender){
+        this.uid = uid;
         this.gender = gender;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getGender() {
