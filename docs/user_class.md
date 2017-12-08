@@ -8,14 +8,17 @@
 
 默认构造函数为空（为了可以dataSnapshot.getValue())
 
-构造函数，传入uid和性别即可（新建用户的时候默认用户没有参加活动）
+构造函数，传入uid即可，也可以传入性别（新建用户的时候默认用户没有参加活动）
 
 ```java
+public User(String uid){
+}
+
 public User(String uid, String gender){
 }
 ```
 
-其中uid从FirebaseUser中获得
+其中uid在注册完的时候返回
 
 ```java
 String uid = FirebaseAuth.getInstance().getCurrentUser().getId();

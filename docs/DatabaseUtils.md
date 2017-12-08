@@ -8,14 +8,8 @@ DatabaseUtils du = new DatabaseUtils(this);
 
 -  添加用户到数据库
 
-  其中uid从FirebaseUser中获得
-
 ```java
-  String uid = FirebaseAuth.getInstance().getCurrentUser().getId();
-```
-
-```java
-  void addUser(String uid, User user){}
+  void addUser(User user){}
 ```
 
 - 获得用户，需实现callback Interface.OnGetUserListener
