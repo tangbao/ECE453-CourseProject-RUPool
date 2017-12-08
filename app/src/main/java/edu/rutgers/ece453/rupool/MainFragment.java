@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class MainFragment extends Fragment {
 
     ListView listView;
     ArrayAdapter<String> searchResult;
+    boolean isJoined=false;
 
     public MainFragment() {
         // Required empty public constructor
@@ -51,6 +53,7 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         listView=(ListView) view.findViewById(R.id.myList);
+
 
         ArrayList<String> searchContent=new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
