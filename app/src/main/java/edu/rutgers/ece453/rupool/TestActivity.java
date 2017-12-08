@@ -81,14 +81,14 @@ public class TestActivity extends AppCompatActivity
 
                 String paid = "-L-dECk0Sh8h1os_ErKV";
 
-                du.getActivity(paid);
+                du.getActivity(paid, 1);
             }
         });
 
         read.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                du.getUser("123");
+                du.getUser("123", 1);
             }
         });
 
@@ -152,11 +152,11 @@ public class TestActivity extends AppCompatActivity
         return true;
     }
 
-    public void onGetUser(User user){
+    public void onGetUser(User user, int ACTION_CODE){
         gen.setText(user.getGender());
     }
 
-    public void onGetActivity(PoolActivity pa){
+    public void onGetActivity(PoolActivity pa, int ACTION_CODE){
         poolActivity = pa;
         pa.setId("-L-dECk0Sh8h1os_ErKV");
         pa.addMember(user.getUid());

@@ -42,13 +42,13 @@ class DatabaseUtils {
         mUsersRef.child(user.getUid()).setValue(user);
     }
 
-    void getUser(String uid){
+    void getUser(String uid, final int ACTION_CODE){
         DatabaseReference mUserRef = mUsersRef.child(uid);
         mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                mGetUserListener.onGetUser(user);
+                mGetUserListener.onGetUser(user, ACTION_CODE);
             }
 
             @Override
@@ -69,13 +69,13 @@ class DatabaseUtils {
         return activityId;
     }
 
-    void getActivity(String aid){
+    void getActivity(String aid, final int ACTION_CODE){
         DatabaseReference mAcRef = mActivRef.child(aid);
         mAcRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PoolActivity pa = dataSnapshot.getValue(PoolActivity.class);
-                mGetActivityListener.onGetActivity(pa);
+                mGetActivityListener.onGetActivity(pa, ACTION_CODE);
             }
 
             @Override
