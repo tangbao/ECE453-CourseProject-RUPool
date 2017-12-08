@@ -1,6 +1,7 @@
 package edu.rutgers.ece453.rupool;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
+
+    private static final int REQUESTCODE_SIGNUPACTIVITY = 508;
 
     private EditText mEditTextEmail;
     private EditText mEditTextPassword;
@@ -49,13 +52,48 @@ public class LoginActivity extends AppCompatActivity {
         mButtonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivityForResult(new Intent(LoginActivity.this, SignUpActivity.class), REQUESTCODE_SIGNUPACTIVITY);
             }
         });
 
         // init auth
         mFirebaseAuth = FirebaseAuth.getInstance();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+
+            case REQUESTCODE_SIGNUPACTIVITY: {
+                switch (resultCode) {
+                    case SignUpActivity.SIGNUP_SUCCESS: {
+                        Toast.makeText(this, "Sign Up Success", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
+                    case SignUpActivity.SIGNUP_FAILURE: {
+                        Log.w(TAG, "onActivityResult: failure");
+                        Toast.makeText(this, "Sign Up Failure", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
+                    case SignUpActivity.SIGNUP_CANCEL: {
+                        Toast.makeText(this, "Sign Up Cancel", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
+                    default: {
+                        Toast.makeText(this, "Default", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+                break;
+            }
+            default:
+                super.onActivityResult(requestCode, resultCode, data);
+                break;
+        }
     }
 
     private void login(String email, String password) {
@@ -73,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login Success.", Toast.LENGTH_SHORT).show();
                         } else {
-                            Log.d(TAG, "onComplete: " + task.getException());
+                            Log.w(TAG, "onComplete: failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Login failed.", Toast.LENGTH_SHORT).show();
                         }
                     }
