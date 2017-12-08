@@ -12,10 +12,11 @@ DatabaseUtils du = new DatabaseUtils(this);
   void addUser(User user){}
 ```
 
-- 获得用户，需实现callback Interface.OnGetUserListener
+- 获得用户，需实现callback Interface.OnGetUserListener.
 
 ```java
-  void getUser(String uid){}
+  void getUser(String uid, int ACTION_CODE){}
+    //ACTION_CODE用于区分操作
 ```
 
 - 更新用户到数据库
@@ -33,7 +34,8 @@ DatabaseUtils du = new DatabaseUtils(this);
 - 获得活动，需实现 Interface.OnGetActivityListener
 
 ```java
-  void getActivity(String aid){}
+  void getActivity(String aid, int ACTION_CODE){}
+    //ACTION_CODE用于区分操作
 ```
 
 - 更新活动到数据库
