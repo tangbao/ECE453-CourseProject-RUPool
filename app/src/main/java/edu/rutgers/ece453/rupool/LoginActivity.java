@@ -69,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                 switch (resultCode) {
                     case SignUpActivity.SIGNUP_SUCCESS: {
                         Toast.makeText(this, "Sign Up Success", Toast.LENGTH_SHORT).show();
+                        finish();
                         break;
                     }
 
@@ -110,6 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                         hideProgressDialog();
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login Success.", Toast.LENGTH_SHORT).show();
+                            finish();
                         } else {
                             Log.w(TAG, "onComplete: failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Login failed.", Toast.LENGTH_SHORT).show();
