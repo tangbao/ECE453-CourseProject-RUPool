@@ -34,6 +34,8 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
         mEditTextEmail = findViewById(R.id.EditText_Email_SignUpActivity);
         mEditTextPassword = findViewById(R.id.EditText_Password_SignUpActivity);
         mButtonSignUp = findViewById(R.id.Button_SignUp_SignUpActivity);
@@ -66,6 +68,14 @@ public class SignUpActivity extends AppCompatActivity {
                         hideProgressDialog();
                         if (task.isSuccessful()) {
                             Log.d(TAG, "onComplete: success");
+                            mFirebaseAuth.getCurrentUser().sendEmailVerification()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful())
+                                                Log.d(TAG, "onComplete: Email sent.");
+                                        }
+                                    });
                             setResult(SIGNUP_SUCCESS);
                             finish();
                         } else {

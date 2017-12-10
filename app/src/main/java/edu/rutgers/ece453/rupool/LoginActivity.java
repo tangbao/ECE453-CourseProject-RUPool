@@ -29,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
 
+
     private ProgressDialog mProgressDialog;
 
 
@@ -61,6 +62,24 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mFirebaseAuth.getCurrentUser() != null)
+            mFirebaseAuth.getCurrentUser().reload()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (mFirebaseAuth.getCurrentUser().isEmailVerified()) {
+                                finish();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Please verify your email first.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -69,6 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                 switch (resultCode) {
                     case SignUpActivity.SIGNUP_SUCCESS: {
                         Toast.makeText(this, "Sign Up Success", Toast.LENGTH_SHORT).show();
+//                        finish();
                         break;
                     }
 
@@ -110,6 +130,12 @@ public class LoginActivity extends AppCompatActivity {
                         hideProgressDialog();
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login Success.", Toast.LENGTH_SHORT).show();
+                            if (mFirebaseAuth.getCurrentUser() != null
+                                    && mFirebaseAuth.getCurrentUser().isEmailVerified())
+                                finish();
+                            else {
+
+                            }
                         } else {
                             Log.w(TAG, "onComplete: failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Login failed.", Toast.LENGTH_SHORT).show();
