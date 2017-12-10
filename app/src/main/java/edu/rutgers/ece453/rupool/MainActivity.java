@@ -141,6 +141,8 @@ public class MainActivity extends AppCompatActivity
             }
             case R.id.action_logout: {
                 mFirebaseAuth.signOut();
+                startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
+                        REQUESTCODE_LOGIN);
                 return true;
             }
             default: {
