@@ -1,5 +1,26 @@
 <resources>
     <string name="app_name">RUPool</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="eventList">
+        <item>Event1</item>
+        <item>Event2</item>
+        <item>Event3</item>
+        <item>Event4</item>
+        <item>Event5</item>
+        <item>Event6</item>
+        <item>Event7</item>
+        <item>Event8</item>
+    </string-array>
+
     <string name="Label_EditText_Email_LoginActivity">Email:</string>
     <string name="Label_EditText_Password_LoginActivity">Password:</string>
     <string name="Text_Button_Login_LoginActivity">LOGIN</string>
