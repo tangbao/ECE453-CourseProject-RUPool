@@ -18,23 +18,26 @@ public class PoolActivity implements Serializable {
     private String id; //the id of the activity
     private String name; //the name of the activity
     private String sponsorId;//the uid of the activity sponsor
-    private int maxMember; //the max member number
-    private String Date; //the date of the activity
+    private String date; //the date of the activity
+    private String description; //the description of the activity
+    private String startPoint;
     private Place place; //the place of the activity
+    private int maxMember; //the max member number
     private double moneyPerPerson; //the money per person should pay
-    private List<String> members= new ArrayList<>();; //the ids of the members who join the activity
+    private List<String> members= new ArrayList<>(); //the ids of the members who join the activity
 
     PoolActivity(){}
 
-    PoolActivity(String name, String sponsorId, int maxMember,  String Date, Place place,
-             double moneyPerPerson){
+    PoolActivity(String name, String sponsorId, String date, String description,
+                 String startPoint, int maxMember, double moneyPerPerson){
         this.members.add(sponsorId);
 
         this.name = name;
         this.sponsorId = sponsorId;
         this.maxMember = maxMember;
-        this.Date = Date;
-        this.place = place;
+        this.date = date;
+        this.description = description;
+        this.startPoint = startPoint;
         this.moneyPerPerson = moneyPerPerson;
     }
 
@@ -63,11 +66,27 @@ public class PoolActivity implements Serializable {
     }
 
     public String getDate() {
-        return Date;
+        return date;
     }
 
-    public void setDate(String date) {
-        Date = date;
+    public void setDate(String d) {
+        date = d;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setStartPoint(String startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public String getStartPoint() {
+        return startPoint;
     }
 
     public Place getPlace() {

@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -43,8 +44,8 @@ class DatabaseUtils {
         mUsersRef = mDatabase.child("users");
         mActivRef = mDatabase.child("activities");
 
-        mGetUserListener = (OnGetUserListener) context;
-        mGetActivityListener = (OnGetActivityListener) context;
+        //mGetUserListener = (OnGetUserListener) context;
+        //mGetActivityListener = (OnGetActivityListener) context;
     }
 
     void addUser(User user){
@@ -65,6 +66,10 @@ class DatabaseUtils {
                 Log.w(TAG, "loadUser:onCancelled", databaseError.toException());
             }
         });
+    }
+
+    void setOnGetUserListener(OnGetUserListener onGetUserListener){
+        mGetUserListener = onGetUserListener;
     }
 
     void updateUser(User user){
@@ -94,6 +99,10 @@ class DatabaseUtils {
         });
     }
 
+    void setOnGetActivityListener(OnGetActivityListener onGetActivityListener){
+        mGetActivityListener = onGetActivityListener;
+    }
+
     void updateActivity(PoolActivity pa){
         mActivRef.child(pa.getId()).setValue(pa);
     }
@@ -101,12 +110,13 @@ class DatabaseUtils {
     List<PoolActivity> findPoolActivityByLocation(Place place){
         final List<PoolActivity> result = new ArrayList<>();
         final LatLng ll = place.getLatLng();
-        mActivRef.addValueEventListener(new ValueEventListener() {
+        mActivRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                PoolActivity pa = dataSnapshot.getValue(PoolActivity.class);
-                if(pa.getPlace().getLatLng() == ll){
-                    result.add(pa);
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    if(data.getValue(PoolActivity.class).getPlace().getLatLng().equals(ll)){
+                        result.add(data.getValue(PoolActivity.class));
+                    }
                 }
             }
 
@@ -115,6 +125,7 @@ class DatabaseUtils {
                 Log.w(TAG, "findPoolActivityByLocation:onCancelled", databaseError.toException());
             }
         });
+
 
         return result;
     }
