@@ -66,11 +66,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        // 已有用户登陆， 刷新用户信息
         if (mFirebaseAuth.getCurrentUser() != null)
             mFirebaseAuth.getCurrentUser().reload()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            // 通过邮件验证的用户
                             if (mFirebaseAuth.getCurrentUser().isEmailVerified()) {
                                 finish();
                             } else {
