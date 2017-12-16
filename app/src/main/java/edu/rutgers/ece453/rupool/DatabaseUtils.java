@@ -1,13 +1,22 @@
 package edu.rutgers.ece453.rupool;
 
 import android.content.Context;
+import android.net.Uri;
+import android.support.v4.util.Pools;
 import android.util.Log;
 
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import edu.rutgers.ece453.rupool.Interface.*;
 
@@ -87,6 +96,27 @@ class DatabaseUtils {
 
     void updateActivity(PoolActivity pa){
         mActivRef.child(pa.getId()).setValue(pa);
+    }
+
+    List<PoolActivity> findPoolActivityByLocation(Place place){
+        final List<PoolActivity> result = new ArrayList<>();
+        final LatLng ll = place.getLatLng();
+        mActivRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                PoolActivity pa = dataSnapshot.getValue(PoolActivity.class);
+                if(pa.getPlace().getLatLng() == ll){
+                    result.add(pa);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "findPoolActivityByLocation:onCancelled", databaseError.toException());
+            }
+        });
+
+        return result;
     }
 
 }

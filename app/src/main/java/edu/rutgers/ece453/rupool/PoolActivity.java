@@ -1,5 +1,7 @@
 package edu.rutgers.ece453.rupool;
 
+import com.google.android.gms.location.places.Place;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,13 +20,13 @@ public class PoolActivity implements Serializable {
     private String sponsorId;//the uid of the activity sponsor
     private int maxMember; //the max member number
     private String Date; //the date of the activity
-    private String location;//todo  store Latlng?
+    private Place place; //the place of the activity
     private double moneyPerPerson; //the money per person should pay
     private List<String> members= new ArrayList<>();; //the ids of the members who join the activity
 
     PoolActivity(){}
 
-    PoolActivity(String name, String sponsorId, int maxMember,  String Date, String location,
+    PoolActivity(String name, String sponsorId, int maxMember,  String Date, Place place,
              double moneyPerPerson){
         this.members.add(sponsorId);
 
@@ -32,7 +34,7 @@ public class PoolActivity implements Serializable {
         this.sponsorId = sponsorId;
         this.maxMember = maxMember;
         this.Date = Date;
-        this.location = location;
+        this.place = place;
         this.moneyPerPerson = moneyPerPerson;
     }
 
@@ -68,12 +70,12 @@ public class PoolActivity implements Serializable {
         Date = date;
     }
 
-    public String getLocation() {
-        return location;
+    public Place getPlace() {
+        return place;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setPlace(Place place) {
+        this.place = place;
     }
 
     public double getMoneyPerPerson() {
