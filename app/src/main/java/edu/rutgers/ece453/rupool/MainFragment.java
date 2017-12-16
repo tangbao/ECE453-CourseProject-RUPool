@@ -30,6 +30,7 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 
 import org.w3c.dom.Text;
 
@@ -74,21 +75,12 @@ public class MainFragment extends Fragment {
 
         listView=(ListView) view.findViewById(R.id.myList);
 
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-//        ImageView searchIcon = (ImageView)((LinearLayout)autocompleteFragment.getView()).getChildAt(2);
-//
-//        searchIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_event_white_24px));
-//        searchIcon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Toast.makeText(getActivity(), "YOUR DESIRED BEHAVIOUR HERE", Toast.LENGTH_SHORT).show();
-//
-//
-//            }
-//        });
 
 
+        //PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        //        getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment)
+                getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
