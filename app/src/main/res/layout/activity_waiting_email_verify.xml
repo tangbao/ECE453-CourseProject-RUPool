@@ -3,23 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="edu.rutgers.ece453.rupool.WaitingEmailVerifyActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Please verify your email address." />
+        android:layout_gravity="center"
+        android:text="Please verify your email address."
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2" />
     <Button
         android:id="@+id/Button_Refresh_WaitingEmailVerifyActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="REFRESH" />
 
-    <Button
-        android:id="@+id/Button_ChangeAccount_WaitingEmailVerifyActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="change account" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10" />
 
 </LinearLayout>

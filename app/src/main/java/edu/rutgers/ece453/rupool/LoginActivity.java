@@ -76,7 +76,8 @@ public class LoginActivity extends AppCompatActivity {
                             if (mFirebaseAuth.getCurrentUser().isEmailVerified()) {
                                 finish();
                             } else {
-                                Toast.makeText(LoginActivity.this, "Please verify your email first.", Toast.LENGTH_SHORT).show();
+                                // 未通过邮件验证
+                                startActivity(new Intent(LoginActivity.this, WaitingEmailVerifyActivity.class));
                             }
                         }
                     });

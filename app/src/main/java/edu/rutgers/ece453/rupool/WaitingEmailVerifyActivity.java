@@ -3,6 +3,8 @@ package edu.rutgers.ece453.rupool;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -62,6 +64,25 @@ public class WaitingEmailVerifyActivity extends AppCompatActivity {
                     });
         } else {
             finish();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.option_menu_activity_waiting_email_verify, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.MenuItem_LogOut_OptionMenu_WaitingEmailVerifyActivity: {
+                mFirebaseAuth.signOut();
+                finish();
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
