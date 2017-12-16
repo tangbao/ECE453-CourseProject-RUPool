@@ -76,25 +76,25 @@ public class MainFragment extends Fragment {
         listView=(ListView) view.findViewById(R.id.myList);
 
 
-
-        //PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-        //        getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment)
-                getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                // TODO:Get info about the selected place.
-                Log.i("AUTOCOMPLETE", "Place: " + place.getName());
-            }
-
-            @Override
-            public void onError(Status status) {
-                // TODO:Handle the error.
-                Log.i("AUTOCOMPLETE", "An error occurred: " + status);
-            }
-        });
+//
+//        //PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+//        //        getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+//        SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment)
+//                getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+//
+//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(Place place) {
+//                // TODO:Get info about the selected place.
+//                Log.i("AUTOCOMPLETE", "Place: " + place.getName());
+//            }
+//
+//            @Override
+//            public void onError(Status status) {
+//                // TODO:Handle the error.
+//                Log.i("AUTOCOMPLETE", "An error occurred: " + status);
+//            }
+//        });
 
 
         ArrayList<String> searchContent=new ArrayList<>();
