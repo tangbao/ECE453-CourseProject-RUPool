@@ -34,18 +34,16 @@ class DatabaseUtils {
 
     private OnGetUserListener mGetUserListener;
     private OnGetActivityListener mGetActivityListener;
+    private OnFindActivityByPlaceListener mFindActivityByPlaceListener;
 
     private DatabaseReference mDatabase;
     private DatabaseReference mUsersRef;
     private DatabaseReference mActivRef;
 
-    DatabaseUtils(Context context){
+    DatabaseUtils(){
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mUsersRef = mDatabase.child("users");
         mActivRef = mDatabase.child("activities");
-
-        //mGetUserListener = (OnGetUserListener) context;
-        //mGetActivityListener = (OnGetActivityListener) context;
     }
 
     void addUser(User user){
@@ -107,27 +105,60 @@ class DatabaseUtils {
         mActivRef.child(pa.getId()).setValue(pa);
     }
 
-    List<PoolActivity> findPoolActivityByLocation(Place place){
-        final List<PoolActivity> result = new ArrayList<>();
-        final LatLng ll = place.getLatLng();
-        mActivRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    void findPoolActivityByLocation(Place place,final int ACTION_CODE){
+
+        Log.e(TAG,place.getAddress().toString());
+        Query query = mActivRef.orderByChild("destiAddress").equalTo(place.getAddress().toString());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                for(DataSnapshot data : dataSnapshot.getChildren()){
-                    if(data.getValue(PoolActivity.class).getPlace().getLatLng().equals(ll)){
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                List<PoolActivity> result = new ArrayList<>();
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
                         result.add(data.getValue(PoolActivity.class));
                     }
+                    mFindActivityByPlaceListener.onFindActivityByPlace(result, 1);
+                }else {
+                    //return fail
+                    mFindActivityByPlaceListener.onFindActivityByPlace(result, 2);
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "findPoolActivityByLocation:onCancelled", databaseError.toException());
+               Log.w(TAG, "findPoolActivityByLocation:onCancelled", databaseError.toException());
             }
         });
 
+//        mActivRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(final DataSnapshot dataSnapshot) {
+//                List<PoolActivity> result = new ArrayList<>();
+//                if(dataSnapshot!=null){
+//                    for(DataSnapshot data : dataSnapshot.getChildren()){
+//                        PoolActivity pa = data.getValue(PoolActivity.class);
+//                        if(pa.getPlace()!=null){
+//                            if(pa.getPlace().getLatLng().equals(ll)){
+//                                result.add(data.getValue(PoolActivity.class));
+//                            }
+//                        }
+//
+//                    }
+//                    mFindActivityByPlaceListener.onFindActivityByPlace(result, ACTION_CODE);
+//                }else{
+//                    Log.e(TAG, "no avitivity now");
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.w(TAG, "findPoolActivityByLocation:onCancelled", databaseError.toException());
+//            }
+//        });
+    }
 
-        return result;
+    void setOnFindActivityByLocationListener(OnFindActivityByPlaceListener onFindActivityByPlaceListener){
+        mFindActivityByPlaceListener = onFindActivityByPlaceListener;
     }
 
 }

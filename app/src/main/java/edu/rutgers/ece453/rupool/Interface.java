@@ -1,5 +1,7 @@
 package edu.rutgers.ece453.rupool;
 
+import java.util.List;
+
 /**
  * Created by Zhongze Tang on 2017/12/5.
  *
@@ -14,6 +16,10 @@ class Interface {
 
     public interface OnGetActivityListener{
         void onGetActivity(PoolActivity pa, int ACTION_CODE);
+    }
+
+    public interface OnFindActivityByPlaceListener{
+        void onFindActivityByPlace(List<PoolActivity> lpa, int ACTION_CODE);
     }
 
 }
