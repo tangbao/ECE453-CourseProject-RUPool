@@ -3,8 +3,14 @@ package edu.rutgers.ece453.rupool;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,11 +18,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -26,6 +45,7 @@ public class MainFragment extends Fragment {
 
     ListView listView;
     ArrayAdapter<String> searchResult;
+    MyBaseAdapter myBaseAdapter;
     boolean isJoined=false;
 
     public MainFragment() {
@@ -54,13 +74,43 @@ public class MainFragment extends Fragment {
 
         listView=(ListView) view.findViewById(R.id.myList);
 
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+//        ImageView searchIcon = (ImageView)((LinearLayout)autocompleteFragment.getView()).getChildAt(2);
+//
+//        searchIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_event_white_24px));
+//        searchIcon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getActivity(), "YOUR DESIRED BEHAVIOUR HERE", Toast.LENGTH_SHORT).show();
+//
+//
+//            }
+//        });
+
+
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO:Get info about the selected place.
+                Log.i("AUTOCOMPLETE", "Place: " + place.getName());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO:Handle the error.
+                Log.i("AUTOCOMPLETE", "An error occurred: " + status);
+            }
+        });
+
 
         ArrayList<String> searchContent=new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
 
-        searchResult=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,searchContent);
-
-        listView.setAdapter(searchResult);
+        //searchResult=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,searchContent);
+        myBaseAdapter=new MyBaseAdapter(getActivity());
+        listView.setAdapter(myBaseAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -73,6 +123,7 @@ public class MainFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+
 
 
         return view;
@@ -110,5 +161,69 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    public class MyBaseAdapter extends BaseAdapter {
+        private int[] colors = new int[] { 0xff3cb371, 0xffa0a0a0 };
+        private Context mContext;
+
+        public MyBaseAdapter(Context context) {
+            this.mContext = context;
+        }
+
+
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder = null;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = LayoutInflater.from(mContext).inflate(
+                        R.layout.item_layout, null);
+
+                holder.dateMonth=(TextView) convertView.findViewById(R.id.Date_Month);
+                holder.dateDay=(TextView) convertView.findViewById(R.id.Date_Day);
+                holder.startPoint=(TextView) convertView.findViewById(R.id.start_point);
+                holder.destination=(TextView) convertView.findViewById(R.id.destination);
+                holder.description=(TextView) convertView.findViewById(R.id.description);
+
+                // 将holder绑定到convertView
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            // 向ViewHolder中填入的数据
+
+//            holder.dateMonth.setText();
+
+            return convertView;
+        }
+
+        /**
+         * ViewHolder类用以储存item中控件的引用
+         */
+        final class ViewHolder {
+            TextView dateMonth;
+            TextView dateDay;
+            TextView startPoint;
+            TextView destination;
+            TextView description;
+        }
     }
 }

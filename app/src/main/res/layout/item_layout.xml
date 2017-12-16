@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    >
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_weight="4"
+        android:orientation="vertical"
+        >
+
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1"
+           android:layout_marginLeft="16dp"
+           android:layout_marginRight="16dp"
+           android:orientation="horizontal"
+           android:gravity="center_vertical"
+           >
+
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="1"
+               android:textStyle="bold"
+               android:gravity="center_vertical|center_horizontal"
+               android:id="@+id/start_point"
+               android:text="Busch"
+               />
+
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="1"
+               android:textStyle="bold"
+               android:gravity="center_vertical|center_horizontal"               android:textSize="20sp"
+               android:text="--->"
+               />
+
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="match_parent"
+               android:layout_weight="1"
+               android:textStyle="bold"
+               android:gravity="center_vertical|center_horizontal"
+               android:id="@+id/destination"
+               android:text="Livingston"
+               />
+
+       </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_weight="2"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textStyle="italic"
+                android:textSize="10sp"
+                android:id="@+id/description"
+                android:text="Description:I want to go to Liv campus and have a cup of coffee at Sunday. I live at Rutgers Busch campus. Is anybody interested? Plz contact me"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical|center_horizontal"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/Date_Month"
+            android:text="Dec"
+            android:textSize="12sp"
+            android:gravity="center_horizontal|center_vertical"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:textStyle="bold"
+            android:id="@+id/Date_Day"
+            android:text="10"
+            android:textSize="36sp"
+            android:gravity="center_horizontal|center_vertical"
+            />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
