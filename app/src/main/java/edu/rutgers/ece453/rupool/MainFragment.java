@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pools;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
@@ -16,6 +17,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
@@ -34,6 +37,7 @@ import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragmen
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -74,34 +78,14 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         listView=(ListView) view.findViewById(R.id.myList);
+        ArrayList<PoolActivity> poolActivities=new ArrayList<>();
 
+        poolActivities.add(new PoolActivity("Test","1",4,"Dec","Liv",5.0));
+        poolActivities.add(new PoolActivity("Test","1",4,"Dec","Liv",5.0));
+        poolActivities.add(new PoolActivity("Test","1",4,"Dec","Liv",5.0));
+        poolActivities.add(new PoolActivity("Test","1",4,"Dec","Liv",5.0));
 
-//
-//        //PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-//        //        getActivity().getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-//        SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment)
-//                getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-//
-//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//            @Override
-//            public void onPlaceSelected(Place place) {
-//                // TODO:Get info about the selected place.
-//                Log.i("AUTOCOMPLETE", "Place: " + place.getName());
-//            }
-//
-//            @Override
-//            public void onError(Status status) {
-//                // TODO:Handle the error.
-//                Log.i("AUTOCOMPLETE", "An error occurred: " + status);
-//            }
-//        });
-
-
-        ArrayList<String> searchContent=new ArrayList<>();
-        searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
-
-        //searchResult=new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,searchContent);
-        myBaseAdapter=new MyBaseAdapter(getActivity());
+        myBaseAdapter=new MyBaseAdapter(getActivity(),R.layout.item_layout,poolActivities);
         listView.setAdapter(myBaseAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -115,7 +99,6 @@ public class MainFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
-
 
 
         return view;
@@ -156,12 +139,25 @@ public class MainFragment extends Fragment {
     }
 
 
-    public class MyBaseAdapter extends BaseAdapter {
-        private int[] colors = new int[] { 0xff3cb371, 0xffa0a0a0 };
-        private Context mContext;
+    public class MyBaseAdapter extends ArrayAdapter<PoolActivity> {
+        private ArrayList<PoolActivity> task;
+        //private Context mContext;
+        private int textViewResourceId;
 
-        public MyBaseAdapter(Context context) {
-            this.mContext = context;
+//        public MyBaseAdapter(Context context,ArrayList<PoolActivity> _task) {
+//            super(context,R.layout.item_layout,_task);
+//            this.mContext = context;
+//            //this.textViewResourceId=textViewResourceId;
+//            this.task=_task;
+//
+//        }
+
+        public MyBaseAdapter(Context context, int resource, ArrayList<PoolActivity> _task)
+        {
+            super(context,resource,_task);
+           // this.mContext = context;
+            this.textViewResourceId=resource;
+            this.task=_task;
         }
 
 
@@ -170,23 +166,17 @@ public class MainFragment extends Fragment {
             return 0;
         }
 
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            PoolActivity poolActivity= task.get(position);
+
             ViewHolder holder = null;
             if (convertView == null) {
                 holder = new ViewHolder();
-                convertView = LayoutInflater.from(mContext).inflate(
-                        R.layout.item_layout, null);
+
+                LayoutInflater layoutInflater=LayoutInflater.from(getActivity().getApplicationContext());
+                convertView = layoutInflater.inflate(textViewResourceId,null);
 
                 holder.dateMonth=(TextView) convertView.findViewById(R.id.Date_Month);
                 holder.dateDay=(TextView) convertView.findViewById(R.id.Date_Day);
@@ -198,11 +188,18 @@ public class MainFragment extends Fragment {
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
+
             }
 
             // 向ViewHolder中填入的数据
 
 //            holder.dateMonth.setText();
+            holder.dateDay.setText("16");
+            holder.dateMonth.setText("Dec");
+            holder.description.setText("老王开车去东北");
+            holder.startPoint.setText("Piscataway");
+            holder.destination.setText("Liv");
+
 
             return convertView;
         }
