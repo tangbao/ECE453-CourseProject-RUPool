@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity
         searchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: how to reveal the navigation drawer
                 drawer.openDrawer(Gravity.LEFT);
             }
         });
@@ -219,6 +218,10 @@ public class MainActivity extends AppCompatActivity
 
     public void myProfile(View view){
         Toast.makeText(this,"Pop a dialog for users to change his Email Address",Toast.LENGTH_SHORT).show();
+    }
+
+    public FloatingActionButton getFab(){
+        return fab;
     }
 
 }

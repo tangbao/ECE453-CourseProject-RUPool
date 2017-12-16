@@ -3,6 +3,7 @@ package edu.rutgers.ece453.rupool;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,10 @@ public class EventFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event, container, false);
 
+        FloatingActionButton fab=((MainActivity) getActivity()).getFab();
+        if (fab != null) {
+            fab.show();
+        }
         joinButton=(Button) view.findViewById(R.id.Join);
         quitButton=(Button) view.findViewById(R.id.Quit);
 

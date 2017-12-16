@@ -77,6 +77,11 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        FloatingActionButton fab=((MainActivity) getActivity()).getFab();
+        if (fab != null) {
+            fab.show();
+        }
+
         listView=(ListView) view.findViewById(R.id.myList);
         ArrayList<PoolActivity> poolActivities=new ArrayList<>();
 
@@ -142,7 +147,8 @@ public class MainFragment extends Fragment {
     public class MyBaseAdapter extends ArrayAdapter<PoolActivity> {
         private ArrayList<PoolActivity> task;
         //private Context mContext;
-        private int textViewResourceId;
+        private LayoutInflater inflater;
+        private int mResourceId;
 
 //        public MyBaseAdapter(Context context,ArrayList<PoolActivity> _task) {
 //            super(context,R.layout.item_layout,_task);
@@ -156,15 +162,11 @@ public class MainFragment extends Fragment {
         {
             super(context,resource,_task);
            // this.mContext = context;
-            this.textViewResourceId=resource;
+            this.mResourceId=resource;
             this.task=_task;
         }
 
 
-        @Override
-        public int getCount() {
-            return 0;
-        }
 
 
         @Override
@@ -176,7 +178,7 @@ public class MainFragment extends Fragment {
                 holder = new ViewHolder();
 
                 LayoutInflater layoutInflater=LayoutInflater.from(getActivity().getApplicationContext());
-                convertView = layoutInflater.inflate(textViewResourceId,null);
+                convertView = layoutInflater.inflate(mResourceId,null);
 
                 holder.dateMonth=(TextView) convertView.findViewById(R.id.Date_Month);
                 holder.dateDay=(TextView) convertView.findViewById(R.id.Date_Day);
@@ -207,12 +209,13 @@ public class MainFragment extends Fragment {
         /**
          * ViewHolder类用以储存item中控件的引用
          */
-        final class ViewHolder {
-            TextView dateMonth;
-            TextView dateDay;
-            TextView startPoint;
-            TextView destination;
-            TextView description;
-        }
+
+    }
+    static class ViewHolder {
+        TextView dateMonth;
+        TextView dateDay;
+        TextView startPoint;
+        TextView destination;
+        TextView description;
     }
 }

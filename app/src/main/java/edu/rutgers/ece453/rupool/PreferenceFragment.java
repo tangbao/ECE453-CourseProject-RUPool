@@ -3,6 +3,7 @@ package edu.rutgers.ece453.rupool;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +50,12 @@ public class PreferenceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_preference, container, false);
+        View view = inflater.inflate(R.layout.fragment_preference, container, false);
+        FloatingActionButton fab=((MainActivity) getActivity()).getFab();
+        if (fab != null) {
+            fab.show();
+        }
+        return view;
     }
 
     public void onButtonPressed(Uri uri) {
