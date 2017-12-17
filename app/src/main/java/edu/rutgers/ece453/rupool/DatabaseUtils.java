@@ -65,7 +65,8 @@ class DatabaseUtils {
         mUsersRef.child(user.getUid()).setValue(user);
     }
 
-    void getUser(String uid, final int ACTION_CODE){
+    void getUser(String uid, final int ACTION_CODE, OnGetUserListener onGetUserListener){
+        mGetUserListener = onGetUserListener;
         DatabaseReference mUserRef = mUsersRef.child(uid);
         mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -86,9 +87,6 @@ class DatabaseUtils {
         });
     }
 
-    void setOnGetUserListener(OnGetUserListener onGetUserListener){
-        mGetUserListener = onGetUserListener;
-    }
 
     void updateUser(User user){
         mUsersRef.child(user.getUid()).setValue(user);
@@ -104,7 +102,8 @@ class DatabaseUtils {
         return activityId;
     }
 
-    void getActivity(String aid, final int ACTION_CODE){
+    void getActivity(String aid, final int ACTION_CODE, OnGetActivityListener onGetActivityListener){
+        mGetActivityListener = onGetActivityListener;
         DatabaseReference mAcRef = mActivRef.child(aid);
         mAcRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -125,9 +124,6 @@ class DatabaseUtils {
         });
     }
 
-    void setOnGetActivityListener(OnGetActivityListener onGetActivityListener){
-        mGetActivityListener = onGetActivityListener;
-    }
 
     void updateActivity(PoolActivity pa){
         mActivRef.child(pa.getId()).setValue(pa);
@@ -135,8 +131,9 @@ class DatabaseUtils {
 
     //==========================Search Activity==========================
 
-    void findActivityByLocation(Place place,final int ACTION_CODE){
-
+    void findActivityByLocation(Place place,final int ACTION_CODE,
+                                OnFindActivityByPlaceListener onFindActivityByPlaceListener){
+        mFindActivityByPlaceListener = onFindActivityByPlaceListener;
         Log.e(TAG,place.getAddress().toString());
         Query query = mActivRef.orderByChild("destiAddress").equalTo(place.getAddress().toString());
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -163,11 +160,9 @@ class DatabaseUtils {
 
     }
 
-    void setOnFindActivityByLocationListener(OnFindActivityByPlaceListener onFindActivityByPlaceListener){
-        mFindActivityByPlaceListener = onFindActivityByPlaceListener;
-    }
 
-    void findAllActivity(){
+    void findAllActivity(OnFindAllActivityListener onFindAllActivityListener){
+        mFindAllActivityListener = onFindAllActivityListener;
         mActivRef.addListenerForSingleValueEvent(new ValueEventListener() {
         @Override
         public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -191,8 +186,5 @@ class DatabaseUtils {
     });
     }
 
-    void setOnFindAllActivityListener(OnFindAllActivityListener onFindAllActivityListener){
-        mFindAllActivityListener = onFindAllActivityListener;
-    }
 
 }
