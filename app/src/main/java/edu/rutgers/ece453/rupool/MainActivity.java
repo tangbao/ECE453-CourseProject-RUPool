@@ -1,48 +1,37 @@
 package edu.rutgers.ece453.rupool;
 
-import android.app.FragmentTransaction;
-import android.media.Image;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
-
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,EventFragment.OnFragmentInteractionListener ,
-        MainFragment.OnFragmentInteractionListener,PreferenceFragment.OnFragmentInteractionListener,NewEventFragment.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener,
+        EventFragment.OnFragmentInteractionListener,
+//        MainFragment.OnFragmentInteractionListener,
+        PreferenceFragment.OnFragmentInteractionListener,
+        NewEventFragment.OnFragmentInteractionListener {
 
 
     private static final int REQUESTCODE_LOGIN = 541;
@@ -69,12 +58,12 @@ public class MainActivity extends AppCompatActivity
         du = new DatabaseUtils();
         // end by tb
 
-        ArrayList<String> searchContent=new ArrayList<>();
+        ArrayList<String> searchContent = new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
 
-        MainFragment mainFragment=new MainFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container,mainFragment);
+        MainFragment mainFragment = new MainFragment();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, mainFragment);
         fragmentTransaction.commit();
 
 
@@ -87,10 +76,10 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                NewEventFragment newEventFragmentventFragment=new NewEventFragment();
+                NewEventFragment newEventFragmentventFragment = new NewEventFragment();
                 getSupportFragmentManager().popBackStack();
-                android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container,newEventFragmentventFragment);
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, newEventFragmentventFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
@@ -101,7 +90,7 @@ public class MainActivity extends AppCompatActivity
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -111,11 +100,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        View childView=(LinearLayout) autocompleteFragment.getView();
-        ImageView searchIcon=(ImageView) childView.findViewById(R.id.place_autocomplete_search_button);
+        View childView = autocompleteFragment.getView();
+        ImageView searchIcon = childView.findViewById(R.id.place_autocomplete_search_button);
         searchIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu_black_24px));
 
         searchIcon.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +127,6 @@ public class MainActivity extends AppCompatActivity
                 Log.i("AUTO", "An error occurred: " + status);
             }
         });
-
 
 
     }
@@ -206,8 +193,7 @@ public class MainActivity extends AppCompatActivity
             }
             case R.id.action_logout: {
                 mFirebaseAuth.signOut();
-                startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
-                        REQUESTCODE_LOGIN);
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 return true;
             }
             default: {
@@ -224,20 +210,20 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.My_Event) {
             // Handle the camera action
-            EventFragment eventFragment=new EventFragment();
+            EventFragment eventFragment = new EventFragment();
             getSupportFragmentManager().popBackStack();
-            android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,eventFragment);
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, eventFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
 
-        } else if(id==R.id.nav_preference) {
+        } else if (id == R.id.nav_preference) {
             fab.show();
-            PreferenceFragment preferenceFragment=new PreferenceFragment();
+            PreferenceFragment preferenceFragment = new PreferenceFragment();
             getSupportFragmentManager().popBackStack();
-            android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container,preferenceFragment);
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_container, preferenceFragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
@@ -257,15 +243,15 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void myIcon(View view){
-        Toast.makeText(this,"Pop a dialog for users to change his Icon",Toast.LENGTH_SHORT).show();
+    public void myIcon(View view) {
+        Toast.makeText(this, "Pop a dialog for users to change his Icon", Toast.LENGTH_SHORT).show();
     }
 
-    public void myProfile(View view){
-        Toast.makeText(this,"Pop a dialog for users to change his Email Address",Toast.LENGTH_SHORT).show();
+    public void myProfile(View view) {
+        Toast.makeText(this, "Pop a dialog for users to change his Email Address", Toast.LENGTH_SHORT).show();
     }
 
-    public FloatingActionButton getFab(){
+    public FloatingActionButton getFab() {
         return fab;
     }
 
