@@ -99,13 +99,13 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View view = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
+        mTextViewUserNameNavHeader = view.findViewById(R.id.TextView_UserName_NavHeaderMain);
 
         // start zhu
         // set username in nav header
-        mTextViewUserNameNavHeader = findViewById(R.id.TextView_UserName_NavHeaderMain);
-        if (mFirebaseAuth.getCurrentUser() != null)
-            mTextViewUserNameNavHeader.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+
         // end zhu
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -148,9 +148,17 @@ public class MainActivity extends AppCompatActivity
                 || !mFirebaseAuth.getCurrentUser().isEmailVerified())
             startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
                     REQUESTCODE_LOGIN);
+        if (mFirebaseAuth.getCurrentUser() != null) {
+            mTextViewUserNameNavHeader.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+        }
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 
     //end by zhu
 
@@ -214,31 +222,34 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.My_Event: {
 
-        if (id == R.id.My_Event) {
-            // Handle the camera action
-            EventFragment eventFragment = new EventFragment();
-            getSupportFragmentManager().popBackStack();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, eventFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+                //TODO ERROR
+                // Handle the camera action
+                EventFragment eventFragment = new EventFragment();
+                getSupportFragmentManager().popBackStack();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, eventFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.nav_preference: {
+                fab.show();
+                PreferenceFragment preferenceFragment = new PreferenceFragment();
+                getSupportFragmentManager().popBackStack();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, preferenceFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                break;
+            }
 
-
-        } else if (id == R.id.nav_preference) {
-            fab.show();
-            PreferenceFragment preferenceFragment = new PreferenceFragment();
-            getSupportFragmentManager().popBackStack();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, preferenceFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            case R.id.Nav_Profile_MainActivity: {
+                startActivity(new Intent(this, ShowProfileActivity.class));
+                break;
+            }
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
