@@ -47,7 +47,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/destination"
+                        android:id="@+id/item_destination"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
