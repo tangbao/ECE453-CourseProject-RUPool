@@ -1,9 +1,17 @@
 package edu.rutgers.ece453.rupool;
 
+import android.app.FragmentTransaction;
+import android.media.Image;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,13 +21,24 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.view.View;
 import android.widget.Toast;
+
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,EventFragment.OnFragmentInteractionListener ,
@@ -50,8 +69,8 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
 
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -70,9 +89,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
+
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -80,7 +102,36 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        DatabaseUtils du = new DatabaseUtils();
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        View childView=(LinearLayout) autocompleteFragment.getView();
+        ImageView searchIcon=(ImageView) childView.findViewById(R.id.place_autocomplete_search_button);
+        searchIcon.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu_black_24px));
+
+        searchIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.openDrawer(Gravity.LEFT);
+            }
+        });
+
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO:Get info about the selected place.
+                Log.i("AUTO", "Place: " + place.getName());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO:Handle the error.
+                Log.i("AUTO", "An error occurred: " + status);
+            }
+        });
+
+
 
     }
 
@@ -113,22 +164,23 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        MenuItem menuItem=menu.findItem(R.id.menu_search);
-        SearchView searchView=(SearchView)menuItem.getActionView();
+//        MenuItem menuItem=menu.findItem(R.id.menu_search);
+//        SearchView searchView=(SearchView)menuItem.getActionView();
+//
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//
+//            }
+//        });
 
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-
-            }
-        });
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -202,6 +254,10 @@ public class MainActivity extends AppCompatActivity
 
     public void myProfile(View view){
         Toast.makeText(this,"Pop a dialog for users to change his Email Address",Toast.LENGTH_SHORT).show();
+    }
+
+    public FloatingActionButton getFab(){
+        return fab;
     }
 
 }
