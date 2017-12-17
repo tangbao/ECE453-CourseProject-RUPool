@@ -3,7 +3,6 @@ package edu.rutgers.ece453.rupool;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -56,8 +55,6 @@ public class EventFragment extends Fragment {
         // add by tangbao
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseUtils = new DatabaseUtils();
-        User a = new User(firebaseUser.getUid(), "F");
-        databaseUtils.addUser(a);
 
         databaseUtils.getUser(firebaseUser.getUid(), 1, new Interface.OnGetUserListener() {
             @Override
