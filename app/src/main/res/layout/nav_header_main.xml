@@ -21,10 +21,11 @@
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
+        android:id="@+id/TextView_UserName_NavHeaderMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:onClick="myProfile"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Dear User"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 

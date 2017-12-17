@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -42,7 +43,8 @@ public class MainActivity extends AppCompatActivity
 
     FloatingActionButton fab;
     // start by zhu
-    FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth mFirebaseAuth;
+    private TextView mTextViewUserNameNavHeader;
     // end by zhu
 
     @Override
@@ -99,6 +101,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // start zhu
+        // set username in nav header
+        mTextViewUserNameNavHeader = findViewById(R.id.TextView_UserName_NavHeaderMain);
+        if (mFirebaseAuth.getCurrentUser() != null)
+            mTextViewUserNameNavHeader.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+        // end zhu
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
