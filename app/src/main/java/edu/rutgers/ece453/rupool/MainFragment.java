@@ -8,10 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pools;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,8 +48,12 @@ public class MainFragment extends Fragment {
 
     ListView listView;
     ArrayAdapter<String> searchResult;
-    MyBaseAdapter myBaseAdapter;
-    boolean isJoined=false;
+    boolean isJoined = false;
+    RecyclerView mRecyclerView;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
+    private OnFragmentInteractionListener mListener;
+
 
     public MainFragment() {
         // Required empty public constructor
@@ -82,16 +84,14 @@ public class MainFragment extends Fragment {
             fab.show();
         }
 
-        listView=(ListView) view.findViewById(R.id.myList);
         ArrayList<PoolActivity> poolActivities=new ArrayList<>();
 
-        poolActivities.add(new PoolActivity("Test","1",4,"Dec","Liv",5.0));
-        poolActivities.add(new PoolActivity("Test","1",4,"Dec","Liv",5.0));
-        poolActivities.add(new PoolActivity("Test","1",4,"Dec","Liv",5.0));
-        poolActivities.add(new PoolActivity("Test","1",4,"Dec","Liv",5.0));
+        poolActivities.add(new PoolActivity("Test", "1", 4, "Dec", "Liv", 5.0));
+        poolActivities.add(new PoolActivity("Test", "1", 4, "Dec", "Liv", 5.0));
+        poolActivities.add(new PoolActivity("Test", "1", 4, "Dec", "Liv", 5.0));
+        poolActivities.add(new PoolActivity("Test", "1", 4, "Dec", "Liv", 5.0));
 
-        myBaseAdapter=new MyBaseAdapter(getActivity(),R.layout.item_layout,poolActivities);
-        listView.setAdapter(myBaseAdapter);
+
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -104,6 +104,18 @@ public class MainFragment extends Fragment {
                 fragmentTransaction.commit();
             }
         });
+
+        // set up RecyclerView
+        mRecyclerView = view.findViewById(R.id.RecyclerView_MainFragment);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mAdapter = new AdapterRecyclerViewMainFragment(poolActivities);
+        mRecyclerView.setAdapter(mAdapter);
+
+
 
 
         return view;
@@ -133,89 +145,17 @@ public class MainFragment extends Fragment {
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-
-    public class MyBaseAdapter extends ArrayAdapter<PoolActivity> {
-        private ArrayList<PoolActivity> task;
-        //private Context mContext;
-        private LayoutInflater inflater;
-        private int mResourceId;
-
-//        public MyBaseAdapter(Context context,ArrayList<PoolActivity> _task) {
-//            super(context,R.layout.item_layout,_task);
-//            this.mContext = context;
-//            //this.textViewResourceId=textViewResourceId;
-//            this.task=_task;
-//
-//        }
-
-        public MyBaseAdapter(Context context, int resource, ArrayList<PoolActivity> _task)
-        {
-            super(context,resource,_task);
-           // this.mContext = context;
-            this.mResourceId=resource;
-            this.task=_task;
-        }
-
-
-
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            PoolActivity poolActivity= task.get(position);
-
-            ViewHolder holder = null;
-            if (convertView == null) {
-                holder = new ViewHolder();
-
-                LayoutInflater layoutInflater=LayoutInflater.from(getActivity().getApplicationContext());
-                convertView = layoutInflater.inflate(mResourceId,null);
-
-                holder.dateMonth=(TextView) convertView.findViewById(R.id.Date_Month);
-                holder.dateDay=(TextView) convertView.findViewById(R.id.Date_Day);
-                holder.startPoint=(TextView) convertView.findViewById(R.id.start_point);
-                holder.destination=(TextView) convertView.findViewById(R.id.destination);
-                holder.description=(TextView) convertView.findViewById(R.id.description);
-
-                // 将holder绑定到convertView
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-
-            }
-
-            // 向ViewHolder中填入的数据
-
-//            holder.dateMonth.setText();
-            holder.dateDay.setText("16");
-            holder.dateMonth.setText("Dec");
-            holder.description.setText("老王开车去东北");
-            holder.startPoint.setText("Piscataway");
-            holder.destination.setText("Liv");
-
-
-            return convertView;
-        }
-
-        /**
-         * ViewHolder类用以储存item中控件的引用
-         */
-
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
-    static class ViewHolder {
-        TextView dateMonth;
-        TextView dateDay;
-        TextView startPoint;
-        TextView destination;
-        TextView description;
-    }
+
+
 }
+
