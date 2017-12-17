@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.util.Pools;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -26,6 +27,10 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
+import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -45,12 +50,16 @@ public class MainActivity extends AppCompatActivity
     // start by zhu
     private FirebaseAuth mFirebaseAuth;
     private TextView mTextViewUserNameNavHeader;
+    private DatabaseUtils databaseUtils;
+    private List<PoolActivity> allActivityList;
+    private MainFragment mainFragment;
     // end by zhu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        databaseUtils=new DatabaseUtils();
 
         // start by zhu
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -63,14 +72,9 @@ public class MainActivity extends AppCompatActivity
         ArrayList<String> searchContent = new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
 
-        MainFragment mainFragment = new MainFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, mainFragment);
-        fragmentTransaction.commit();
 
 
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -89,8 +93,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+
 
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -121,6 +124,17 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        // 进入程序，显示已有activity
+        databaseUtils.findAllActivity(new Interface.OnFindAllActivityListener() {
+            @Override
+            public void onFindAllActivity(List<PoolActivity> lpa, int RESULT_CODE) {
+                // 得到所有activity列表
+                    allActivityList = lpa;
+                    Toast.makeText(getApplicationContext(),lpa.get(1).getDate().toString(),Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -135,6 +149,11 @@ public class MainActivity extends AppCompatActivity
                 Log.i("AUTO", "An error occurred: " + status);
             }
         });
+
+        mainFragment = new MainFragment();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, mainFragment);
+        fragmentTransaction.commit();
 
 
     }
@@ -262,6 +281,12 @@ public class MainActivity extends AppCompatActivity
     public FloatingActionButton getFab() {
         return fab;
     }
+
+    public List<PoolActivity> getAllActivityList(){
+        return allActivityList;
+    }
+
+
 
 }
 

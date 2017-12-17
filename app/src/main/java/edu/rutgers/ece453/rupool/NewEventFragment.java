@@ -41,9 +41,9 @@ public class NewEventFragment extends Fragment {
     private EditText pricePerUser;
     private EditText userNum;
     private Button button;
+    private  EditText edittext;
     private Place place;
     private Calendar myCalendar;
-    private  EditText edittext;
     private DatePickerDialog.OnDateSetListener date;
     private Spinner spinner;
     private int startLocation;
