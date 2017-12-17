@@ -2,10 +2,12 @@ package edu.rutgers.ece453.rupool;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,23 +17,35 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ErrorDialogFragment;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
 
 public class NewEventFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
+    private EditText dest;
+    private EditText pricePerUser;
+    private EditText userNum;
+    private Button button;
+    private Place place;
+    private Calendar myCalendar;
+    private  EditText edittext;
+    private DatePickerDialog.OnDateSetListener date;
+
 
     private OnFragmentInteractionListener mListener;
+
 
     public NewEventFragment() {
         // Required empty public constructor
@@ -42,8 +56,6 @@ public class NewEventFragment extends Fragment {
     public static NewEventFragment newInstance(String param1, String param2) {
         NewEventFragment fragment = new NewEventFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +64,6 @@ public class NewEventFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -71,26 +81,34 @@ public class NewEventFragment extends Fragment {
         }
 
 
-
-        final EditText dest=view.findViewById(R.id.new_dest);
-        final EditText pricePerUser=view.findViewById(R.id.new_price);
-        final EditText userNum=view.findViewById(R.id.new_num);
-        Button button=view.findViewById(R.id.OK);
-
+        dest=view.findViewById(R.id.new_dest);
+        pricePerUser=view.findViewById(R.id.new_price);
+        userNum=view.findViewById(R.id.new_num);
+        button=view.findViewById(R.id.OK);
 
 
+        dest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    Intent intent =
+                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                                    .build(getActivity());
+                    startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                } catch (GooglePlayServicesRepairableException e) {
+                    // TODO:Handle the error.
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    // TODO:Handle the error.
+                }
 
-        final Calendar myCalendar = Calendar.getInstance();
-
-        final EditText edittext= (EditText) view.findViewById(R.id.new_date);
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-            private void updateLabel() {
-                String myFormat = "MM/dd/yyyy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-
-                edittext.setText(sdf.format(myCalendar.getTime()));
             }
+        });
+
+
+        myCalendar= Calendar.getInstance();
+
+        edittext= (EditText) view.findViewById(R.id.new_date);
+        date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -101,6 +119,14 @@ public class NewEventFragment extends Fragment {
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
             }
+
+            public void updateLabel() {
+                String myFormat = "MM/dd/yyyy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                edittext.setText(sdf.format(myCalendar.getTime()));
+            }
+
 
         };
 
@@ -119,6 +145,8 @@ public class NewEventFragment extends Fragment {
 
 
 
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -131,17 +159,36 @@ public class NewEventFragment extends Fragment {
                     Toast.makeText(getActivity(),"You have to input all the information",Toast.LENGTH_SHORT).show();
                     return;
                 }else{
-                    //TODO 创建poolactivity并加入数据库中
+                    //TODO 创建poolactivity并加入数据库中，获取到的place 变量名为place ，直接加进去就行
+
                     onBackPressed();
                 }
             }
         });
 
 
-
-
-
         return view;
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                place = PlaceAutocomplete.getPlace(getActivity(), data);
+                dest.setText(place.getName());
+                Log.i("AUTO", "Place: " + place.getName());
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(getActivity(), data);
+
+                // TODO:Handle the error.
+                Log.i("AUTO", status.getStatusMessage());
+
+            } else if (resultCode == RESULT_CANCELED) {
+                // The user canceled the operation.
+            }
+        }
     }
 
     public void onBackPressed(){

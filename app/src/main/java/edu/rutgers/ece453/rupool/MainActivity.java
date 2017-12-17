@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
+
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
                 NewEventFragment newEventFragmentventFragment=new NewEventFragment();
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity
                 drawer.openDrawer(Gravity.LEFT);
             }
         });
+
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
