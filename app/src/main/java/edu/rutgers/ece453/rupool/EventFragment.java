@@ -3,26 +3,38 @@ package edu.rutgers.ece453.rupool;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import static edu.rutgers.ece453.rupool.Constant.GET_USER_SUCCESS;
 
 
 public class EventFragment extends Fragment {
     private static final String ARGS_POOLACTIVITY = "edu.rutgers.ece453.rupool.EventFragment.ARGS.POOLACTIVITY";
+    private static final String TAG = "Event Fragment";
     Button joinButton;
     Button quitButton;
-    boolean isJoined = false;
+    boolean isJoined = false; //判断是否已经参加
     private PoolActivity mPoolActivity;
     private TextView mTextViewDestination;
     private TextView mTextViewDate;
     private TextView mTextViewNumberOfPassenger;
     private TextView mTextViewPrice;
     private OnFragmentInteractionListener mListener;
+    private FirebaseUser firebaseUser;
+    private User myUser;
+    private DatabaseUtils databaseUtils;
 
     public EventFragment() {
         // Required empty public constructor
@@ -40,10 +52,37 @@ public class EventFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mPoolActivity = (PoolActivity) getArguments().getSerializable(ARGS_POOLACTIVITY);
-        }
 
+        // add by tangbao
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        databaseUtils.getUser(firebaseUser.getUid(), 1, new Interface.OnGetUserListener() {
+            @Override
+            public void onGetUser(User user, int ACTION_CODE, int RESULT_CODE) {
+                if(RESULT_CODE == GET_USER_SUCCESS){
+                    myUser = user;
+                }else{
+                    //todo 没有在数据库中找到用户的异常处理
+                }
+            }
+        });
+
+        if(firebaseUser!=null){
+            if (getArguments() != null) {
+                mPoolActivity = (PoolActivity) getArguments().getSerializable(ARGS_POOLACTIVITY);
+                for(String id : mPoolActivity.getMembers()){
+                    if(id.equals(firebaseUser.getUid())){
+                        isJoined = true;
+                        break;
+                    }
+                }
+            }else{
+                //todo 没有获得Activity的异常处理
+            }
+        }else{
+            //todo 当前没有用户登陆的异常处理
+        }
+        // add end
 
     }
 
@@ -62,19 +101,46 @@ public class EventFragment extends Fragment {
         joinButton = view.findViewById(R.id.Join);
         quitButton = view.findViewById(R.id.Quit);
 
+        // add and edit by tangbao
         joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
+                if(mPoolActivity.getStatus()){
+                    mPoolActivity.addMember(firebaseUser.getUid());
+                    myUser.joinActivity(mPoolActivity.getId());
+                    if(mPoolActivity.getMembers().size() == mPoolActivity.getMaxMember()){
+                        mPoolActivity.setStatus(false);
+                    }
+                    databaseUtils.updateUser(myUser);
+                    databaseUtils.updateActivity(mPoolActivity);
+                    //todo 检查数据一致性 防止覆盖 etc
+
+                    joinButton.setVisibility(View.INVISIBLE);
+                    quitButton.setVisibility(View.VISIBLE);
+                }else{
+                    Log.e(TAG, "Error: PoolActivity Closed.");
+                    Toast.makeText(getContext(), "Error: PoolAcitivity Closed", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
         quitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
+                myUser.quitActivity(mPoolActivity.getId());
+                mPoolActivity.removeMember(myUser.getUid());
+                if(!mPoolActivity.getStatus()){
+                    mPoolActivity.setStatus(true);
+                }
+                databaseUtils.updateUser(myUser);
+                databaseUtils.updateActivity(mPoolActivity);
+
+                joinButton.setVisibility(View.VISIBLE);
+                quitButton.setVisibility(View.INVISIBLE);
             }
         });
+
+        // end by tangbao
 
         // initial textview
 
