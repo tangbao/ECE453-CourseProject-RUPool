@@ -12,23 +12,25 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
-
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".WaitingEmailVerifyActivity" />
+        <activity android:name=".ShowProfileActivity" />
+        <activity android:name=".EditProfileActivity"></activity>
     </application>
 
 </manifest>
