@@ -1,15 +1,8 @@
 package edu.rutgers.ece453.rupool;
 
-import android.support.annotation.NonNull;
-
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Zhongze Tang on 2017/11/21.
@@ -46,6 +39,7 @@ public class User implements Serializable{
     }
 
     public List<String> getActivities() {
+        if (activities == null) activities = new LinkedList<>();
         return activities;
     }
 

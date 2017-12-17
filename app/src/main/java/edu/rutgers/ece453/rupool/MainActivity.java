@@ -99,13 +99,13 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View view = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
+        mTextViewUserNameNavHeader = view.findViewById(R.id.TextView_UserName_NavHeaderMain);
 
         // start zhu
         // set username in nav header
-        mTextViewUserNameNavHeader = findViewById(R.id.TextView_UserName_NavHeaderMain);
-        if (mFirebaseAuth.getCurrentUser() != null)
-            mTextViewUserNameNavHeader.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+
         // end zhu
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -148,9 +148,17 @@ public class MainActivity extends AppCompatActivity
                 || !mFirebaseAuth.getCurrentUser().isEmailVerified())
             startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
                     REQUESTCODE_LOGIN);
+        if (mFirebaseAuth.getCurrentUser() != null) {
+            mTextViewUserNameNavHeader.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+        }
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
 
     //end by zhu
 
@@ -216,6 +224,8 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.My_Event: {
+
+                //TODO ERROR
                 // Handle the camera action
                 EventFragment eventFragment = new EventFragment();
                 getSupportFragmentManager().popBackStack();

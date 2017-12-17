@@ -73,6 +73,7 @@ public class ShowProfileActivity extends AppCompatActivity {
                                                     for (PoolActivity poolActivity : lpa)
                                                         stringPoolActivityMap.put(poolActivity.getId(), poolActivity);
                                                     List<PoolActivity> toShow = new LinkedList<>();
+//                                                    if (!user.getActivities().isEmpty())
                                                     for (String activityID : user.getActivities())
                                                         toShow.add(stringPoolActivityMap.get(activityID));
                                                     mTextViewName.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
@@ -87,7 +88,8 @@ public class ShowProfileActivity extends AppCompatActivity {
                                                     mRecyclerView.setAdapter(mAdapter);
                                                 }
                                             });
-                                        } else finish();
+                                        } else
+                                            startActivity(new Intent(ShowProfileActivity.this, EditProfileActivity.class));
                                     }
                                 });
                             } else finish();
