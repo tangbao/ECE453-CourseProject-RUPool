@@ -2,6 +2,7 @@ package edu.rutgers.ece453.rupool;
 
 import android.app.FragmentTransaction;
 import android.media.Image;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
@@ -30,6 +33,8 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,14 +45,20 @@ public class MainActivity extends AppCompatActivity
         MainFragment.OnFragmentInteractionListener,PreferenceFragment.OnFragmentInteractionListener,NewEventFragment.OnFragmentInteractionListener{
 
 
+    private static final int REQUESTCODE_LOGIN = 541;
     FloatingActionButton fab;
+    // start by zhu
+    FirebaseAuth mFirebaseAuth;
+    // end by zhu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        // start by zhu
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        // end by zhu
 
         ArrayList<String> searchContent=new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
@@ -58,14 +69,13 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.commit();
 
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
                 NewEventFragment newEventFragmentventFragment=new NewEventFragment();
@@ -74,6 +84,7 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.replace(R.id.fragment_container,newEventFragmentventFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+
 
             }
         });
@@ -87,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -124,9 +135,24 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    // start by zhu
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mFirebaseAuth.getCurrentUser() == null
+                || !mFirebaseAuth.getCurrentUser().isEmailVerified())
+            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
+                    REQUESTCODE_LOGIN);
+
+    }
+
+
+    //end by zhu
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -164,16 +190,21 @@ public class MainActivity extends AppCompatActivity
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings: {
+                return true;
+            }
+            case R.id.action_logout: {
+                mFirebaseAuth.signOut();
+                startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
+                        REQUESTCODE_LOGIN);
+                return true;
+            }
+            default: {
+                return super.onOptionsItemSelected(item);
+            }
         }
-
-
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -207,7 +238,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

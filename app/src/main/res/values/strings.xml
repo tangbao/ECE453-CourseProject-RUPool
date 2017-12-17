@@ -21,4 +21,8 @@
         <item>Event8</item>
     </string-array>
 
+    <string name="Label_EditText_Email_LoginActivity">Email:</string>
+    <string name="Label_EditText_Password_LoginActivity">Password:</string>
+    <string name="Text_Button_Login_LoginActivity">LOGIN</string>
+    <string name="title_activity_waitint_email_verify">WaitintEmailVerifyActivity</string>
 </resources>
