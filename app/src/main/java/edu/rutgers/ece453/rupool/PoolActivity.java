@@ -29,6 +29,7 @@ public class PoolActivity implements Serializable {
     private int maxMember; //the max member number
     private double moneyPerPerson; //the money per person should pay
     private List<String> members= new ArrayList<>(); //the ids of the members who join the activity
+    private boolean status;
 
     PoolActivity(){}
 
@@ -43,6 +44,7 @@ public class PoolActivity implements Serializable {
         this.description = description;
         this.startPoint = startPoint;
         this.moneyPerPerson = moneyPerPerson;
+        this.status = true;
     }
 
     public String getId(){
@@ -134,5 +136,13 @@ public class PoolActivity implements Serializable {
 
     public void removeMember(String uid){
         this.members.remove(uid);
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public boolean getStatus(){
+        return status;
     }
 }
