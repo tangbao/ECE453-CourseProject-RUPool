@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEditTextEmail;
     private EditText mEditTextPassword;
 
+    private TextView mTextViewResetPassword;
+
     private Button mButtonLogin;
     private Button mButtonSignUp;
 
@@ -38,9 +41,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // init auth
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
         // Views
         mEditTextEmail = findViewById(R.id.EditText_Email_LoginActivity);
         mEditTextPassword = findViewById(R.id.EditText_Password_LoginActivity);
+        mTextViewResetPassword = findViewById(R.id.TextView_ResetPassword_LoginActivity);
         mButtonLogin = findViewById(R.id.Button_Login_LoginActivity);
         mButtonSignUp = findViewById(R.id.Button_SignUp_LoginActivity);
 
@@ -57,8 +64,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // init auth
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        mTextViewResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
+            }
+        });
+
+
 
     }
 
@@ -133,12 +146,11 @@ public class LoginActivity extends AppCompatActivity {
                         hideProgressDialog();
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login Success.", Toast.LENGTH_SHORT).show();
-                            if (mFirebaseAuth.getCurrentUser() != null
-                                    && mFirebaseAuth.getCurrentUser().isEmailVerified())
-                                finish();
-                            else {
-
-                            }
+                            if (mFirebaseAuth.getCurrentUser() != null)
+                                if (mFirebaseAuth.getCurrentUser().isEmailVerified())
+                                    finish();
+                                else
+                                    startActivity(new Intent(LoginActivity.this, WaitingEmailVerifyActivity.class));
                         } else {
                             Log.w(TAG, "onComplete: failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Login failed.", Toast.LENGTH_SHORT).show();

@@ -11,8 +11,8 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCSJbs4ekFG_CiTRcr4jIVRWXZGPJ0JW30"
-            />
+            android:value="AIzaSyCSJbs4ekFG_CiTRcr4jIVRWXZGPJ0JW30" />
+
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
@@ -25,14 +25,13 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
-
         </activity>
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".WaitingEmailVerifyActivity" />
         <activity android:name=".ShowProfileActivity" />
-        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".ResetPasswordActivity"></activity>
     </application>
 
 </manifest>

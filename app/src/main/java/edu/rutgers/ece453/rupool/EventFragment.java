@@ -9,15 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
+import android.widget.TextView;
 
 
 public class EventFragment extends Fragment {
-
+    private static final String ARGS_POOLACTIVITY = "edu.rutgers.ece453.rupool.EventFragment.ARGS.POOLACTIVITY";
     Button joinButton;
     Button quitButton;
-    boolean isJoined=false;
-
+    boolean isJoined = false;
+    private PoolActivity mPoolActivity;
+    private TextView mTextViewDestination;
+    private TextView mTextViewDate;
+    private TextView mTextViewNumberOfPassenger;
+    private TextView mTextViewPrice;
     private OnFragmentInteractionListener mListener;
 
     public EventFragment() {
@@ -25,9 +29,10 @@ public class EventFragment extends Fragment {
     }
 
 
-    public static EventFragment newInstance(String param1, String param2) {
+    public static EventFragment newInstance(PoolActivity poolActivity) {
         EventFragment fragment = new EventFragment();
         Bundle args = new Bundle();
+        args.putSerializable(ARGS_POOLACTIVITY, poolActivity);
         fragment.setArguments(args);
         return fragment;
     }
@@ -36,6 +41,7 @@ public class EventFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            mPoolActivity = (PoolActivity) getArguments().getSerializable(ARGS_POOLACTIVITY);
         }
 
 
@@ -47,30 +53,53 @@ public class EventFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event, container, false);
 
-        FloatingActionButton fab=((MainActivity) getActivity()).getFab();
+        FloatingActionButton fab = ((MainActivity) getActivity()).getFab();
         if (fab != null) {
             fab.show();
         }
-        joinButton=(Button) view.findViewById(R.id.Join);
-        quitButton=(Button) view.findViewById(R.id.Quit);
 
-        if(!isJoined) {
+
+        joinButton = view.findViewById(R.id.Join);
+        quitButton = view.findViewById(R.id.Quit);
+
+        joinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO
+            }
+        });
+
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO
+            }
+        });
+
+        // initial textview
+
+        mTextViewDestination = view.findViewById(R.id.destination);
+        mTextViewDate = view.findViewById(R.id.date);
+        mTextViewNumberOfPassenger = view.findViewById(R.id.numberOfPassenger);
+        mTextViewPrice = view.findViewById(R.id.price);
+
+        // TODO 显示信息
+        mTextViewDestination.setText(mPoolActivity.getDestiName());
+        mTextViewNumberOfPassenger.setText(String.valueOf(mPoolActivity.getMembers().size()));
+        mTextViewDate.setText(mPoolActivity.getDate());
+        // TODO 此处存疑
+        mTextViewPrice.setText(String.valueOf(mPoolActivity.getMoneyPerPerson()));
+
+        if (!isJoined) {
             joinButton.setVisibility(View.VISIBLE);
             quitButton.setVisibility(View.INVISIBLE);
-        }
-        else{
+        } else {
             joinButton.setVisibility(View.INVISIBLE);
             quitButton.setVisibility(View.VISIBLE);
         }
         return view;
     }
 
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
