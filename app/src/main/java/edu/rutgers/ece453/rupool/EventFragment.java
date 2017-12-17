@@ -62,6 +62,20 @@ public class EventFragment extends Fragment {
         joinButton = view.findViewById(R.id.Join);
         quitButton = view.findViewById(R.id.Quit);
 
+        joinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO
+            }
+        });
+
+        quitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO
+            }
+        });
+
         // initial textview
 
         mTextViewDestination = view.findViewById(R.id.destination);
@@ -70,7 +84,11 @@ public class EventFragment extends Fragment {
         mTextViewPrice = view.findViewById(R.id.price);
 
         // TODO 显示信息
-
+        mTextViewDestination.setText(mPoolActivity.getDestiName());
+        mTextViewNumberOfPassenger.setText(String.valueOf(mPoolActivity.getMembers().size()));
+        mTextViewDate.setText(mPoolActivity.getDate());
+        // TODO 此处存疑
+        mTextViewPrice.setText(String.valueOf(mPoolActivity.getMoneyPerPerson()));
 
         if (!isJoined) {
             joinButton.setVisibility(View.VISIBLE);
