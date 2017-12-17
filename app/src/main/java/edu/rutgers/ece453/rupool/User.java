@@ -1,6 +1,7 @@
 package edu.rutgers.ece453.rupool;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public class User implements Serializable{
     private String uid;
     private String gender;
-    private List<String> activities;
+    private List<String> activities = new ArrayList<>();
 
     public User(){}
 

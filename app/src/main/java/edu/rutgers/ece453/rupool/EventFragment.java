@@ -55,6 +55,9 @@ public class EventFragment extends Fragment {
 
         // add by tangbao
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseUtils = new DatabaseUtils();
+        User a = new User(firebaseUser.getUid(), "F");
+        databaseUtils.addUser(a);
 
         databaseUtils.getUser(firebaseUser.getUid(), 1, new Interface.OnGetUserListener() {
             @Override
@@ -107,6 +110,7 @@ public class EventFragment extends Fragment {
             public void onClick(View v) {
                 if(mPoolActivity.getStatus()){
                     mPoolActivity.addMember(firebaseUser.getUid());
+                    Log.e(TAG, mPoolActivity.getId());
                     myUser.joinActivity(mPoolActivity.getId());
                     if(mPoolActivity.getMembers().size() == mPoolActivity.getMaxMember()){
                         mPoolActivity.setStatus(false);
@@ -114,6 +118,8 @@ public class EventFragment extends Fragment {
                     databaseUtils.updateUser(myUser);
                     databaseUtils.updateActivity(mPoolActivity);
                     //todo 检查数据一致性 防止覆盖 etc
+
+                    Toast.makeText(getContext(), "Join successfully.", Toast.LENGTH_LONG).show();
 
                     joinButton.setVisibility(View.INVISIBLE);
                     quitButton.setVisibility(View.VISIBLE);
@@ -134,6 +140,8 @@ public class EventFragment extends Fragment {
                 }
                 databaseUtils.updateUser(myUser);
                 databaseUtils.updateActivity(mPoolActivity);
+
+                Toast.makeText(getContext(), "Quit successfully.", Toast.LENGTH_LONG).show();
 
                 joinButton.setVisibility(View.VISIBLE);
                 quitButton.setVisibility(View.INVISIBLE);

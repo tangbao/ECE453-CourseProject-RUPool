@@ -42,9 +42,9 @@ public class AdapterRecyclerViewMainFragment extends RecyclerView.Adapter<Adapte
         holder.view.setTag(position);
         holder.textViewDateMonth.setText("TEST");
         holder.textViewDateDay.setText("TEST");
-        holder.textViewStartPoint.setText("TEST");
-        holder.textViewDestination.setText("TEST");
-        holder.textViewDescription.setText("TEST");
+        holder.textViewStartPoint.setText(poolActivity.getStartPoint());
+        holder.textViewDestination.setText(poolActivity.getDestiName());
+        holder.textViewDescription.setText(poolActivity.getDescription());
     }
 
     @Override
