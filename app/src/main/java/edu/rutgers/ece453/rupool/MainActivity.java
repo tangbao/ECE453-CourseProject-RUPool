@@ -140,10 +140,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (mFirebaseAuth.getCurrentUser() == null
-                || !mFirebaseAuth.getCurrentUser().isEmailVerified())
-            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
-                    REQUESTCODE_LOGIN);
+//        if (mFirebaseAuth.getCurrentUser() == null
+//                || !mFirebaseAuth.getCurrentUser().isEmailVerified())
+//            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
+//                    REQUESTCODE_LOGIN);
 
     }
 

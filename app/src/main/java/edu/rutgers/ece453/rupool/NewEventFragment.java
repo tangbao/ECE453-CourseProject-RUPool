@@ -11,9 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ErrorDialogFragment;
@@ -42,6 +45,8 @@ public class NewEventFragment extends Fragment {
     private Calendar myCalendar;
     private  EditText edittext;
     private DatePickerDialog.OnDateSetListener date;
+    private Spinner spinner;
+    private int startLocation;
 
 
     private OnFragmentInteractionListener mListener;
@@ -85,8 +90,26 @@ public class NewEventFragment extends Fragment {
         pricePerUser=view.findViewById(R.id.new_price);
         userNum=view.findViewById(R.id.new_num);
         button=view.findViewById(R.id.OK);
+        spinner=view.findViewById(R.id.spinner);
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.startPoint, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                startLocation=i;
+                Log.d("startLocation",String.valueOf(startLocation));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         dest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -159,7 +182,8 @@ public class NewEventFragment extends Fragment {
                     Toast.makeText(getActivity(),"You have to input all the information",Toast.LENGTH_SHORT).show();
                     return;
                 }else{
-                    //TODO 创建poolactivity并加入数据库中，获取到的place 变量名为place ，直接加进去就行
+                    //TODO 创建poolactivity并加入数据库中，获取到的place 变量名为place ，直接加进去就行,地点为startLocation (int类型), 0-busch
+                    // todo: 1-liv, 2-cook, 3- doug
 
                     onBackPressed();
                 }
