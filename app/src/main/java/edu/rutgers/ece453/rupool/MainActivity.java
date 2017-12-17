@@ -46,6 +46,11 @@ public class MainActivity extends AppCompatActivity
 
 
     private static final int REQUESTCODE_LOGIN = 541;
+    // start by tb
+    private static final String TAG = "Main Activity";
+    DatabaseUtils du;
+    // end by tb
+
     FloatingActionButton fab;
     // start by zhu
     FirebaseAuth mFirebaseAuth;
@@ -59,6 +64,10 @@ public class MainActivity extends AppCompatActivity
         // start by zhu
         mFirebaseAuth = FirebaseAuth.getInstance();
         // end by zhu
+
+        // start by tb
+        du = new DatabaseUtils();
+        // end by tb
 
         ArrayList<String> searchContent=new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));

@@ -22,4 +22,8 @@ class Interface {
         void onFindActivityByPlace(List<PoolActivity> lpa, int ACTION_CODE, int RESULT_CODE);
     }
 
+    public interface OnFindAllActivityListener{
+        void onFindAllActivity(List<PoolActivity> lpa, int RESULT_CODE);
+    }
+
 }

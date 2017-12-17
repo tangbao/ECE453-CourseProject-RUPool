@@ -22,6 +22,7 @@ import java.util.Locale;
 import edu.rutgers.ece453.rupool.Interface.OnGetActivityListener;
 import edu.rutgers.ece453.rupool.Interface.OnGetUserListener;
 import edu.rutgers.ece453.rupool.Interface.OnFindActivityByPlaceListener;
+import edu.rutgers.ece453.rupool.Interface.OnFindAllActivityListener;
 
 import static edu.rutgers.ece453.rupool.Constant.FIND_ACTIVITY_BY_PLACE_FAIL;
 import static edu.rutgers.ece453.rupool.Constant.FIND_ACTIVITY_BY_PLACE_SUCCESS;
@@ -29,6 +30,8 @@ import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_FAIL;
 import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
 import static edu.rutgers.ece453.rupool.Constant.GET_USER_FAIL;
 import static edu.rutgers.ece453.rupool.Constant.GET_USER_SUCCESS;
+import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
+import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_FAIL;
 
 /**
  * Created by Zhongze Tang on 2017/11/21.
@@ -44,6 +47,7 @@ class DatabaseUtils {
     private OnGetUserListener mGetUserListener;
     private OnGetActivityListener mGetActivityListener;
     private OnFindActivityByPlaceListener mFindActivityByPlaceListener;
+    private OnFindAllActivityListener mFindAllActivityListener;
 
     private DatabaseReference mDatabase;
     private DatabaseReference mUsersRef;
@@ -156,35 +160,39 @@ class DatabaseUtils {
             }
         });
 
-//        mActivRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(final DataSnapshot dataSnapshot) {
-//                List<PoolActivity> result = new ArrayList<>();
-//                if(dataSnapshot!=null){
-//                    for(DataSnapshot data : dataSnapshot.getChildren()){
-//                        PoolActivity pa = data.getValue(PoolActivity.class);
-//                        if(pa.getPlace()!=null){
-//                            if(pa.getPlace().getLatLng().equals(ll)){
-//                                result.add(data.getValue(PoolActivity.class));
-//                            }
-//                        }
-//
-//                    }
-//                    mFindActivityByPlaceListener.onFindActivityByPlace(result, ACTION_CODE);
-//                }else{
-//                    Log.e(TAG, "no avitivity now");
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.w(TAG, "findPoolActivityByLocation:onCancelled", databaseError.toException());
-//            }
-//        });
+
     }
 
     void setOnFindActivityByLocationListener(OnFindActivityByPlaceListener onFindActivityByPlaceListener){
         mFindActivityByPlaceListener = onFindActivityByPlaceListener;
+    }
+
+    void findAllActivity(){
+        mActivRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(final DataSnapshot dataSnapshot) {
+            List<PoolActivity> result = new ArrayList<>();
+            if(dataSnapshot!=null){
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    PoolActivity pa = data.getValue(PoolActivity.class);
+                    result.add(pa);
+                }
+                mFindAllActivityListener.onFindAllActivity(result, GET_ALL_ACTIVITY_SUCCESS );
+            }else{
+                Log.e(TAG, "no avitivity now");
+                mFindAllActivityListener.onFindAllActivity(result, GET_ALL_ACTIVITY_FAIL);
+            }
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Log.w(TAG, "findAllActivities:onCancelled", databaseError.toException());
+        }
+    });
+    }
+
+    void setOnFindAllActivityListener(OnFindAllActivityListener onFindAllActivityListener){
+        mFindAllActivityListener = onFindAllActivityListener;
     }
 
 }
