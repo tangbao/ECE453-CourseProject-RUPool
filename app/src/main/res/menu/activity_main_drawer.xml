@@ -12,6 +12,10 @@
             android:id="@+id/nav_preference"
             android:icon="@drawable/ic_menu_manage"
             android:title="Preference" />
+        <item
+            android:id="@+id/Nav_Profile_MainActivity"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Profile" />
     </group>
 
     <item android:title="Communicate">

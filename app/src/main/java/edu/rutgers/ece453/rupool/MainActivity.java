@@ -214,31 +214,32 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.My_Event: {
+                // Handle the camera action
+                EventFragment eventFragment = new EventFragment();
+                getSupportFragmentManager().popBackStack();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, eventFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.nav_preference: {
+                fab.show();
+                PreferenceFragment preferenceFragment = new PreferenceFragment();
+                getSupportFragmentManager().popBackStack();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, preferenceFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                break;
+            }
 
-        if (id == R.id.My_Event) {
-            // Handle the camera action
-            EventFragment eventFragment = new EventFragment();
-            getSupportFragmentManager().popBackStack();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, eventFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-
-
-        } else if (id == R.id.nav_preference) {
-            fab.show();
-            PreferenceFragment preferenceFragment = new PreferenceFragment();
-            getSupportFragmentManager().popBackStack();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, preferenceFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            case R.id.Nav_Profile_MainActivity: {
+                startActivity(new Intent(this, ShowProfileActivity.class));
+                break;
+            }
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
