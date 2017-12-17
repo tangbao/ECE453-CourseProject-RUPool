@@ -3,10 +3,7 @@ package edu.rutgers.ece453.rupool;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,43 +13,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
-
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 
 public class MainFragment extends Fragment {
 
 
-    ListView listView;
     ArrayAdapter<String> searchResult;
     boolean isJoined = false;
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
-    private OnFragmentInteractionListener mListener;
+//    private OnFragmentInteractionListener mListener;
 
 
     public MainFragment() {
@@ -103,8 +77,7 @@ public class MainFragment extends Fragment {
         mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
             @Override
             public void onItemClick(PoolActivity poolActivity) {
-                // TODO  传值
-                EventFragment eventFragment = new EventFragment();
+                EventFragment eventFragment = EventFragment.newInstance(poolActivity);
                 getActivity().getSupportFragmentManager().popBackStack();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, eventFragment);
@@ -113,35 +86,31 @@ public class MainFragment extends Fragment {
             }
         });
         mRecyclerView.setAdapter(mAdapter);
-
-
-
-
         return view;
     }
 
 
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+//        mListener = null;
     }
 
 
@@ -150,10 +119,10 @@ public class MainFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+//    public interface OnFragmentInteractionListener {
+//        // TODO: Update argument type and name
+//        void onFragmentInteraction(Uri uri);
+//    }
 
 
 }
