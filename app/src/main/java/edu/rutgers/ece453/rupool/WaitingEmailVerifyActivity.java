@@ -38,14 +38,6 @@ public class WaitingEmailVerifyActivity extends AppCompatActivity {
                             finish();
                     }
                 });
-        findViewById(R.id.Button_ChangeAccount_WaitingEmailVerifyActivity)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mFirebaseAuth.signOut();
-                        finish();
-                    }
-                });
 
     }
 
