@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -62,18 +62,17 @@ public class MainFragment extends Fragment {
         poolActivities.add(new PoolActivity("Test", "1", 4, "Dec", "Liv", 5.0));
 
 
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                EventFragment eventFragment = new EventFragment();
-                getActivity().getSupportFragmentManager().popBackStack();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, eventFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                EventFragment eventFragment = new EventFragment();
+//                getActivity().getSupportFragmentManager().popBackStack();
+//                android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.replace(R.id.fragment_container, eventFragment);
+//                fragmentTransaction.addToBackStack(null);
+//                fragmentTransaction.commit();
+//            }
+//        });
 
         // set up RecyclerView
         mRecyclerView = view.findViewById(R.id.RecyclerView_MainFragment);
@@ -82,7 +81,18 @@ public class MainFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new AdapterRecyclerViewMainFragment(poolActivities);
+        mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
+            @Override
+            public void onItemClick(PoolActivity poolActivity) {
+                // TODO
+                EventFragment eventFragment = new EventFragment();
+                getActivity().getSupportFragmentManager().popBackStack();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, eventFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
 
 
