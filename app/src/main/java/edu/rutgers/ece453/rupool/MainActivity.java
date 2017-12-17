@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
                 NewEventFragment newEventFragmentventFragment=new NewEventFragment();
@@ -72,7 +73,6 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.replace(R.id.fragment_container,newEventFragmentventFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
-
 
             }
         });
@@ -117,6 +117,9 @@ public class MainActivity extends AppCompatActivity
                 Log.i("AUTO", "An error occurred: " + status);
             }
         });
+
+
+
     }
 
     @Override
