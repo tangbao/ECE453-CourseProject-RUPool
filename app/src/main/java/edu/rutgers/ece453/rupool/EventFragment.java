@@ -28,7 +28,6 @@ public class EventFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     public static EventFragment newInstance(PoolActivity poolActivity) {
         EventFragment fragment = new EventFragment();
         Bundle args = new Bundle();
@@ -43,8 +42,11 @@ public class EventFragment extends Fragment {
         if (getArguments() != null) {
             mPoolActivity = (PoolActivity) getArguments().getSerializable(ARGS_POOLACTIVITY);
         }
-
-
+        // TODO: 如果为空，先随便new了个activity，防止报错
+        else
+        {
+            mPoolActivity=new PoolActivity("sun","1","11/1/2017","kaiche qu dong bei","Bush Student Center",4,3.0);
+        }
     }
 
     @Override
@@ -78,10 +80,10 @@ public class EventFragment extends Fragment {
 
         // initial textview
 
-        mTextViewDestination = view.findViewById(R.id.destination);
-        mTextViewDate = view.findViewById(R.id.date);
-        mTextViewNumberOfPassenger = view.findViewById(R.id.numberOfPassenger);
-        mTextViewPrice = view.findViewById(R.id.price);
+        mTextViewDestination = view.findViewById(R.id.event_dest);
+        mTextViewDate = view.findViewById(R.id.event_date);
+        mTextViewNumberOfPassenger = view.findViewById(R.id.event_num);
+        mTextViewPrice = view.findViewById(R.id.event_price);
 
         // TODO 显示信息
         mTextViewDestination.setText(mPoolActivity.getDestiName());
