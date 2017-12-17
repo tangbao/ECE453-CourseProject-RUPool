@@ -45,7 +45,6 @@ import java.util.List;
 
 public class MainFragment extends Fragment {
 
-    private OnFragmentInteractionListener mListener;
 
     ListView listView;
     ArrayAdapter<String> searchResult;
@@ -104,7 +103,7 @@ public class MainFragment extends Fragment {
         mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
             @Override
             public void onItemClick(PoolActivity poolActivity) {
-                // TODO
+                // TODO  传值
                 EventFragment eventFragment = new EventFragment();
                 getActivity().getSupportFragmentManager().popBackStack();
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
