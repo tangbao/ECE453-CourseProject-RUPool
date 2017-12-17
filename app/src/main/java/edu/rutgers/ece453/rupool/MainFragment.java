@@ -60,10 +60,11 @@ public class MainFragment extends Fragment {
 
         ArrayList<PoolActivity> poolActivities=new ArrayList<>();
 
-        poolActivities.add(new PoolActivity("Test", "1", 4, "Dec", "Liv", 5.0));
-        poolActivities.add(new PoolActivity("Test", "1", 4, "Dec", "Liv", 5.0));
-        poolActivities.add(new PoolActivity("Test", "1", 4, "Dec", "Liv", 5.0));
-        poolActivities.add(new PoolActivity("Test", "1", 4, "Dec", "Liv", 5.0));
+        poolActivities.add(new PoolActivity("Test1", "1", "now", "test description", "BSC", 5, 5.0));
+        poolActivities.add(new PoolActivity("Test2", "2", "now", "test description", "BSC", 5, 5.0));
+        poolActivities.add(new PoolActivity("Test3", "3", "now", "test description", "BSC", 5, 5.0));
+        poolActivities.add(new PoolActivity("Test4", "4", "now", "test description", "BSC", 5, 5.0));
+
 
 
 
