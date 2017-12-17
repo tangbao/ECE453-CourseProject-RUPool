@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,6 +37,21 @@ public class WaitingEmailVerifyActivity extends AppCompatActivity {
                                     });
                         else
                             finish();
+                    }
+                });
+        findViewById(R.id.Button_ResendEmail_WaitingEmailVerifyActivity)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mFirebaseAuth.getCurrentUser() != null) {
+                            mFirebaseAuth.getCurrentUser().sendEmailVerification()
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Toast.makeText(WaitingEmailVerifyActivity.this, "Resend verify email success", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        } else finish();
                     }
                 });
 

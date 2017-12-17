@@ -26,12 +26,22 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".WaitingEmailVerifyActivity" />
-        <activity android:name=".ShowProfileActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".ResetPasswordActivity"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="Log in" />
+        <activity
+            android:name=".SignUpActivity"
+            android:label="Sign Up" />
+        <activity
+            android:name=".WaitingEmailVerifyActivity"
+            android:label="Please Verify Email" />
+        <activity
+            android:name=".ShowProfileActivity"
+            android:label="Profile" />
+        <activity
+            android:name=".EditProfileActivity"
+            android:label="Edit Profile" />
+        <activity android:name=".ResetPasswordActivity" />
     </application>
 
 </manifest>
