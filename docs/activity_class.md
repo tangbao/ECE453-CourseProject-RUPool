@@ -1,6 +1,4 @@
-**活动**
-
-存在尚未解决的问题，请参见[Issues #3](https://github.com/tangbao/ECE453-CourseProject/issues/3)
+### 活动
 
 id String id
 
@@ -8,11 +6,21 @@ id String id
 
 发起人 String sponsorId
 
+时间 String date
+
+描述 String description
+
+起点 String startPoint
+
+终点名字 String destiName
+
+终点地址 String destiAddress
+
+终点Latitude double destiLatitude
+
+终点Longitude double destiLongitude
+
 最多参与的人数 int maxMember
-
-时间 String Date
-
-地点 String location
 
 预计每人多少钱 double moneyPerPerson
 
@@ -20,10 +28,21 @@ id String id
 
 默认构造函数为空
 
-一般构造函数为传入名字，发起人id，最大参与人数，时间，地点和每人需要多少钱。会将发起人自动添加到成员列表中。
+一般构造函数为传入名字，发起人id，时间，描述，起点，最大人数和每人需要多少钱。会将发起人自动添加到成员列表中。
+
+需要再使用addPlace(Place place)传入目的地，将会自动从place中获得终点名字、地址、经纬度存入poolActivity中
 
 ```java
-PoolActivity(String name, String sponsorId, int maxMember,  String Date, String location, double moneyPerPerson){}
+PoolActivity(String name, String sponsorId, String date, String description,
+                 String startPoint, int maxMember, double moneyPerPerson){}
 ```
 
 提供了除了members之外所有成员的set与get函数。members提供了getMembers函数，addMember(String uid)与removeMember(String uid)函数，分别用来获得所有成员列表，添加一名成员和删除一名成员。
+
+```java
+public void addMember(String uid) {
+}
+
+public void removeMember(String uid){
+}
+```

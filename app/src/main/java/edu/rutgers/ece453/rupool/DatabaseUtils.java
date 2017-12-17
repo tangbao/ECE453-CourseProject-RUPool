@@ -19,7 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import edu.rutgers.ece453.rupool.Interface.*;
+import edu.rutgers.ece453.rupool.Interface.OnGetActivityListener;
+import edu.rutgers.ece453.rupool.Interface.OnGetUserListener;
+import edu.rutgers.ece453.rupool.Interface.OnFindActivityByPlaceListener;
+
+import static edu.rutgers.ece453.rupool.Constant.FIND_ACTIVITY_BY_PLACE_FAIL;
+import static edu.rutgers.ece453.rupool.Constant.FIND_ACTIVITY_BY_PLACE_SUCCESS;
+import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_FAIL;
+import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
+import static edu.rutgers.ece453.rupool.Constant.GET_USER_FAIL;
+import static edu.rutgers.ece453.rupool.Constant.GET_USER_SUCCESS;
 
 /**
  * Created by Zhongze Tang on 2017/11/21.
@@ -46,6 +55,8 @@ class DatabaseUtils {
         mActivRef = mDatabase.child("activities");
     }
 
+    //========================User Methods================================
+
     void addUser(User user){
         mUsersRef.child(user.getUid()).setValue(user);
     }
@@ -55,8 +66,13 @@ class DatabaseUtils {
         mUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                mGetUserListener.onGetUser(user, ACTION_CODE);
+                User user = new User();
+                if(dataSnapshot.exists()){
+                    user = dataSnapshot.getValue(User.class);
+                    mGetUserListener.onGetUser(user, ACTION_CODE, GET_USER_SUCCESS);
+                }else{
+                    mGetUserListener.onGetUser(user, ACTION_CODE, GET_USER_FAIL);
+                }
             }
 
             @Override
@@ -74,6 +90,9 @@ class DatabaseUtils {
         mUsersRef.child(user.getUid()).setValue(user);
     }
 
+    //======================Activity Methods===============================
+
+
     String addActivity(PoolActivity pa){
         String activityId = mActivRef.push().getKey();
         pa.setId(activityId);
@@ -86,8 +105,13 @@ class DatabaseUtils {
         mAcRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                PoolActivity pa = dataSnapshot.getValue(PoolActivity.class);
-                mGetActivityListener.onGetActivity(pa, ACTION_CODE);
+                PoolActivity pa = new PoolActivity();
+                if(dataSnapshot.exists()){
+                    pa = dataSnapshot.getValue(PoolActivity.class);
+                    mGetActivityListener.onGetActivity(pa, ACTION_CODE, GET_ACTIVITY_SUCCESS);
+                }else{
+                    mGetActivityListener.onGetActivity(pa, ACTION_CODE, GET_ACTIVITY_FAIL);
+                }
             }
 
             @Override
@@ -105,7 +129,9 @@ class DatabaseUtils {
         mActivRef.child(pa.getId()).setValue(pa);
     }
 
-    void findPoolActivityByLocation(Place place,final int ACTION_CODE){
+    //==========================Search Activity==========================
+
+    void findActivityByLocation(Place place,final int ACTION_CODE){
 
         Log.e(TAG,place.getAddress().toString());
         Query query = mActivRef.orderByChild("destiAddress").equalTo(place.getAddress().toString());
@@ -117,10 +143,10 @@ class DatabaseUtils {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         result.add(data.getValue(PoolActivity.class));
                     }
-                    mFindActivityByPlaceListener.onFindActivityByPlace(result, 1);
+                    mFindActivityByPlaceListener.onFindActivityByPlace(result, ACTION_CODE, FIND_ACTIVITY_BY_PLACE_SUCCESS);
                 }else {
                     //return fail
-                    mFindActivityByPlaceListener.onFindActivityByPlace(result, 2);
+                    mFindActivityByPlaceListener.onFindActivityByPlace(result, ACTION_CODE, FIND_ACTIVITY_BY_PLACE_FAIL);
                 }
             }
 
