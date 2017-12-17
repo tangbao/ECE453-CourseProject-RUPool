@@ -16,6 +16,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
 
     private String mStringGender = "Male";
+    private User mUser;
 
     private ImageView mImageView;
     private EditText mEditTextName;
@@ -61,6 +62,36 @@ public class EditProfileActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (mFirebaseAuth.getCurrentUser() == null) finish();
+        DatabaseUtils databaseUtils = new DatabaseUtils();
+        databaseUtils.getUser(mFirebaseAuth.getCurrentUser().getUid(), 999, new Interface.OnGetUserListener() {
+            @Override
+            public void onGetUser(User user, int ACTION_CODE, int RESULT_CODE) {
+                if (RESULT_CODE == Constant.GET_USER_SUCCESS) {
+                    mUser = user;
+                    mEditTextName.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+                    switch (mUser.getGender()) {
+                        case "Male": {
+                            mRadioGroup.check(R.id.RadioButton_Male_EditProfileActivity);
+                            break;
+                        }
+                        case "Female": {
+                            mRadioGroup.check(R.id.RadioButton_Female_EditProfileActivity);
+                            break;
+                        }
+                        case "Other": {
+                            mRadioGroup.check(R.id.RadioButton_Other_EditProfileActivity);
+                            break;
+                        }
+                        default: {
+                            mRadioGroup.check(R.id.RadioButton_Male_EditProfileActivity);
+                            break;
+                        }
+                    }
+                } else {
+                    mUser = new User();
+                }
+            }
+        });
     }
 
     @Override
@@ -80,9 +111,10 @@ public class EditProfileActivity extends AppCompatActivity {
                         .build();
                 mFirebaseAuth.getCurrentUser().updateProfile(userProfileChangeRequest);
 
-                User user = new User(mFirebaseAuth.getCurrentUser().getUid(), mStringGender);
+                mUser.setUid(mFirebaseAuth.getCurrentUser().getUid());
+                mUser.setGender(mStringGender);
                 DatabaseUtils databaseUtils = new DatabaseUtils();
-                databaseUtils.updateUser(user);
+                databaseUtils.updateUser(mUser);
                 finish();
                 return true;
             }

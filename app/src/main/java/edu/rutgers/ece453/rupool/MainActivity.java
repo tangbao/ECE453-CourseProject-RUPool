@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     // start by zhu
     private FirebaseAuth mFirebaseAuth;
     private TextView mTextViewUserNameNavHeader;
+    private TextView mTextViewEmailNavHeader;
     // end by zhu
 
     @Override
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity
         View view = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
         mTextViewUserNameNavHeader = view.findViewById(R.id.TextView_UserName_NavHeaderMain);
-
+        mTextViewEmailNavHeader = view.findViewById(R.id.TextView_Email_NavHeaderMain);
         // start zhu
         // set username in nav header
 
@@ -149,7 +150,19 @@ public class MainActivity extends AppCompatActivity
             startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
                     REQUESTCODE_LOGIN);
         if (mFirebaseAuth.getCurrentUser() != null) {
-            mTextViewUserNameNavHeader.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+            DatabaseUtils databaseUtils = new DatabaseUtils();
+            databaseUtils.getUser(mFirebaseAuth.getCurrentUser().getUid(), 3, new Interface.OnGetUserListener() {
+                @Override
+                public void onGetUser(User user, int ACTION_CODE, int RESULT_CODE) {
+                    if (RESULT_CODE == Constant.GET_USER_SUCCESS) {
+                        mTextViewUserNameNavHeader.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+                        mTextViewEmailNavHeader.setText(mFirebaseAuth.getCurrentUser().getEmail());
+                    } else {
+                        startActivity(new Intent(MainActivity.this, EditProfileActivity.class));
+                    }
+                }
+            });
+
         }
 
     }
@@ -244,6 +257,11 @@ public class MainActivity extends AppCompatActivity
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
+            }
+
+            case R.id.Nav_Logout_MainActivity: {
+                mFirebaseAuth.signOut();
+                startActivity(new Intent(this, LoginActivity.class));
             }
 
             case R.id.Nav_Profile_MainActivity: {
