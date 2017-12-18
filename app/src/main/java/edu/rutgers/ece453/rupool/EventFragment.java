@@ -310,6 +310,16 @@ public class EventFragment extends Fragment
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        mTextViewDestination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MapsActivity.class);
+                intent.putExtra(MapsActivity.ARG_POOLACTIVITY, mPoolActivity);
+                startActivity(intent);
+            }
+        });
+
+
         databaseUtils.findAllUser(new Interface.OnFindAllUserListener() {
             @Override
             public void onFindAllUser(List<User> lu, int RESULT_CODE) {

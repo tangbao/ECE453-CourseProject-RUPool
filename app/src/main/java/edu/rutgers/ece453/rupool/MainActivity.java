@@ -303,6 +303,11 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
+    @Override
+    public void updateMainFragmentList() {
+        getSupportFragmentManager().popBackStack();
+        ((MainFragment) getSupportFragmentManager().findFragmentByTag("MainFragment")).updateListToShow();
+    }
 }
 
 

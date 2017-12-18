@@ -264,7 +264,8 @@ public class NewEventFragment extends Fragment implements EasyPermissions.Permis
                     getResultsFromApi();
 
                     //end by tb
-                    onBackPressed();
+//                    onBackPressed();
+                    mListener.updateMainFragmentList();
                 }
             }
         });
@@ -402,7 +403,7 @@ public class NewEventFragment extends Fragment implements EasyPermissions.Permis
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void updateMainFragmentList();
 
     }
 

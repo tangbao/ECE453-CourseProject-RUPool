@@ -132,12 +132,35 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    boolean validate() {
+        String email = mEditTextEmail.getText().toString();
+        String password = mEditTextPassword.getText().toString();
+
+        mEditTextEmail.setError(null);
+        mEditTextPassword.setError(null);
+
+        if (email.isEmpty()) {
+            mEditTextEmail.setError("This field is required");
+            hideProgressDialog();
+            return false;
+        }
+
+        if (password.isEmpty()) {
+            mEditTextPassword.setError("This field is required");
+            hideProgressDialog();
+            return false;
+        }
+
+
+        return true;
+    }
+
     private void login(String email, String password) {
         Log.d(TAG, "login: login " + email + "\t" + password);
-        if (!validateForm())
-            return;
 
         showProgressDialog();
+
+        if (!validate()) return;
 
         mFirebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
