@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,9 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
-import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -59,7 +55,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        databaseUtils=new DatabaseUtils();
+        databaseUtils = new DatabaseUtils();
 
         // start by zhu
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -72,9 +68,9 @@ public class MainActivity extends AppCompatActivity
         ArrayList<String> searchContent = new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
 
-        MainFragment mainFragment=new MainFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container,mainFragment);
+        MainFragment mainFragment = MainFragment.newInstance();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container, mainFragment, "MainFragment");
         fragmentTransaction.commit();
 
 
@@ -99,7 +95,6 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -113,7 +108,6 @@ public class MainActivity extends AppCompatActivity
         mTextViewEmailNavHeader = view.findViewById(R.id.TextView_Email_NavHeaderMain);
         // start zhu
         // set username in nav header
-
 
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -146,6 +140,14 @@ public class MainActivity extends AppCompatActivity
             public void onPlaceSelected(Place place) {
                 // TODO:Get info about the selected place.
                 Log.i("AUTO", "Place: " + place.getName());
+                DatabaseUtils databaseUtils = new DatabaseUtils();
+                databaseUtils.findActivityByLocation(place, 123, new Interface.OnFindActivityByPlaceListener() {
+                    @Override
+                    public void onFindActivityByPlace(List<PoolActivity> lpa, int ACTION_CODE, int RESULT_CODE) {
+                        MainFragment mainFragment1 = (MainFragment) getSupportFragmentManager().findFragmentByTag("MainFragment");
+                        mainFragment1.updateRecyclerView(lpa);
+                    }
+                });
             }
 
             @Override
@@ -189,10 +191,7 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-    //end by zhu
-
-
-
+        //end by zhu
 
 
 //        return super.onCreateOptionsMenu(menu);
@@ -280,10 +279,9 @@ public class MainActivity extends AppCompatActivity
         return fab;
     }
 
-    public List<PoolActivity> getAllActivityList(){
+    public List<PoolActivity> getAllActivityList() {
         return allActivityList;
     }
-
 
 
 }

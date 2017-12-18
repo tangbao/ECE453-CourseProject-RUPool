@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -20,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +30,9 @@ import java.util.Locale;
 public class MainFragment extends Fragment {
 
 
+    //by tb
+    private final static String TAG = "Main Fragment";
+    List<PoolActivity> poolActivities;
     private ArrayAdapter<String> searchResult;
     private boolean isJoined = false;
     private RecyclerView mRecyclerView;
@@ -44,20 +45,28 @@ public class MainFragment extends Fragment {
     private Calendar myCalendarTo;
     private DatePickerDialog.OnDateSetListener dateTo;
     private ImageButton imgBtn;
-    private List<PoolActivity> allActivityList;
 
 //    private OnFragmentInteractionListener mListener;
-
-    //by tb
-    private final static String TAG = "Main Fragment";
-    List<PoolActivity> poolActivities;
+private List<PoolActivity> allActivityList;
+    private AdapterRecyclerViewMainFragment.OnItemClickListener mOnItemClickListener =
+            new AdapterRecyclerViewMainFragment.OnItemClickListener() {
+                @Override
+                public void onItemClick(PoolActivity poolActivity) {
+                    EventFragment eventFragment = EventFragment.newInstance(poolActivity);
+                    getActivity().getSupportFragmentManager().popBackStack();
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragment_container, eventFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            };
     //end by tb
 
     public MainFragment() {
         // Required empty public constructor
     }
 
-    public static MainFragment newInstance(String param1, String param2) {
+    public static MainFragment newInstance() {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
 
@@ -81,8 +90,8 @@ public class MainFragment extends Fragment {
 //            allActivityList = ((MainActivity) getActivity()).getAllActivityList();
 //            Toast.makeText(getActivity().getApplicationContext(),"Fragment fOUNT",Toast.LENGTH_SHORT).show();
 //        }
-        fromWhen=(EditText) view.findViewById(R.id.time_filter1);
-        toWhen=(EditText) view.findViewById(R.id.time_filter2);
+        fromWhen = view.findViewById(R.id.time_filter1);
+        toWhen = view.findViewById(R.id.time_filter2);
 
         FloatingActionButton fab=((MainActivity) getActivity()).getFab();
         if (fab != null) {
@@ -166,7 +175,7 @@ public class MainFragment extends Fragment {
         });
 
         // image button来确定
-        imgBtn=(ImageButton) view.findViewById(R.id.imgBtn);
+        imgBtn = view.findViewById(R.id.imgBtn);
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,17 +194,7 @@ public class MainFragment extends Fragment {
                     Log.e(TAG, lpa.get(i).getId());
                 }
 
-                mAdapter = new AdapterRecyclerViewMainFragment(lpa, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(PoolActivity poolActivity) {
-                        EventFragment eventFragment = EventFragment.newInstance(poolActivity);
-                        getActivity().getSupportFragmentManager().popBackStack();
-                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fragment_container, eventFragment);
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
-                    }
-                });
+                mAdapter = new AdapterRecyclerViewMainFragment(lpa, mOnItemClickListener);
                 mRecyclerView.setAdapter(mAdapter);
             }
         });
@@ -210,17 +209,7 @@ public class MainFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
-            @Override
-            public void onItemClick(PoolActivity poolActivity) {
-                EventFragment eventFragment = EventFragment.newInstance(poolActivity);
-                getActivity().getSupportFragmentManager().popBackStack();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, eventFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
-        });
+        mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -264,6 +253,10 @@ public class MainFragment extends Fragment {
 //        void onFragmentInteraction(Uri uri);
 //    }
 
+    void updateRecyclerView(List<PoolActivity> poolActivities) {
+        mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, mOnItemClickListener);
+        mRecyclerView.setAdapter(mAdapter);
+    }
 
 }
 
