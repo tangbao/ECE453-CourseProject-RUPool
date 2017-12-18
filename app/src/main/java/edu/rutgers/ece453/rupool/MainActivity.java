@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
     private TextView mTextViewEmailNavHeader;
     private DatabaseUtils databaseUtils;
     private List<PoolActivity> allActivityList;
-    private MainFragment mainFragment;
+    private MainFragment mMainFragment;
     private ShareActionProvider mShareActionProvider;
     private Intent sendIntent;
     // end by zhu
@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity
         ArrayList<String> searchContent = new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
 
-        MainFragment mainFragment = MainFragment.newInstance();
+        mMainFragment = MainFragment.newInstance();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, mainFragment, "MainFragment");
+        fragmentTransaction.replace(R.id.fragment_container, mMainFragment, "MainFragment");
         fragmentTransaction.commit();
 
 
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
-        View view = navigationView.getHeaderView(0);
+        final View view = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
         mTextViewUserNameNavHeader = view.findViewById(R.id.TextView_UserName_NavHeaderMain);
         mTextViewEmailNavHeader = view.findViewById(R.id.TextView_Email_NavHeaderMain);
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity
         // set username in nav header
 
 
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+        final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         View childView = autocompleteFragment.getView();
         ImageView searchIcon = childView.findViewById(R.id.place_autocomplete_search_button);
@@ -153,16 +153,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO:Get info about the selected place.
-
+                mMainFragment.updatePlace(place);
                 Log.i("AUTO", "Place: " + place.getName());
-                DatabaseUtils databaseUtils = new DatabaseUtils();
-                databaseUtils.findActivityByLocation(place, 123, new Interface.OnFindActivityByPlaceListener() {
-                    @Override
-                    public void onFindActivityByPlace(List<PoolActivity> lpa, int ACTION_CODE, int RESULT_CODE) {
-                        MainFragment mainFragment1 = (MainFragment) getSupportFragmentManager().findFragmentByTag("MainFragment");
-                        mainFragment1.updateRecyclerView(lpa);
-                    }
-                });
+                //TODO
+
             }
 
             @Override
@@ -171,6 +165,15 @@ public class MainActivity extends AppCompatActivity
                 Log.i("AUTO", "An error occurred: " + status);
             }
         });
+        autocompleteFragment.getView().findViewById(R.id.place_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        autocompleteFragment.setText("");
+                        v.setVisibility(View.GONE);
+                        mMainFragment.updatePlace(null);
+                    }
+                });
 //
 //        mainFragment = new MainFragment();
 //        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
