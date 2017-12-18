@@ -11,9 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ErrorDialogFragment;
@@ -39,10 +42,13 @@ public class NewEventFragment extends Fragment {
     private EditText pricePerUser;
     private EditText userNum;
     private Button button;
+    private  EditText edittext;
     private Place place;
     private Calendar myCalendar;
-    private  EditText edittext;
     private DatePickerDialog.OnDateSetListener date;
+    private Spinner spinner;
+    private EditText description;
+    private String startLocation;
 
 
     private OnFragmentInteractionListener mListener;
@@ -86,8 +92,40 @@ public class NewEventFragment extends Fragment {
         pricePerUser=view.findViewById(R.id.new_price);
         userNum=view.findViewById(R.id.new_num);
         button=view.findViewById(R.id.OK);
+        spinner=view.findViewById(R.id.spinner);
+        description=view.findViewById(R.id.new_description);
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                R.array.startPoint, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
 
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                switch(i){
+                    case 0:
+                        startLocation="Busch Student Center";
+                        break;
+                    case 1:
+                        startLocation="Liv Student Center";
+                        break;
+                    case 2:
+                        startLocation="Cook Student Center";
+                        break;
+                    case 3:
+                        startLocation="Douglas Student Center";
+                        break;
+                }
+                Log.d("startLocation",startLocation);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
         dest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -155,8 +193,11 @@ public class NewEventFragment extends Fragment {
                 String inputDest=dest.getText().toString();
                 String inputPrice=pricePerUser.getText().toString();
                 String inputNum=userNum.getText().toString();
+                String inputDescription=description.getText().toString();
+
                 if(inputDate.matches("")||inputDest.matches("")
-                        ||inputDest.matches("")||inputNum.matches("")){
+                        ||inputDest.matches("")||inputNum.matches("")
+                        ||inputPrice.matches("") ||inputDescription.matches("")){
                     Toast.makeText(getActivity(),"You have to input all the information",Toast.LENGTH_SHORT).show();
                     return;
                 }else{

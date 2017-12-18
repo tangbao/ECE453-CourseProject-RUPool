@@ -40,8 +40,8 @@ public class AdapterRecyclerViewMainFragment extends RecyclerView.Adapter<Adapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         PoolActivity poolActivity = mData.get(position);
         holder.view.setTag(position);
-        holder.textViewDateMonth.setText("TEST");
-        holder.textViewDateDay.setText("TEST");
+        holder.textViewDateMonth.setText(poolActivity.getDate());
+        holder.textViewDateDay.setText(poolActivity.getDate());
         holder.textViewStartPoint.setText(poolActivity.getStartPoint());
         holder.textViewDestination.setText(poolActivity.getDestiName());
         holder.textViewDescription.setText(poolActivity.getDescription());
@@ -72,7 +72,7 @@ public class AdapterRecyclerViewMainFragment extends RecyclerView.Adapter<Adapte
             textViewDateMonth = itemView.findViewById(R.id.Date_Month);
             textViewDateDay = itemView.findViewById(R.id.Date_Day);
             textViewStartPoint = itemView.findViewById(R.id.start_point);
-            textViewDestination = itemView.findViewById(R.id.destination);
+            textViewDestination = itemView.findViewById(R.id.item_destination);
             textViewDescription = itemView.findViewById(R.id.description);
         }
     }

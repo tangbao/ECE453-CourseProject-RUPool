@@ -1,5 +1,6 @@
 package edu.rutgers.ece453.rupool;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,19 +17,41 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainFragment extends Fragment {
 
 
-    ArrayAdapter<String> searchResult;
-    boolean isJoined = false;
-    RecyclerView mRecyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
+    private ArrayAdapter<String> searchResult;
+    private boolean isJoined = false;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private EditText fromWhen;
+    private EditText toWhen;
+    private Calendar myCalendarFrom;
+    private DatePickerDialog.OnDateSetListener dateFrom;
+    private Calendar myCalendarTo;
+    private DatePickerDialog.OnDateSetListener dateTo;
+    private ImageButton imgBtn;
+    private List<PoolActivity> allActivityList;
+    private String timeFromWhen;
+    private String timeToWhen;
+
 //    private OnFragmentInteractionListener mListener;
 
     //by tb
@@ -60,14 +83,99 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+//        if(((MainActivity) getActivity()).getAllActivityList()!=null) {
+//            allActivityList = ((MainActivity) getActivity()).getAllActivityList();
+//            Toast.makeText(getActivity().getApplicationContext(),"Fragment fOUNT",Toast.LENGTH_SHORT).show();
+//        }
+        fromWhen=(EditText) view.findViewById(R.id.time_filter1);
+        toWhen=(EditText) view.findViewById(R.id.time_filter2);
+
         FloatingActionButton fab=((MainActivity) getActivity()).getFab();
         if (fab != null) {
             fab.show();
         }
 
+        // set the time filter
+
+        myCalendarFrom= Calendar.getInstance();
+
+        dateFrom = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendarFrom.set(Calendar.YEAR, year);
+                myCalendarFrom.set(Calendar.MONTH, monthOfYear);
+                myCalendarFrom.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+            public void updateLabel() {
+                String myFormat = "mm/dd/yyyy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                fromWhen.setText(sdf.format(myCalendarFrom.getTime()));
+            }
+
+
+        };
+
+        fromWhen.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(getActivity(), dateFrom, myCalendarFrom
+                        .get(Calendar.YEAR), myCalendarFrom.get(Calendar.MONTH),
+                        myCalendarFrom.get(Calendar.DAY_OF_MONTH)).show();
+            }
+
+
+        });
+
+        myCalendarTo= Calendar.getInstance();
+
+        dateTo = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendarTo.set(Calendar.YEAR, year);
+                myCalendarTo.set(Calendar.MONTH, monthOfYear);
+                myCalendarTo.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
+            }
+
+            public void updateLabel() {
+                String myFormat = "MM/dd/yyyy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                toWhen.setText(sdf.format(myCalendarTo.getTime()));
+            }
+
+
+        };
+
+        toWhen.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                new DatePickerDialog(getActivity(), dateTo, myCalendarTo
+                        .get(Calendar.YEAR), myCalendarTo.get(Calendar.MONTH),
+                        myCalendarTo.get(Calendar.DAY_OF_MONTH)).show();
+            }
+
+
+        });
+
+
 
         //TEST CODE by tangbao
         poolActivities = new ArrayList<PoolActivity>();
+
         DatabaseUtils du = new DatabaseUtils();
         du.findAllActivity(new Interface.OnFindAllActivityListener() {
             @Override
@@ -75,6 +183,30 @@ public class MainFragment extends Fragment {
                 for(int i = 0; i< lpa.size(); i++){
                     Log.e(TAG, lpa.get(i).getId());
                 }
+
+                Collections.sort(lpa, new Comparator<PoolActivity>() {
+                    @Override
+                    public int compare(PoolActivity poolActivity, PoolActivity t1) {
+                        String dateString1=poolActivity.getDate();
+                        String dateString2=t1.getDate();
+
+                        SimpleDateFormat format=new SimpleDateFormat("mm/dd/yyyy");
+                        Date date1=null;
+                        Date date2 = null;
+
+                        try {
+                            date1=format.parse(dateString1);
+                            date2=format.parse(dateString2);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+
+                        return (date1.compareTo(date2));
+
+
+                    }
+                });
 
                 mAdapter = new AdapterRecyclerViewMainFragment(lpa, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
                     @Override
@@ -113,6 +245,42 @@ public class MainFragment extends Fragment {
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+
+
+        // 时间过滤
+
+//        // image button来确定
+//        imgBtn=(ImageButton) view.findViewById(R.id.imgBtn);
+//        imgBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //TODO: 确定设置time filter
+//
+//                if(fromWhen.getText()!=null&&toWhen.getText()!=null){
+//                    timeFromWhen=fromWhen.getText().toString();
+//                    timeToWhen=toWhen.getText().toString();
+//                    SimpleDateFormat format=new SimpleDateFormat("mm/dd/yyyy");
+//                    Date dateFromWhen =null;
+//                    Date dateToWhen=null;
+//
+//                    try {
+//                        dateFromWhen=format.parse(timeFromWhen);
+//                        dateToWhen=format.parse(timeToWhen);
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    //得到了前后两个date
+//
+//                    List<PoolActivity> tempActivityList=new ArrayList<PoolActivity>();
+//                    for(int i=0;i<)
+//                }
+//            }
+//        });
+
+
+
+
         return view;
     }
 
