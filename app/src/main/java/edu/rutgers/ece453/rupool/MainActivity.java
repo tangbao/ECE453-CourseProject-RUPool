@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static android.provider.LiveFolders.INTENT;
 import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
 import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
 
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity
     private DatabaseUtils databaseUtils;
     private List<PoolActivity> allActivityList;
     private MainFragment mainFragment;
+    private ShareActionProvider mShareActionProvider;
+    private Intent sendIntent;
     // end by zhu
 
     @Override
@@ -60,6 +64,17 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         databaseUtils=new DatabaseUtils();
+
+        // start by sun
+        // for sharing
+        sendIntent=new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT,"Title");
+        sendIntent.putExtra(Intent.EXTRA_TEXT,"Sharing Content");
+        sendIntent.setType("text/plain");
+
+
+        // end by sun
 
         // start by zhu
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -189,15 +204,22 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-
-    //end by zhu
-
-
-
-
-
-//        return super.onCreateOptionsMenu(menu);
     }
+
+
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//
+//        getMenuInflater().inflate(R.menu.activity_main_drawer,menu);
+//
+//        MenuItem item=menu.findItem(R.id.nav_share);
+//
+//        mShareActionProvider =(ShareActionProvider) item.getActionProvider();
+//
+//
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -256,6 +278,13 @@ public class MainActivity extends AppCompatActivity
             case R.id.Nav_Profile_MainActivity: {
                 startActivity(new Intent(this, ShowProfileActivity.class));
                 break;
+
+
+            }
+
+            case R.id.nav_share:{
+                startActivity(Intent.createChooser(sendIntent, "TEST HERE"));
+
             }
         }
 
@@ -263,6 +292,9 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    // Call to update the share intent
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {
