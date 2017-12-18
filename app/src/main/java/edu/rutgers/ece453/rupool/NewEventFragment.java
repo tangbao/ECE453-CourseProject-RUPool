@@ -201,10 +201,22 @@ public class NewEventFragment extends Fragment {
                     return;
                 }else{
                     //add by tb
-                    PoolActivity pa = new PoolActivity("name", FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                    final PoolActivity pa = new PoolActivity("name", FirebaseAuth.getInstance().getCurrentUser().getUid(),
                             inputDate,inputDescription, startLocation, Integer.parseInt(inputNum), Double.parseDouble(inputPrice));
                     pa.setPlace(place);
-                    DatabaseUtils du = new DatabaseUtils();
+                    final DatabaseUtils du = new DatabaseUtils();
+                    du.getUser(FirebaseAuth.getInstance().getCurrentUser().getUid(), 1,
+                            new Interface.OnGetUserListener() {
+                                @Override
+                                public void onGetUser(User user, int ACTION_CODE, int RESULT_CODE) {
+                                    if(RESULT_CODE==1){
+                                        user.joinActivity(pa.getId());
+                                        du.updateUser(user);
+                                    }else{
+                                        //todo 没找到用户的异常处理
+                                    }
+                                }
+                            });
                     du.addActivity(pa);
                     //end by tb
                     onBackPressed();
