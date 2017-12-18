@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity
 
         MainFragment mainFragment=new MainFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container,mainFragment);
+        fragmentTransaction.add(R.id.fragment_container,mainFragment, "MainFragment");
         fragmentTransaction.commit();
 
 
