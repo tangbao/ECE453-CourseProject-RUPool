@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import static edu.rutgers.ece453.rupool.Constant.GET_USER_SUCCESS;
+import android.widget.TextView;
 
 
 public class EventFragment extends Fragment {
@@ -172,10 +173,10 @@ public class EventFragment extends Fragment {
 
         // initial textview
 
-        mTextViewDestination = view.findViewById(R.id.destination);
-        mTextViewDate = view.findViewById(R.id.date);
-        mTextViewNumberOfPassenger = view.findViewById(R.id.numberOfPassenger);
-        mTextViewPrice = view.findViewById(R.id.price);
+        mTextViewDestination = view.findViewById(R.id.event_dest);
+        mTextViewDate = view.findViewById(R.id.event_date);
+        mTextViewNumberOfPassenger = view.findViewById(R.id.event_num);
+        mTextViewPrice = view.findViewById(R.id.event_price);
 
         // TODO 显示信息
         mTextViewDestination.setText(mPoolActivity.getDestiName());

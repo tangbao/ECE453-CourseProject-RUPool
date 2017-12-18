@@ -25,13 +25,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
         >
 
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:id="@+id/spinner"
+            >
+
+
+        </Spinner>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|center_horizontal"
+            android:textSize="36dp"
+            android:text="-->"
+            />
+
 
         <EditText
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="3"
             android:layout_height="match_parent"
             android:gravity="center_vertical|center_horizontal"
             android:id="@+id/new_dest"
@@ -41,10 +62,12 @@
     </LinearLayout>
 
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
         >
 
@@ -65,6 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
         >
 
@@ -83,6 +107,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
         >
 
@@ -92,6 +117,27 @@
             android:gravity="center_vertical|center_horizontal"
             android:id="@+id/new_price"
             android:hint="How much is the estimated price ??"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="16dp"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="top|center_horizontal"
+            android:maxLength="140"
+            android:id="@+id/new_description"
+            android:hint="Add some descriptions here"
+            android:minLines="3"
+            android:inputType="textMultiLine"
             />
 
     </LinearLayout>

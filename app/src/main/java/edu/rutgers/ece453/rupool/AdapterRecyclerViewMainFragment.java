@@ -72,7 +72,7 @@ public class AdapterRecyclerViewMainFragment extends RecyclerView.Adapter<Adapte
             textViewDateMonth = itemView.findViewById(R.id.Date_Month);
             textViewDateDay = itemView.findViewById(R.id.Date_Day);
             textViewStartPoint = itemView.findViewById(R.id.start_point);
-            textViewDestination = itemView.findViewById(R.id.destination);
+            textViewDestination = itemView.findViewById(R.id.item_destination);
             textViewDescription = itemView.findViewById(R.id.description);
         }
     }

@@ -1,5 +1,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainFragment"
     android:layout_width="match_parent"
@@ -35,8 +36,49 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/RecyclerView_MainFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center|bottom"
+        android:orientation="horizontal"
+        >
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:clickable="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/time_filter1"
+            android:hint="From when"
+            />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:textSize="26dp"
+            android:background="@null"
+            android:id="@+id/imgBtn"
+            app:srcCompat="@drawable/ic_arrow_forward_black_24px"
+            android:layout_weight="1"
+            />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center_horizontal|center_vertical"
+            android:clickable="true"
+            android:hint="To when"
+            android:id="@+id/time_filter2"
+            />
+
+    </LinearLayout>
 
 
 </LinearLayout>
