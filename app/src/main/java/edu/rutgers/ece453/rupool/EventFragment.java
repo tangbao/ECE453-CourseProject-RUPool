@@ -1,10 +1,9 @@
 package edu.rutgers.ece453.rupool;
 
+import android.Manifest;
 import android.accounts.AccountManager;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
@@ -12,11 +11,8 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.text.TextUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,7 +23,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.Manifest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -41,37 +36,39 @@ import com.google.api.client.util.DateTime;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
-import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
-import com.google.api.services.calendar.model.EventReminder;
-import com.google.api.services.calendar.model.Events;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import static android.app.Activity.RESULT_OK;
-import static edu.rutgers.ece453.rupool.Constant.GET_USER_SUCCESS;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
+
+import static android.app.Activity.RESULT_OK;
+import static edu.rutgers.ece453.rupool.Constant.GET_USER_SUCCESS;
 
 
 public class EventFragment extends Fragment
         implements EasyPermissions.PermissionCallbacks {
+    static final int REQUEST_ACCOUNT_PICKER = 1000;
+    static final int REQUEST_AUTHORIZATION = 1001;
+    static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
+    static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
     private static final String ARGS_POOLACTIVITY = "edu.rutgers.ece453.rupool.EventFragment.ARGS.POOLACTIVITY";
     private static final String TAG = "Event Fragment";
+    private static final String BUTTON_TEXT = "Call Google Calendar API";
+    private static final String PREF_ACCOUNT_NAME = "accountName";
+    private static final String[] SCOPES = {CalendarScopes.CALENDAR};
     Button joinButton;
     Button quitButton;
     boolean isJoined = false; //判断是否已经参加
+    GoogleAccountCredential mCredential;
     private PoolActivity mPoolActivity;
     private TextView mTextViewDestination;
     private TextView mTextViewDate;
@@ -86,18 +83,6 @@ public class EventFragment extends Fragment
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
-
-
-        GoogleAccountCredential mCredential;
-
-        static final int REQUEST_ACCOUNT_PICKER = 1000;
-        static final int REQUEST_AUTHORIZATION = 1001;
-        static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
-        static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
-
-        private static final String BUTTON_TEXT = "Call Google Calendar API";
-        private static final String PREF_ACCOUNT_NAME = "accountName";
-        private static final String[] SCOPES = { CalendarScopes.CALENDAR};
 
 
 
@@ -233,12 +218,15 @@ public class EventFragment extends Fragment
                         databaseUtils.getUser(mPoolActivity.getSponsorId(), 123, new Interface.OnGetUserListener() {
                             @Override
                             public void onGetUser(User user, int ACTION_CODE, int RESULT_CODE) {
-                                Intent intent = new Intent(Intent.ACTION_SENDTO);
-                                intent.setData(Uri.parse("mailto:"));
-                                // TODO
-//                                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{user)
-                                if (intent.resolveActivity(getActivity().getPackageManager()) != null)
-                                    startActivity(intent);
+                                if (RESULT_CODE == Constant.GET_USER_SUCCESS) {
+
+                                    Intent intent = new Intent(Intent.ACTION_SENDTO);
+                                    intent.setData(Uri.parse("mailto:"));
+                                    // TODO
+                                    intent.putExtra(Intent.EXTRA_EMAIL, new String[]{user.getEmail()});
+                                    if (intent.resolveActivity(getActivity().getPackageManager()) != null)
+                                        startActivity(intent);
+                                }
                             }
                         });
 
@@ -323,15 +311,6 @@ public class EventFragment extends Fragment
         mListener = null;
     }
 
-
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void startProfile(User user);
-    }
-
-
-    //============below is google calender by tangbao=================
-
     /**
      * Attempt to call the API, after verifying that all the preconditions are
      * satisfied. The preconditions are: Google Play Services installed, an
@@ -353,6 +332,9 @@ public class EventFragment extends Fragment
 
         }
     }
+
+
+    //============below is google calender by tangbao=================
 
     /**
      * Attempts to set the account used with the API credentials. If an account
@@ -519,7 +501,6 @@ public class EventFragment extends Fragment
         }
     }
 
-
     /**
      * Display an error dialog showing that Google Play Services is missing
      * or out of date.
@@ -534,6 +515,12 @@ public class EventFragment extends Fragment
                 connectionStatusCode,
                 REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
+    }
+
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void startProfile(User user);
     }
 
     /**
