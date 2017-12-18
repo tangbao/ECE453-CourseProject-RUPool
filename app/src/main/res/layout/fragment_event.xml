@@ -184,7 +184,7 @@
             android:layout_height="0dp"
             android:layout_weight="3"
             android:hint="Description here"
-            android:minLines="3"
+            android:minLines="4"
             />
 
     </LinearLayout>
