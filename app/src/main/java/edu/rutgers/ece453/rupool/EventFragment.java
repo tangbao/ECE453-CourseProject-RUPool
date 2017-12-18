@@ -179,6 +179,26 @@ public class EventFragment extends Fragment
 
                     joinButton.setVisibility(View.INVISIBLE);
                     quitButton.setVisibility(View.VISIBLE);
+                    databaseUtils.findAllUser(new Interface.OnFindAllUserListener() {
+                        @Override
+                        public void onFindAllUser(List<User> lu, int RESULT_CODE) {
+                            Map<String, User> stringUserMap = new HashMap<>();
+                            for (User user : lu)
+                                stringUserMap.put(user.getUid(), user);
+                            List<User> users = new LinkedList<>();
+                            for (String s : mPoolActivity.getMembers())
+                                if (stringUserMap.containsKey(s))
+                                    users.add(stringUserMap.get(s));
+
+                            mAdapter = new AdapterRecyclerViewUsers(users, new AdapterRecyclerViewUsers.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(User user) {
+                                    mListener.startProfile(user);
+                                }
+                            });
+                            mRecyclerView.setAdapter(mAdapter);
+                        }
+                    });
                 } else {
                     Log.e(TAG, "Error: PoolActivity Closed.");
                     Toast.makeText(getContext(), "Error: PoolAcitivity Closed", Toast.LENGTH_LONG).show();
@@ -205,6 +225,26 @@ public class EventFragment extends Fragment
 
                     joinButton.setVisibility(View.VISIBLE);
                     quitButton.setVisibility(View.INVISIBLE);
+                    databaseUtils.findAllUser(new Interface.OnFindAllUserListener() {
+                        @Override
+                        public void onFindAllUser(List<User> lu, int RESULT_CODE) {
+                            Map<String, User> stringUserMap = new HashMap<>();
+                            for (User user : lu)
+                                stringUserMap.put(user.getUid(), user);
+                            List<User> users = new LinkedList<>();
+                            for (String s : mPoolActivity.getMembers())
+                                if (stringUserMap.containsKey(s))
+                                    users.add(stringUserMap.get(s));
+
+                            mAdapter = new AdapterRecyclerViewUsers(users, new AdapterRecyclerViewUsers.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(User user) {
+                                    mListener.startProfile(user);
+                                }
+                            });
+                            mRecyclerView.setAdapter(mAdapter);
+                        }
+                    });
                 }
             }
         });
