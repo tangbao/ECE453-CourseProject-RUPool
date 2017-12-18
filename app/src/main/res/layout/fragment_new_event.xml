@@ -1,10 +1,11 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/new_event"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/detailsElementBackground"
     android:orientation="vertical"
-    android:id="@+id/new_event"
     tools:context="edu.rutgers.ece453.rupool.EventFragment">
 
     <android.support.v7.widget.CardView
@@ -17,24 +18,24 @@
             />
         <fragment
             android:id="@+id/place_autocomplete_fragment"
+            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"/>
+            android:layout_height="wrap_content" />
     </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
         android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
         >
 
         <Spinner
+            android:id="@+id/spinner"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:id="@+id/spinner"
             >
 
 
@@ -45,17 +46,17 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
-            android:textSize="36dp"
             android:text="-->"
+            android:textSize="36dp"
             />
 
 
         <EditText
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|center_horizontal"
             android:id="@+id/new_dest"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center_vertical|center_horizontal"
             android:hint="Where are you going to ? "
             />
 
@@ -66,18 +67,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         >
 
 
         <EditText
+            android:id="@+id/new_date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
             android:gravity="center_vertical|center_horizontal"
-            android:id="@+id/new_date"
             android:hint="When is your trip ?"
             />
 
@@ -87,16 +88,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         >
 
         <EditText
+            android:id="@+id/new_num"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical|center_horizontal"
-            android:id="@+id/new_num"
             android:hint="How many people does this pool need ?"
 
             />
@@ -106,16 +107,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         >
 
         <EditText
+            android:id="@+id/new_price"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical|center_horizontal"
-            android:id="@+id/new_price"
             android:hint="How much is the estimated price ??"
             />
 
@@ -124,31 +125,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         >
 
         <EditText
+            android:id="@+id/new_description"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top|center_horizontal"
-            android:maxLength="140"
-            android:id="@+id/new_description"
             android:hint="Add some descriptions here"
-            android:minLines="3"
             android:inputType="textMultiLine"
+            android:maxLength="140"
+            android:minLines="3"
             />
 
     </LinearLayout>
 
 
     <Button
+        android:id="@+id/OK"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginRight="16dp"
-        android:id="@+id/OK"
         android:text="OK"
         />
 </LinearLayout>

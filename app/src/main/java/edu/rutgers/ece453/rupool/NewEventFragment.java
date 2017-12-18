@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ErrorDialogFragment;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -143,7 +142,7 @@ public class NewEventFragment extends Fragment {
 
         myCalendar= Calendar.getInstance();
 
-        edittext= (EditText) view.findViewById(R.id.new_date);
+        edittext = view.findViewById(R.id.new_date);
         date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -207,7 +206,14 @@ public class NewEventFragment extends Fragment {
         return view;
     }
 
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        FloatingActionButton fab = ((MainActivity) getActivity()).getFab();
+        if (fab != null) {
+            fab.show();
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
