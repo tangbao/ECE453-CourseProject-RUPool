@@ -152,6 +152,7 @@
         android:layout_gravity="end"
         android:layout_marginRight="16dp"
         android:id="@+id/OK"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:text="OK"
         />
 </LinearLayout>

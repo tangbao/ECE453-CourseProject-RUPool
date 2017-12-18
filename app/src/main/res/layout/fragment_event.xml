@@ -213,6 +213,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:text="Quit this pool"
                 />
 
@@ -221,6 +222,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:text="Join this pool"
                 />
 
@@ -234,6 +236,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="16dp"
             android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:text="Contact the poster " />
 
 
