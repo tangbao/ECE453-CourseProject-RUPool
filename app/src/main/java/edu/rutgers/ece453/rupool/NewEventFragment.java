@@ -24,6 +24,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -45,6 +46,7 @@ public class NewEventFragment extends Fragment {
     private Calendar myCalendar;
     private DatePickerDialog.OnDateSetListener date;
     private Spinner spinner;
+    private EditText description;
     private String startLocation;
 
 
@@ -90,6 +92,7 @@ public class NewEventFragment extends Fragment {
         userNum=view.findViewById(R.id.new_num);
         button=view.findViewById(R.id.OK);
         spinner=view.findViewById(R.id.spinner);
+        description=view.findViewById(R.id.new_description);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.startPoint, android.R.layout.simple_spinner_item);
@@ -189,14 +192,21 @@ public class NewEventFragment extends Fragment {
                 String inputDest=dest.getText().toString();
                 String inputPrice=pricePerUser.getText().toString();
                 String inputNum=userNum.getText().toString();
+                String inputDescription=description.getText().toString();
+
                 if(inputDate.matches("")||inputDest.matches("")
-                        ||inputDest.matches("")||inputNum.matches("")){
+                        ||inputDest.matches("")||inputNum.matches("")
+                        ||inputPrice.matches("") ||inputDescription.matches("")){
                     Toast.makeText(getActivity(),"You have to input all the information",Toast.LENGTH_SHORT).show();
                     return;
                 }else{
-                    //TODO 创建poolactivity并加入数据库中，获取到的place 变量名为place ，直接加进去就行,地点为startLocation (int类型), 0-busch
-                    // todo: 1-liv, 2-cook, 3- doug
-
+                    //add by tb
+                    PoolActivity pa = new PoolActivity("name", FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                            inputDate,inputDescription, startLocation, Integer.parseInt(inputNum), Double.parseDouble(inputPrice));
+                    pa.setPlace(place);
+                    DatabaseUtils du = new DatabaseUtils();
+                    du.addActivity(pa);
+                    //end by tb
                     onBackPressed();
                 }
             }

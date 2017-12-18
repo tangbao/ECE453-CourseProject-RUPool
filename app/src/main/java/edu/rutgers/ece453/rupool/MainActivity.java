@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,6 +27,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
+import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -139,6 +143,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO:Get info about the selected place.
+
                 Log.i("AUTO", "Place: " + place.getName());
                 DatabaseUtils databaseUtils = new DatabaseUtils();
                 databaseUtils.findActivityByLocation(place, 123, new Interface.OnFindActivityByPlaceListener() {
@@ -282,6 +287,7 @@ public class MainActivity extends AppCompatActivity
     public List<PoolActivity> getAllActivityList() {
         return allActivityList;
     }
+
 
 
 }

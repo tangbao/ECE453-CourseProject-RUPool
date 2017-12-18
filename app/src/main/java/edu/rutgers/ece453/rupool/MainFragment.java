@@ -20,11 +20,17 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
 
 
 public class MainFragment extends Fragment {
@@ -45,6 +51,8 @@ public class MainFragment extends Fragment {
     private Calendar myCalendarTo;
     private DatePickerDialog.OnDateSetListener dateTo;
     private ImageButton imgBtn;
+    private String timeFromWhen;
+    private String timeToWhen;
 
 //    private OnFragmentInteractionListener mListener;
 private List<PoolActivity> allActivityList;
@@ -90,6 +98,7 @@ private List<PoolActivity> allActivityList;
 //            allActivityList = ((MainActivity) getActivity()).getAllActivityList();
 //            Toast.makeText(getActivity().getApplicationContext(),"Fragment fOUNT",Toast.LENGTH_SHORT).show();
 //        }
+
         fromWhen = view.findViewById(R.id.time_filter1);
         toWhen = view.findViewById(R.id.time_filter2);
 
@@ -186,6 +195,12 @@ private List<PoolActivity> allActivityList;
 
         //TEST CODE by tangbao
         poolActivities = new ArrayList<PoolActivity>();
+        mRecyclerView=view.findViewById(R.id.RecyclerView_MainFragment);
+        mRecyclerView.setHasFixedSize(true);
+
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
         DatabaseUtils du = new DatabaseUtils();
         du.findAllActivity(new Interface.OnFindAllActivityListener() {
             @Override
@@ -193,24 +208,126 @@ private List<PoolActivity> allActivityList;
                 for(int i = 0; i< lpa.size(); i++){
                     Log.e(TAG, lpa.get(i).getId());
                 }
+                if(RESULT_CODE==GET_ALL_ACTIVITY_SUCCESS) {
 
-                mAdapter = new AdapterRecyclerViewMainFragment(lpa, mOnItemClickListener);
-                mRecyclerView.setAdapter(mAdapter);
+                    // 数据库不为空，读到了数据
+                    poolActivities=lpa;
+
+                    // 排序
+                    Collections.sort(poolActivities, new Comparator<PoolActivity>() {
+                        @Override
+                        public int compare(PoolActivity poolActivity, PoolActivity t1) {
+                            String dateString1 = poolActivity.getDate();
+                            String dateString2 = t1.getDate();
+
+                            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                            Date date1 = null;
+                            Date date2 = null;
+
+                            try {
+                                date1 = format.parse(dateString1);
+                                date2 = format.parse(dateString2);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            return (date1.compareTo(date2));
+                        }
+                    });
+
+
+                    mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(PoolActivity poolActivity) {
+                            EventFragment eventFragment = EventFragment.newInstance(poolActivity);
+                            getActivity().getSupportFragmentManager().popBackStack();
+                            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.fragment_container, eventFragment);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+                        }
+                    });
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+                else{
+                    //列表为空
+                    // set up RecyclerView
+
+        mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, mOnItemClickListener);
+        mRecyclerView.setAdapter(mAdapter);}
+
             }
         });
         //TEST CODE end
 
 
 
-        // set up RecyclerView
-        mRecyclerView = view.findViewById(R.id.RecyclerView_MainFragment);
-        mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, mOnItemClickListener);
-        mRecyclerView.setAdapter(mAdapter);
+        // 时间过滤
+
+        // image button来确定
+        imgBtn=(ImageButton) view.findViewById(R.id.imgBtn);
+        imgBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: 确定设置time filter
+
+                if(fromWhen.getText()!=null&&toWhen.getText()!=null){
+                    timeFromWhen=fromWhen.getText().toString();
+                    timeToWhen=toWhen.getText().toString();
+                    SimpleDateFormat format=new SimpleDateFormat("MM/dd/yyyy");
+                    Date dateFromWhen =null;
+                    Date dateToWhen=null;
+
+                    try {
+                        dateFromWhen=format.parse(timeFromWhen);
+                        dateToWhen=format.parse(timeToWhen);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    //得到了前后两个date
+
+                    ArrayList<PoolActivity> tempActivityList=new ArrayList<PoolActivity>();
+                    //遍历时间
+                    for(int i=0;i<poolActivities.size();i++){
+                       PoolActivity tempActivity=poolActivities.get(i);
+
+                       // 转变date string的格式
+                       String tempDate=tempActivity.getDate().toString();
+                       Date currentDate=null;
+
+                       try {
+                           currentDate=format.parse(tempDate);
+                       } catch (ParseException e) {
+                           e.printStackTrace();
+                       }
+
+                       if(currentDate.before(dateToWhen)&&currentDate.after(dateFromWhen)){
+                           tempActivityList.add(tempActivity);
+                       }
+
+
+
+
+                   }
+
+                    mAdapter = new AdapterRecyclerViewMainFragment(tempActivityList, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(PoolActivity poolActivity) {
+                            EventFragment eventFragment = EventFragment.newInstance(poolActivity);
+                            getActivity().getSupportFragmentManager().popBackStack();
+                            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.fragment_container, eventFragment);
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+                        }
+                    });
+                    mRecyclerView.setAdapter(mAdapter);
+
+                }
+            }
+        });
 
 
 
