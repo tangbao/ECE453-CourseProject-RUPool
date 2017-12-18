@@ -192,6 +192,7 @@ public class EventFragment extends Fragment {
         mTextViewDescription = view.findViewById(R.id.event_description);
 
 
+        Log.d("getDest",mPoolActivity.getDestiName());
         mTextViewDestination.setText(mPoolActivity.getDestiName());
         mTextViewNumberOfPassenger.setText(String.valueOf(mPoolActivity.getMembers().size()));
         mTextViewDate.setText(mPoolActivity.getDate());

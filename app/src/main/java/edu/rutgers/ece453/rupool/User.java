@@ -15,12 +15,16 @@ public class User implements Serializable{
     private String uid;
     private String gender;
     private List<String> activities = new ArrayList<>();
+    private String email;
+    private String name;
 
     public User(){}
 
-    public User(String uid, String gender){
+    public User(String uid, String gender, String email, String name){
         this.uid = uid;
         this.gender = gender;
+        this.email = email;
+        this.name = name;
     }
 
     public String getUid() {
@@ -42,6 +46,18 @@ public class User implements Serializable{
     public List<String> getActivities() {
         if (activities == null) activities = new LinkedList<>();
         return activities;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setActivities(List<String> activities){

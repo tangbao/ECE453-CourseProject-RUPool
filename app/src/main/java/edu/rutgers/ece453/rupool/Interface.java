@@ -14,6 +14,10 @@ class Interface {
         void onGetUser(User user, int ACTION_CODE, int RESULT_CODE);
     }
 
+    public interface OnFindAllUserListener{
+        void onFindAllUser(List<User> lu, int RESULT_CODE);
+    }
+
     public interface OnGetActivityListener{
         void onGetActivity(PoolActivity pa, int ACTION_CODE, int RESULT_CODE);
     }
