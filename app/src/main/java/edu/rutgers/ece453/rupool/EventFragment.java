@@ -32,6 +32,8 @@ public class EventFragment extends Fragment {
     private TextView mTextViewDate;
     private TextView mTextViewNumberOfPassenger;
     private TextView mTextViewPrice;
+    private TextView mTextViewDescription;
+    private TextView mTextViewStartPoint;
     private OnFragmentInteractionListener mListener;
     private FirebaseUser firebaseUser;
     private User myUser;
@@ -132,36 +134,45 @@ public class EventFragment extends Fragment {
         quitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myUser.quitActivity(mPoolActivity.getId());
-                mPoolActivity.removeMember(myUser.getUid());
-                if(!mPoolActivity.getStatus()){
-                    mPoolActivity.setStatus(true);
+                if(firebaseUser.getUid().equals(myUser.getUid())){
+                    Toast.makeText(getContext(), "You cannot quit the activity you created.", Toast.LENGTH_LONG).show();
+                }else{
+
+                    myUser.quitActivity(mPoolActivity.getId());
+                    mPoolActivity.removeMember(myUser.getUid());
+                    if(!mPoolActivity.getStatus()){
+                        mPoolActivity.setStatus(true);
+                    }
+                    databaseUtils.updateUser(myUser);
+                    databaseUtils.updateActivity(mPoolActivity);
+
+                    Toast.makeText(getContext(), "Quit successfully.", Toast.LENGTH_LONG).show();
+
+                    joinButton.setVisibility(View.VISIBLE);
+                    quitButton.setVisibility(View.INVISIBLE);
                 }
-                databaseUtils.updateUser(myUser);
-                databaseUtils.updateActivity(mPoolActivity);
-
-                Toast.makeText(getContext(), "Quit successfully.", Toast.LENGTH_LONG).show();
-
-                joinButton.setVisibility(View.VISIBLE);
-                quitButton.setVisibility(View.INVISIBLE);
             }
         });
 
         // end by tangbao
 
-        // initial textview
+        // initial textview,
+        // edited by tb
 
         mTextViewDestination = view.findViewById(R.id.event_dest);
         mTextViewDate = view.findViewById(R.id.event_date);
         mTextViewNumberOfPassenger = view.findViewById(R.id.event_num);
         mTextViewPrice = view.findViewById(R.id.event_price);
+        mTextViewStartPoint = view.findViewById(R.id.event_startPoint);
+        mTextViewDescription = view.findViewById(R.id.event_description);
 
-        // TODO 显示信息
+
         mTextViewDestination.setText(mPoolActivity.getDestiName());
         mTextViewNumberOfPassenger.setText(String.valueOf(mPoolActivity.getMembers().size()));
         mTextViewDate.setText(mPoolActivity.getDate());
-        // TODO 此处存疑
         mTextViewPrice.setText(String.valueOf(mPoolActivity.getMoneyPerPerson()));
+        mTextViewDescription.setText(mPoolActivity.getDescription());
+        mTextViewStartPoint.setText(mPoolActivity.getStartPoint());
 
         if (!isJoined) {
             joinButton.setVisibility(View.VISIBLE);

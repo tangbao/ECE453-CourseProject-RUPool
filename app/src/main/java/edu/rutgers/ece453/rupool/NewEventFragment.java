@@ -201,10 +201,9 @@ public class NewEventFragment extends Fragment {
                     Toast.makeText(getActivity(),"You have to input all the information",Toast.LENGTH_SHORT).show();
                     return;
                 }else{
-                    //TODO 创建poolactivity并加入数据库中，获取到的place 变量名为place ，直接加进去就行
                     //add by tb
                     PoolActivity pa = new PoolActivity("name", FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                            inputDate,"Description", "startPoint", Integer.parseInt(inputNum), Double.parseDouble(inputPrice));
+                            inputDate,inputDescription, startLocation, Integer.parseInt(inputNum), Double.parseDouble(inputPrice));
                     pa.setPlace(place);
                     DatabaseUtils du = new DatabaseUtils();
                     du.addActivity(pa);
