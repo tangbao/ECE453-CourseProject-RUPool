@@ -157,6 +157,7 @@ public class EventFragment extends Fragment {
                             public void onGetUser(User user, int ACTION_CODE, int RESULT_CODE) {
                                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                                 intent.setData(Uri.parse("mailto:"));
+                                // TODO
 //                                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{user)
                                 if (intent.resolveActivity(getActivity().getPackageManager()) != null)
                                     startActivity(intent);
