@@ -38,40 +38,40 @@
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="portrait"
             android:name=".LoginActivity"
-            android:label="Log in" />
+            android:label="Log in RUPool"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".SignUpActivity"
-            android:label="Sign Up" />
+            android:label="Sign Up RUPool"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".WaitingEmailVerifyActivity"
-            android:label="Please Verify Email" />
+            android:label="Please Verify Email"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".ShowProfileActivity"
-            android:label="Profile" />
+            android:label="Profile"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".EditProfileActivity"
-            android:label="Edit Profile" />
+            android:label="Edit Profile"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".ResetPasswordActivity" />
+            android:name=".ResetPasswordActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".EventActivity"
-            android:label="Event" />
+            android:label="Event"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".MyEventActivity"
-            android:label="My Event" />
+            android:label="My Event"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
             android:name=".ProfileActivity"
-            android:label="Profile" />
+            android:label="Profile"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
