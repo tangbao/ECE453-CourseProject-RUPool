@@ -28,6 +28,8 @@ import static edu.rutgers.ece453.rupool.Constant.FIND_ACTIVITY_BY_PLACE_FAIL;
 import static edu.rutgers.ece453.rupool.Constant.FIND_ACTIVITY_BY_PLACE_SUCCESS;
 import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_FAIL;
 import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
+import static edu.rutgers.ece453.rupool.Constant.GET_ALL_USER_FAIL;
+import static edu.rutgers.ece453.rupool.Constant.GET_ALL_USER_SUCCESS;
 import static edu.rutgers.ece453.rupool.Constant.GET_USER_FAIL;
 import static edu.rutgers.ece453.rupool.Constant.GET_USER_SUCCESS;
 import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
@@ -48,6 +50,7 @@ class DatabaseUtils {
     private OnGetActivityListener mGetActivityListener;
     private OnFindActivityByPlaceListener mFindActivityByPlaceListener;
     private OnFindAllActivityListener mFindAllActivityListener;
+    private Interface.OnFindAllUserListener mFindAllUserListener;
 
     private DatabaseReference mDatabase;
     private DatabaseReference mUsersRef;
@@ -90,6 +93,31 @@ class DatabaseUtils {
 
     void updateUser(User user){
         mUsersRef.child(user.getUid()).setValue(user);
+    }
+
+    void findAllUser(Interface.OnFindAllUserListener onFindAllUserListener){
+        mFindAllUserListener = onFindAllUserListener;
+        mUsersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(final DataSnapshot dataSnapshot) {
+                List<User> result = new ArrayList<>();
+                if(dataSnapshot!=null){
+                    for(DataSnapshot data : dataSnapshot.getChildren()){
+                        User user = data.getValue(User.class);
+                        result.add(user);
+                    }
+                    mFindAllUserListener.onFindAllUser(result, GET_ALL_USER_SUCCESS);
+                }else{
+                    Log.e(TAG, "no user now");
+                    mFindAllUserListener.onFindAllUser(result, GET_ALL_USER_FAIL);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "findAllUser:onCancelled", databaseError.toException());
+            }
+        });
     }
 
     //======================Activity Methods===============================

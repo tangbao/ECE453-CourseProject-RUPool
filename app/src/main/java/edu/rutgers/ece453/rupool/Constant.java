@@ -21,4 +21,7 @@ public class Constant {
     public final static int GET_ALL_ACTIVITY_SUCCESS = 1;
     public final static int GET_ALL_ACTIVITY_FAIL = 0;
 
+    public final static int GET_ALL_USER_SUCCESS = 1;
+    public final static int GET_ALL_USER_FAIL = 0;
+
 }
