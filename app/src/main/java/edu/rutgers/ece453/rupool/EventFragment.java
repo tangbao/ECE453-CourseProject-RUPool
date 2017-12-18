@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +38,9 @@ public class EventFragment extends Fragment {
     private FirebaseUser firebaseUser;
     private User myUser;
     private DatabaseUtils databaseUtils;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.Adapter mAdapter;
 
     public EventFragment() {
         // Required empty public constructor
@@ -201,6 +206,15 @@ public class EventFragment extends Fragment {
             joinButton.setVisibility(View.INVISIBLE);
             quitButton.setVisibility(View.VISIBLE);
         }
+
+        mRecyclerView = view.findViewById(R.id.RecyclerView_EventFragment);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // TODO
+
+
         return view;
     }
 
