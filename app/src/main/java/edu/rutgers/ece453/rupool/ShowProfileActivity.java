@@ -82,7 +82,9 @@ public class ShowProfileActivity extends AppCompatActivity {
                                                     mAdapter = new AdapterRecyclerViewMainFragment(toShow, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
                                                         @Override
                                                         public void onItemClick(PoolActivity poolActivity) {
-
+                                                            Intent intent = new Intent(ShowProfileActivity.this, EventActivity.class);
+                                                            intent.putExtra(EventActivity.ARGS_POOLACTIVITY, poolActivity);
+                                                            startActivity(intent);
                                                         }
                                                     });
                                                     mRecyclerView.setAdapter(mAdapter);

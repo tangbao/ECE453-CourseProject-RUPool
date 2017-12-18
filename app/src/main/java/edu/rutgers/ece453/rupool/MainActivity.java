@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,13 +27,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
-import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         EventFragment.OnFragmentInteractionListener,
-//        MainFragment.OnFragmentInteractionListener,
+        MainFragment.OnFragmentInteractionListener,
         PreferenceFragment.OnFragmentInteractionListener,
         NewEventFragment.OnFragmentInteractionListener {
 
@@ -59,7 +55,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        databaseUtils=new DatabaseUtils();
+        databaseUtils = new DatabaseUtils();
 
         // start by zhu
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -72,9 +68,9 @@ public class MainActivity extends AppCompatActivity
         ArrayList<String> searchContent = new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
 
-        MainFragment mainFragment=new MainFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container,mainFragment, "MainFragment");
+        MainFragment mainFragment = MainFragment.newInstance();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, mainFragment, "MainFragment");
         fragmentTransaction.commit();
 
 
@@ -90,14 +86,13 @@ public class MainActivity extends AppCompatActivity
                 NewEventFragment newEventFragmentventFragment = new NewEventFragment();
                 getSupportFragmentManager().popBackStack();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, newEventFragmentventFragment);
+                fragmentTransaction.add(R.id.fragment_container, newEventFragmentventFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
 
             }
         });
-
 
 
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -113,7 +108,6 @@ public class MainActivity extends AppCompatActivity
         mTextViewEmailNavHeader = view.findViewById(R.id.TextView_Email_NavHeaderMain);
         // start zhu
         // set username in nav header
-
 
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -147,6 +141,14 @@ public class MainActivity extends AppCompatActivity
                 // TODO:Get info about the selected place.
 
                 Log.i("AUTO", "Place: " + place.getName());
+                DatabaseUtils databaseUtils = new DatabaseUtils();
+                databaseUtils.findActivityByLocation(place, 123, new Interface.OnFindActivityByPlaceListener() {
+                    @Override
+                    public void onFindActivityByPlace(List<PoolActivity> lpa, int ACTION_CODE, int RESULT_CODE) {
+                        MainFragment mainFragment1 = (MainFragment) getSupportFragmentManager().findFragmentByTag("MainFragment");
+                        mainFragment1.updateRecyclerView(lpa);
+                    }
+                });
             }
 
             @Override
@@ -169,10 +171,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-//        if (mFirebaseAuth.getCurrentUser() == null
-//                || !mFirebaseAuth.getCurrentUser().isEmailVerified())
-//            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
-//                    REQUESTCODE_LOGIN);
+        if (mFirebaseAuth.getCurrentUser() == null
+                || !mFirebaseAuth.getCurrentUser().isEmailVerified())
+            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
+                    REQUESTCODE_LOGIN);
         if (mFirebaseAuth.getCurrentUser() != null) {
             DatabaseUtils databaseUtils = new DatabaseUtils();
             databaseUtils.getUser(mFirebaseAuth.getCurrentUser().getUid(), 3, new Interface.OnGetUserListener() {
@@ -190,10 +192,7 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-    //end by zhu
-
-
-
+        //end by zhu
 
 
 //        return super.onCreateOptionsMenu(menu);
@@ -226,15 +225,9 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.My_Event: {
+                Intent intent = new Intent(this, MyEventActivity.class);
+                startActivity(intent);
 
-                //TODO ERROR
-                // Handle the camera action
-                EventFragment eventFragment = new EventFragment();
-                getSupportFragmentManager().popBackStack();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, eventFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
                 break;
             }
             case R.id.nav_preference: {
@@ -242,7 +235,7 @@ public class MainActivity extends AppCompatActivity
                 PreferenceFragment preferenceFragment = new PreferenceFragment();
                 getSupportFragmentManager().popBackStack();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, preferenceFragment);
+                fragmentTransaction.add(R.id.fragment_container, preferenceFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
@@ -281,12 +274,17 @@ public class MainActivity extends AppCompatActivity
         return fab;
     }
 
-    public List<PoolActivity> getAllActivityList(){
+    public List<PoolActivity> getAllActivityList() {
         return allActivityList;
     }
 
 
-
+    @Override
+    public void startEventActivity(PoolActivity poolActivity) {
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra(EventActivity.ARGS_POOLACTIVITY, poolActivity);
+        startActivity(intent);
+    }
 }
 
 
