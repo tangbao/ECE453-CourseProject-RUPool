@@ -67,7 +67,7 @@ public class EditProfileActivity extends AppCompatActivity {
             public void onGetUser(User user, int ACTION_CODE, int RESULT_CODE) {
                 if (RESULT_CODE == Constant.GET_USER_SUCCESS) {
                     mUser = user;
-                    mEditTextName.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+                    mEditTextName.setText(mUser.getName());
                     switch (mUser.getGender()) {
                         case "Male": {
                             mRadioGroup.check(R.id.RadioButton_Male_EditProfileActivity);
