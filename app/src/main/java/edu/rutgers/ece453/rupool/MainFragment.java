@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -53,19 +52,16 @@ public class MainFragment extends Fragment {
     private ImageButton imgBtn;
     private String timeFromWhen;
     private String timeToWhen;
+    private OnFragmentInteractionListener mListener;
 
-//    private OnFragmentInteractionListener mListener;
-private List<PoolActivity> allActivityList;
+    //    private OnFragmentInteractionListener mListener;
+    private List<PoolActivity> allActivityList;
     private AdapterRecyclerViewMainFragment.OnItemClickListener mOnItemClickListener =
             new AdapterRecyclerViewMainFragment.OnItemClickListener() {
                 @Override
                 public void onItemClick(PoolActivity poolActivity) {
-                    EventFragment eventFragment = EventFragment.newInstance(poolActivity);
-                    getActivity().getSupportFragmentManager().popBackStack();
-                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.add(R.id.fragment_container, eventFragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    Log.d(TAG, "onItemClick: Start event activity.");
+                    mListener.startEventActivity(poolActivity);
                 }
             };
     //end by tb
@@ -102,14 +98,14 @@ private List<PoolActivity> allActivityList;
         fromWhen = view.findViewById(R.id.time_filter1);
         toWhen = view.findViewById(R.id.time_filter2);
 
-        FloatingActionButton fab=((MainActivity) getActivity()).getFab();
+        FloatingActionButton fab = ((MainActivity) getActivity()).getFab();
         if (fab != null) {
             fab.show();
         }
 
         // set the time filter
 
-        myCalendarFrom= Calendar.getInstance();
+        myCalendarFrom = Calendar.getInstance();
 
         dateFrom = new DatePickerDialog.OnDateSetListener() {
 
@@ -146,7 +142,7 @@ private List<PoolActivity> allActivityList;
 
         });
 
-        myCalendarTo= Calendar.getInstance();
+        myCalendarTo = Calendar.getInstance();
 
         dateTo = new DatePickerDialog.OnDateSetListener() {
 
@@ -195,7 +191,7 @@ private List<PoolActivity> allActivityList;
 
         //TEST CODE by tangbao
         poolActivities = new ArrayList<PoolActivity>();
-        mRecyclerView=view.findViewById(R.id.RecyclerView_MainFragment);
+        mRecyclerView = view.findViewById(R.id.RecyclerView_MainFragment);
         mRecyclerView.setHasFixedSize(true);
 
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -205,13 +201,13 @@ private List<PoolActivity> allActivityList;
         du.findAllActivity(new Interface.OnFindAllActivityListener() {
             @Override
             public void onFindAllActivity(List<PoolActivity> lpa, int RESULT_CODE) {
-                for(int i = 0; i< lpa.size(); i++){
+                for (int i = 0; i < lpa.size(); i++) {
                     Log.e(TAG, lpa.get(i).getId());
                 }
-                if(RESULT_CODE==GET_ALL_ACTIVITY_SUCCESS) {
+                if (RESULT_CODE == GET_ALL_ACTIVITY_SUCCESS) {
 
                     // 数据库不为空，读到了数据
-                    poolActivities=lpa;
+                    poolActivities = lpa;
 
                     // 排序
                     Collections.sort(poolActivities, new Comparator<PoolActivity>() {
@@ -235,101 +231,74 @@ private List<PoolActivity> allActivityList;
                     });
 
 
-                    mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(PoolActivity poolActivity) {
-                            EventFragment eventFragment = EventFragment.newInstance(poolActivity);
-                            getActivity().getSupportFragmentManager().popBackStack();
-                            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.fragment_container, eventFragment);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
-                        }
-                    });
+                    mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, mOnItemClickListener);
                     mRecyclerView.setAdapter(mAdapter);
-                }
-                else{
+                } else {
                     //列表为空
                     // set up RecyclerView
 
-        mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, mOnItemClickListener);
-        mRecyclerView.setAdapter(mAdapter);}
+                    mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, mOnItemClickListener);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
 
             }
         });
         //TEST CODE end
 
 
-
-
-
         // 时间过滤
 
         // image button来确定
-        imgBtn=(ImageButton) view.findViewById(R.id.imgBtn);
+        imgBtn = view.findViewById(R.id.imgBtn);
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO: 确定设置time filter
 
-                if(fromWhen.getText()!=null&&toWhen.getText()!=null){
-                    timeFromWhen=fromWhen.getText().toString();
-                    timeToWhen=toWhen.getText().toString();
-                    SimpleDateFormat format=new SimpleDateFormat("MM/dd/yyyy");
-                    Date dateFromWhen =null;
-                    Date dateToWhen=null;
+                if (fromWhen.getText() != null && toWhen.getText() != null) {
+                    timeFromWhen = fromWhen.getText().toString();
+                    timeToWhen = toWhen.getText().toString();
+                    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+                    Date dateFromWhen = null;
+                    Date dateToWhen = null;
 
                     try {
-                        dateFromWhen=format.parse(timeFromWhen);
-                        dateToWhen=format.parse(timeToWhen);
+                        dateFromWhen = format.parse(timeFromWhen);
+                        dateToWhen = format.parse(timeToWhen);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
 
                     //得到了前后两个date
 
-                    ArrayList<PoolActivity> tempActivityList=new ArrayList<PoolActivity>();
+                    ArrayList<PoolActivity> tempActivityList = new ArrayList<PoolActivity>();
                     //遍历时间
-                    for(int i=0;i<poolActivities.size();i++){
-                       PoolActivity tempActivity=poolActivities.get(i);
+                    for (int i = 0; i < poolActivities.size(); i++) {
+                        PoolActivity tempActivity = poolActivities.get(i);
 
-                       // 转变date string的格式
-                       String tempDate=tempActivity.getDate().toString();
-                       Date currentDate=null;
+                        // 转变date string的格式
+                        String tempDate = tempActivity.getDate().toString();
+                        Date currentDate = null;
 
-                       try {
-                           currentDate=format.parse(tempDate);
-                       } catch (ParseException e) {
-                           e.printStackTrace();
-                       }
-
-                       if(currentDate.before(dateToWhen)&&currentDate.after(dateFromWhen)){
-                           tempActivityList.add(tempActivity);
-                       }
-
-
-
-
-                   }
-
-                    mAdapter = new AdapterRecyclerViewMainFragment(tempActivityList, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(PoolActivity poolActivity) {
-                            EventFragment eventFragment = EventFragment.newInstance(poolActivity);
-                            getActivity().getSupportFragmentManager().popBackStack();
-                            FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                            fragmentTransaction.replace(R.id.fragment_container, eventFragment);
-                            fragmentTransaction.addToBackStack(null);
-                            fragmentTransaction.commit();
+                        try {
+                            currentDate = format.parse(tempDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
-                    });
+
+                        if (currentDate.before(dateToWhen) && currentDate.after(dateFromWhen)) {
+                            tempActivityList.add(tempActivity);
+                        }
+
+
+                    }
+
+                    mAdapter = new AdapterRecyclerViewMainFragment(tempActivityList, mOnItemClickListener);
                     mRecyclerView.setAdapter(mAdapter);
 
                 }
             }
         });
-
-
 
 
         return view;
@@ -345,18 +314,18 @@ private List<PoolActivity> allActivityList;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
+        mListener = null;
     }
 
 
@@ -365,14 +334,14 @@ private List<PoolActivity> allActivityList;
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        void onFragmentInteraction(Uri uri);
-//    }
-
     void updateRecyclerView(List<PoolActivity> poolActivities) {
         mAdapter = new AdapterRecyclerViewMainFragment(poolActivities, mOnItemClickListener);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void startEventActivity(PoolActivity poolActivity);
     }
 
 }
