@@ -17,6 +17,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +47,11 @@ import com.google.api.services.calendar.model.EventReminder;
 import com.google.api.services.calendar.model.Events;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 import static edu.rutgers.ece453.rupool.Constant.GET_USER_SUCCESS;
@@ -76,6 +83,9 @@ public class EventFragment extends Fragment
     private FirebaseUser firebaseUser;
     private User myUser;
     private DatabaseUtils databaseUtils;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.Adapter mAdapter;
 
 
         GoogleAccountCredential mCredential;
@@ -150,7 +160,7 @@ public class EventFragment extends Fragment
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event, container, false);
 
@@ -264,6 +274,34 @@ public class EventFragment extends Fragment
             joinButton.setVisibility(View.INVISIBLE);
             quitButton.setVisibility(View.VISIBLE);
         }
+
+        mRecyclerView = view.findViewById(R.id.RecyclerView_EventFragment);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        databaseUtils.findAllUser(new Interface.OnFindAllUserListener() {
+            @Override
+            public void onFindAllUser(List<User> lu, int RESULT_CODE) {
+                Map<String, User> stringUserMap = new HashMap<>();
+                for (User user : lu)
+                    stringUserMap.put(user.getUid(), user);
+                List<User> users = new LinkedList<>();
+                for (String s : mPoolActivity.getMembers())
+                    if (stringUserMap.containsKey(s))
+                        users.add(stringUserMap.get(s));
+
+                mAdapter = new AdapterRecyclerViewUsers(users, new AdapterRecyclerViewUsers.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(User user) {
+                        mListener.startProfile(user);
+                    }
+                });
+                mRecyclerView.setAdapter(mAdapter);
+            }
+        });
+
+
         return view;
     }
 
@@ -271,24 +309,24 @@ public class EventFragment extends Fragment
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
+        mListener = null;
     }
 
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void startProfile(User user);
     }
 
 

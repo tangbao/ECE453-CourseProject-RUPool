@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -88,7 +87,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         }
                     }
                 } else {
-                    mUser = new User();
+                    mUser = null;
                 }
             }
         });
@@ -105,14 +104,17 @@ public class EditProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.MenuItem_Save_OptionMenu_EditProfileActivity: {
-                UserProfileChangeRequest userProfileChangeRequest
-                        = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(mEditTextName.getText().toString())
-                        .build();
-                mFirebaseAuth.getCurrentUser().updateProfile(userProfileChangeRequest);
 
-                mUser.setUid(mFirebaseAuth.getCurrentUser().getUid());
-                mUser.setGender(mStringGender);
+                if (mUser == null) {
+                    mUser = new User(
+                            mFirebaseAuth.getCurrentUser().getUid(),
+                            mStringGender,
+                            mFirebaseAuth.getCurrentUser().getEmail(),
+                            mEditTextName.getText().toString());
+                } else {
+                    mUser.setName(mEditTextName.getText().toString());
+                    mUser.setGender(mStringGender);
+                }
                 DatabaseUtils databaseUtils = new DatabaseUtils();
                 databaseUtils.updateUser(mUser);
                 finish();
