@@ -55,7 +55,7 @@ private List<PoolActivity> allActivityList;
                     EventFragment eventFragment = EventFragment.newInstance(poolActivity);
                     getActivity().getSupportFragmentManager().popBackStack();
                     FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.fragment_container, eventFragment);
+                    fragmentTransaction.add(R.id.fragment_container, eventFragment);
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }

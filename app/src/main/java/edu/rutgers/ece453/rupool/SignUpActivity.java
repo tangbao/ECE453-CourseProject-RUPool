@@ -56,10 +56,44 @@ public class SignUpActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+
+    boolean validate() {
+        mEditTextEmail.setError(null);
+        mEditTextPassword.setError(null);
+
+        String email = mEditTextEmail.getText().toString();
+        String password = mEditTextPassword.getText().toString();
+
+        if (email.isEmpty()) {
+            mEditTextEmail.setError("This field is required");
+            mEditTextEmail.requestFocus();
+            return false;
+        }
+        if (!email.contains("@") || !email.contains("rutgers.edu")) {
+            mEditTextEmail.setError("Please use university email address");
+            mEditTextEmail.requestFocus();
+            return false;
+        }
+
+
+        if (password.length() < 6) {
+            mEditTextPassword.setError("This password is too short");
+            mEditTextPassword.requestFocus();
+            return false;
+        }
+
+        return true;
+    }
+
     private void signUp(String email, String password) {
         showProgressDialog();
 
+
         // TODO validate email and password
+        if (!validate()) {
+            hideProgressDialog();
+            return;
+        }
 
         mFirebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

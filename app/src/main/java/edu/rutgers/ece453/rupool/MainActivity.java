@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
 
         MainFragment mainFragment = MainFragment.newInstance();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, mainFragment, "MainFragment");
+        fragmentTransaction.replace(R.id.fragment_container, mainFragment, "MainFragment");
         fragmentTransaction.commit();
 
 
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
                 NewEventFragment newEventFragmentventFragment = new NewEventFragment();
                 getSupportFragmentManager().popBackStack();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, newEventFragmentventFragment);
+                fragmentTransaction.add(R.id.fragment_container, newEventFragmentventFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
@@ -170,10 +170,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-//        if (mFirebaseAuth.getCurrentUser() == null
-//                || !mFirebaseAuth.getCurrentUser().isEmailVerified())
-//            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
-//                    REQUESTCODE_LOGIN);
+        if (mFirebaseAuth.getCurrentUser() == null
+                || !mFirebaseAuth.getCurrentUser().isEmailVerified())
+            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
+                    REQUESTCODE_LOGIN);
         if (mFirebaseAuth.getCurrentUser() != null) {
             DatabaseUtils databaseUtils = new DatabaseUtils();
             databaseUtils.getUser(mFirebaseAuth.getCurrentUser().getUid(), 3, new Interface.OnGetUserListener() {
@@ -230,7 +230,7 @@ public class MainActivity extends AppCompatActivity
                 EventFragment eventFragment = new EventFragment();
                 getSupportFragmentManager().popBackStack();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, eventFragment);
+                fragmentTransaction.add(R.id.fragment_container, eventFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity
                 PreferenceFragment preferenceFragment = new PreferenceFragment();
                 getSupportFragmentManager().popBackStack();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, preferenceFragment);
+                fragmentTransaction.add(R.id.fragment_container, preferenceFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;

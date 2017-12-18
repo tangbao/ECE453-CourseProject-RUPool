@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/detailsElementBackground"
     android:orientation="vertical"
     tools:context="edu.rutgers.ece453.rupool.EventFragment">
 
@@ -16,24 +17,24 @@
             />
         <fragment
             android:id="@+id/place_autocomplete_fragment"
+            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"/>
+            android:layout_height="wrap_content" />
     </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
         android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
         >
 
         <TextView
+            android:id="@+id/event_startPoint"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:id="@+id/event_startPoint"
             android:gravity="center_vertical|center_horizontal"
 
             android:hint="Start Point"
@@ -44,17 +45,17 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
-            android:textSize="36dp"
             android:text="-->"
+            android:textSize="36dp"
             />
 
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="3"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|center_horizontal"
             android:id="@+id/event_dest"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:gravity="center_vertical|center_horizontal"
             android:hint="Where to ? "
             />
 
@@ -64,26 +65,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         >
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:text="Your Poll Will Start on"
             android:gravity="center_horizontal|center_vertical"
+            android:text="Your Poll Will Start on"
             />
 
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|center_horizontal"
             android:id="@+id/event_date"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center_vertical|center_horizontal"
             android:hint="Date here"
             />
 
@@ -93,33 +94,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         >
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
-            android:text="Your Poll Will Have "
             android:gravity="center_horizontal|center_vertical"
+            android:text="Your Poll Will Have "
             />
 
         <TextView
+            android:id="@+id/event_num"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/event_num"
             android:gravity="center_vertical|center_horizontal"
-            android:textSize="15dp"
             android:hint="number"
+            android:textSize="15dp"
             />
 
 
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="3"
             android:layout_height="match_parent"
+            android:layout_weight="3"
             android:gravity="center_vertical|center_horizontal"
             android:hint="Friends Together"
             />
@@ -129,33 +130,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         >
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="8"
-            android:text="Each one Needs to Pay"
             android:gravity="center_horizontal|center_vertical"
+            android:text="Each one Needs to Pay"
             />
 
         <TextView
+            android:id="@+id/event_price"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/event_price"
             android:gravity="center_vertical|center_horizontal"
-            android:textSize="15dp"
             android:hint="amount"
+            android:textSize="15dp"
             />
 
 
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
             android:hint="$"
             />
@@ -165,9 +166,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
         >
 
       <TextView
@@ -178,12 +179,12 @@
           />
 
         <TextView
+            android:id="@+id/event_description"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:minLines="3"
-            android:id="@+id/event_description"
             android:hint="Description here"
+            android:minLines="3"
             />
 
     </LinearLayout>
@@ -201,25 +202,25 @@
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             >
 
             <Button
+                android:id="@+id/Quit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:id="@+id/Quit"
                 android:text="Quit this pool"
                 />
 
             <Button
+                android:id="@+id/Join"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:id="@+id/Join"
                 android:text="Join this pool"
                 />
 
@@ -229,10 +230,10 @@
         <Button
             android:id="@+id/contact"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_margin="16dp"
+            android:layout_weight="1"
             android:text="Contact the poster " />
 
 
