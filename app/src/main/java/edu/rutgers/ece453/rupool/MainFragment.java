@@ -81,8 +81,6 @@ public class MainFragment extends Fragment {
 //            allActivityList = ((MainActivity) getActivity()).getAllActivityList();
 //            Toast.makeText(getActivity().getApplicationContext(),"Fragment fOUNT",Toast.LENGTH_SHORT).show();
 //        }
-
-
         fromWhen=(EditText) view.findViewById(R.id.time_filter1);
         toWhen=(EditText) view.findViewById(R.id.time_filter2);
 
