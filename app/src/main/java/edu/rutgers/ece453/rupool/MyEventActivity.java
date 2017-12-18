@@ -32,6 +32,13 @@ public class MyEventActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         final DatabaseUtils databaseUtils = new DatabaseUtils();
         databaseUtils.getUser(mFirebaseAuth.getCurrentUser().getUid(), 1, new Interface.OnGetUserListener() {
             @Override
@@ -64,7 +71,5 @@ public class MyEventActivity extends AppCompatActivity {
                 } else finish();
             }
         });
-
-
     }
 }
