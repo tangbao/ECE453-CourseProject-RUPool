@@ -71,22 +71,20 @@
         >
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Your Poll Will Start on"
-            />
+            android:layout_marginStart="16dp"
+            android:text="Your pool will start on" />
 
+        <!--android:gravity="center_horizontal|center_vertical"-->
 
         <TextView
             android:id="@+id/event_date"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="16dp"
             android:hint="Date here"
-            />
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 
@@ -100,30 +98,26 @@
         >
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Your Poll Will Have "
-            />
+            android:layout_marginStart="16dp"
+            android:text="Your pool will have" />
 
         <TextView
             android:id="@+id/event_num"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical|center_horizontal"
-            android:hint="number"
-            android:textSize="15dp"
-            />
-
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:hint="n"
+            android:textColor="@android:color/black"
+            android:textSize="15dp" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:gravity="center_vertical|center_horizontal"
-            android:hint="Friends Together"
-            />
+            android:text="friends together" />
+
 
     </LinearLayout>
 
@@ -136,30 +130,21 @@
         >
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Each one Needs to Pay"
-            />
+            android:layout_marginStart="16dp"
+            android:text="Each one needs to pay $" />
 
         <TextView
             android:id="@+id/event_price"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|center_horizontal"
-            android:hint="amount"
-            android:textSize="15dp"
-            />
-
-
-        <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:hint="$"
-            />
+            android:hint="amount"
+            android:textColor="@android:color/black"
+            android:textSize="15dp" />
+
 
     </LinearLayout>
 
@@ -171,18 +156,19 @@
         android:orientation="vertical"
         >
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="0dp"
-          android:layout_weight="2"
-          android:text="Description: "
-          />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginStart="16dp"
+            android:text="Description: " />
 
         <TextView
             android:id="@+id/event_description"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="3"
+            android:layout_marginStart="16dp"
             android:hint="Description here"
             android:minLines="4"
             />

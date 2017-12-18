@@ -34,25 +34,25 @@
         >
 
         <EditText
-            android:id="@+id/time_filter1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:clickable="true"
-            android:focusableInTouchMode="false"
             android:gravity="center_vertical|center_horizontal"
+            android:focusableInTouchMode="false"
+            android:id="@+id/time_filter1"
             android:hint="From when"
             />
 
         <ImageButton
-            android:id="@+id/imgBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null"
             android:gravity="center_horizontal|center_vertical"
             android:textSize="26dp"
+            android:background="@null"
+            android:id="@+id/imgBtn"
             app:srcCompat="@drawable/ic_arrow_forward_black_24px"
+            android:layout_weight="1"
             />
 
         <EditText
@@ -76,7 +76,7 @@
         android:layout_marginTop="4dp"
         android:gravity="center_horizontal"
         android:text="Event List"
-        />
+        android:textSize="18sp" />
 
 
     <android.support.v7.widget.RecyclerView

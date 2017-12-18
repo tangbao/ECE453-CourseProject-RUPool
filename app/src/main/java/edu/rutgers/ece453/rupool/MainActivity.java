@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity
         sendIntent=new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_SUBJECT,"Try RUPool! It's awesome!");
-        sendIntent.putExtra(Intent.EXTRA_TEXT,"This app is awesome! Just have a try! download the RUPool right now!");
+        sendIntent.putExtra(Intent.EXTRA_TEXT,"This app is awesome! Just have a try! Download the RUPool right now!");
         sendIntent.setType("text/plain");
 
 
@@ -279,11 +280,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void myIcon(View view) {
-        Toast.makeText(this, "Pop a dialog for users to change his Icon", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Pop a dialog for users to change his Icon", Toast.LENGTH_SHORT).show();
     }
 
     public void myProfile(View view) {
-        Toast.makeText(this, "Pop a dialog for users to change his Email Address", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Pop a dialog for users to change his Email Address", Toast.LENGTH_SHORT).show();
     }
 
     public FloatingActionButton getFab() {

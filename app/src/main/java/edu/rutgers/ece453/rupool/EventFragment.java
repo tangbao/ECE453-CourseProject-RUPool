@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.UnicodeSetSpanner;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -173,6 +174,7 @@ public class EventFragment extends Fragment
                     databaseUtils.updateActivity(mPoolActivity);
                     //todo 检查数据一致性 防止覆盖 etc
 
+                    Toast.makeText(getContext(), "Start to add the event to your Google Calender", Toast.LENGTH_LONG).show();
                     getResultsFromApi();
 
                     Toast.makeText(getContext(), "Join successfully.", Toast.LENGTH_LONG).show();
@@ -361,6 +363,9 @@ public class EventFragment extends Fragment
         mListener = null;
     }
 
+
+    //============below is google calender by tangbao=================
+
     /**
      * Attempt to call the API, after verifying that all the preconditions are
      * satisfied. The preconditions are: Google Play Services installed, an
@@ -383,8 +388,6 @@ public class EventFragment extends Fragment
         }
     }
 
-
-    //============below is google calender by tangbao=================
 
     /**
      * Attempts to set the account used with the API credentials. If an account
@@ -613,6 +616,7 @@ public class EventFragment extends Fragment
 
                 mService.events().insert(ID, event).execute();
                 Log.e(TAG, "inserting event");
+                //Toast.makeText(getContext(), "Add event to your google calender successfully", Toast.LENGTH_LONG).show();
                 return null;
             } catch (Exception e) {
                 mLastError = e;
