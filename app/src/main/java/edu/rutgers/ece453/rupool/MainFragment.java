@@ -77,10 +77,10 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        if(((MainActivity) getActivity()).getAllActivityList()!=null) {
-            allActivityList = ((MainActivity) getActivity()).getAllActivityList();
-            Toast.makeText(getActivity().getApplicationContext(),"Fragment fOUNT",Toast.LENGTH_SHORT).show();
-        }
+//        if(((MainActivity) getActivity()).getAllActivityList()!=null) {
+//            allActivityList = ((MainActivity) getActivity()).getAllActivityList();
+//            Toast.makeText(getActivity().getApplicationContext(),"Fragment fOUNT",Toast.LENGTH_SHORT).show();
+//        }
 
 
         fromWhen=(EditText) view.findViewById(R.id.time_filter1);
@@ -90,13 +90,6 @@ public class MainFragment extends Fragment {
         if (fab != null) {
             fab.show();
         }
-
-        ArrayList<PoolActivity> poolActivities=new ArrayList<>();
-
-        poolActivities.add(new PoolActivity("Test1", "1", "now", "test description", "BSC", 5, 5.0));
-        poolActivities.add(new PoolActivity("Test2", "2", "now", "test description", "BSC", 5, 5.0));
-        poolActivities.add(new PoolActivity("Test3", "3", "now", "test description", "BSC", 5, 5.0));
-        poolActivities.add(new PoolActivity("Test4", "4", "now", "test description", "BSC", 5, 5.0));
 
         // set the time filter
 

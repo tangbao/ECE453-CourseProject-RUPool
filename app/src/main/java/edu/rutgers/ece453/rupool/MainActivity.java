@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
 import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity
     // start by zhu
     private FirebaseAuth mFirebaseAuth;
     private TextView mTextViewUserNameNavHeader;
+    private TextView mTextViewEmailNavHeader;
     private DatabaseUtils databaseUtils;
     private List<PoolActivity> allActivityList;
     private MainFragment mainFragment;
@@ -126,17 +128,17 @@ public class MainActivity extends AppCompatActivity
                 drawer.openDrawer(Gravity.LEFT);
             }
         });
-
-        // 进入程序，显示已有activity
-        databaseUtils.findAllActivity(new Interface.OnFindAllActivityListener() {
-            @Override
-            public void onFindAllActivity(List<PoolActivity> lpa, int RESULT_CODE) {
-                // 得到所有activity列表
-                    allActivityList = lpa;
-                    Toast.makeText(getApplicationContext(),lpa.get(1).getDate().toString(),Toast.LENGTH_SHORT).show();
-
-            }
-        });
+//
+//        // 进入程序，显示已有activity
+//        databaseUtils.findAllActivity(new Interface.OnFindAllActivityListener() {
+//            @Override
+//            public void onFindAllActivity(List<PoolActivity> lpa, int RESULT_CODE) {
+//                // 得到所有activity列表
+//                    allActivityList = lpa;
+//                    Toast.makeText(getApplicationContext(),lpa.get(1).getDate().toString(),Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
 
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -152,11 +154,11 @@ public class MainActivity extends AppCompatActivity
                 Log.i("AUTO", "An error occurred: " + status);
             }
         });
-
-        mainFragment = new MainFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, mainFragment);
-        fragmentTransaction.commit();
+//
+//        mainFragment = new MainFragment();
+//        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.add(R.id.fragment_container, mainFragment);
+//        fragmentTransaction.commit();
 
 
     }
@@ -189,39 +191,11 @@ public class MainActivity extends AppCompatActivity
 
     //end by zhu
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-//        MenuItem menuItem=menu.findItem(R.id.menu_search);
-//        SearchView searchView=(SearchView)menuItem.getActionView();
-//
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return false;
-//
-//            }
-//        });
 
 
-        return super.onCreateOptionsMenu(menu);
+
+
+//        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

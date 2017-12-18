@@ -46,7 +46,7 @@ public class NewEventFragment extends Fragment {
     private Calendar myCalendar;
     private DatePickerDialog.OnDateSetListener date;
     private Spinner spinner;
-    private int startLocation;
+    private String startLocation;
 
 
     private OnFragmentInteractionListener mListener;
@@ -101,8 +101,21 @@ public class NewEventFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                startLocation=i;
-                Log.d("startLocation",String.valueOf(startLocation));
+                switch(i){
+                    case 0:
+                        startLocation="Busch Student Center";
+                        break;
+                    case 1:
+                        startLocation="Liv Student Center";
+                        break;
+                    case 2:
+                        startLocation="Cook Student Center";
+                        break;
+                    case 3:
+                        startLocation="Douglas Student Center";
+                        break;
+                }
+                Log.d("startLocation",startLocation);
             }
 
             @Override
