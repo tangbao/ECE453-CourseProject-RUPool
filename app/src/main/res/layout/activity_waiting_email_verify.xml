@@ -35,6 +35,7 @@
         <Button
             android:id="@+id/Button_Refresh_WaitingEmailVerifyActivity"
             android:layout_width="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="REFRESH" />
@@ -47,6 +48,7 @@
         <Button
             android:id="@+id/Button_ResendEmail_WaitingEmailVerifyActivity"
             android:layout_width="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:layout_height="wrap_content"
             android:text="Resend email" />
 
