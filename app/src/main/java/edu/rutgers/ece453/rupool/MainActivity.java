@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity
         // for sharing
         sendIntent=new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_SUBJECT,"Title");
-        sendIntent.putExtra(Intent.EXTRA_TEXT,"Sharing Content");
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT,"Try RUPool! It's awesome!");
+        sendIntent.putExtra(Intent.EXTRA_TEXT,"This app is awesome! Just have a try! download the RUPool right now!");
         sendIntent.setType("text/plain");
 
 
@@ -245,16 +245,7 @@ public class MainActivity extends AppCompatActivity
                 startActivity(new Intent(this,MyEventActivity.class));
                 break;
             }
-            case R.id.nav_preference: {
-                fab.show();
-                PreferenceFragment preferenceFragment = new PreferenceFragment();
-                getSupportFragmentManager().popBackStack();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.fragment_container, preferenceFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-                break;
-            }
+
 
             case R.id.Nav_Logout_MainActivity: {
                 mFirebaseAuth.signOut();

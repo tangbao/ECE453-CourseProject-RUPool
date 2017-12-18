@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?android:attr/detailsElementBackground"
+    android:clickable="true"
     android:orientation="vertical"
     tools:context="edu.rutgers.ece453.rupool.EventFragment">
 
@@ -46,18 +47,18 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical|center_horizontal"
-            android:textSize="36dp"
             android:text="-->"
+            android:textSize="36dp"
             />
 
 
         <EditText
+            android:id="@+id/new_dest"
             android:layout_width="0dp"
-            android:layout_weight="3"
             android:layout_height="match_parent"
+            android:layout_weight="3"
             android:focusableInTouchMode="false"
             android:gravity="center_vertical|center_horizontal"
-            android:id="@+id/new_dest"
             android:hint="Where are you going to ? "
             />
 
@@ -68,19 +69,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         >
 
 
         <EditText
+            android:id="@+id/new_date"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusableInTouchMode="false"
             android:clickable="true"
+            android:focusableInTouchMode="false"
             android:gravity="center_vertical|center_horizontal"
-            android:id="@+id/new_date"
             android:hint="When is your trip ?"
             />
 
@@ -90,16 +91,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         >
 
         <EditText
+            android:id="@+id/new_num"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical|center_horizontal"
-            android:id="@+id/new_num"
             android:hint="How many people does this pool need ?"
 
             />
@@ -109,16 +110,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         >
 
         <EditText
+            android:id="@+id/new_price"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical|center_horizontal"
-            android:id="@+id/new_price"
             android:hint="How much is the estimated price ??"
             />
 
@@ -127,20 +128,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:orientation="horizontal"
         >
 
         <EditText
+            android:id="@+id/new_description"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="top|center_horizontal"
-            android:maxLength="140"
-            android:id="@+id/new_description"
             android:hint="Add some descriptions here"
-            android:minLines="3"
             android:inputType="textMultiLine"
+            android:maxLength="140"
+            android:minLines="3"
             />
 
     </LinearLayout>

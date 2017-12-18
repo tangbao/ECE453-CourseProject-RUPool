@@ -124,6 +124,8 @@ public class MainFragment extends Fragment {
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
                 fromWhen.setText(sdf.format(myCalendarFrom.getTime()));
+
+
             }
 
 
@@ -179,15 +181,6 @@ public class MainFragment extends Fragment {
 
         });
 
-        // image button来确定
-        imgBtn = view.findViewById(R.id.imgBtn);
-        imgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: 确定设置time filter
-
-            }
-        });
 
         //TEST CODE by tangbao
         poolActivities = new ArrayList<PoolActivity>();
@@ -258,6 +251,8 @@ public class MainFragment extends Fragment {
                 if (fromWhen.getText() != null && toWhen.getText() != null) {
                     timeFromWhen = fromWhen.getText().toString();
                     timeToWhen = toWhen.getText().toString();
+
+
                     SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
                     Date dateFromWhen = null;
                     Date dateToWhen = null;
@@ -285,6 +280,7 @@ public class MainFragment extends Fragment {
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
+
 
                         if (currentDate.before(dateToWhen) && currentDate.after(dateFromWhen)) {
                             tempActivityList.add(tempActivity);
