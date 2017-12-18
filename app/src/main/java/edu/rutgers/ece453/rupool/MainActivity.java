@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO:Get info about the selected place.
+
                 Log.i("AUTO", "Place: " + place.getName());
             }
 

@@ -54,6 +54,7 @@
             android:layout_width="0dp"
             android:layout_weight="3"
             android:layout_height="match_parent"
+            android:focusableInTouchMode="false"
             android:gravity="center_vertical|center_horizontal"
             android:id="@+id/new_dest"
             android:hint="Where are you going to ? "
@@ -75,6 +76,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:focusableInTouchMode="false"
             android:clickable="true"
             android:gravity="center_vertical|center_horizontal"
             android:id="@+id/new_date"
