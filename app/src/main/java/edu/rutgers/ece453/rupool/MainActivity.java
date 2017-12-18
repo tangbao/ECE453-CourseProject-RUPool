@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.util.Pools;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,7 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
 import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
@@ -72,9 +70,14 @@ public class MainActivity extends AppCompatActivity
         ArrayList<String> searchContent = new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
 
+        MainFragment mainFragment=new MainFragment();
+        android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.fragment_container,mainFragment);
+        fragmentTransaction.commit();
 
 
-
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -102,14 +105,14 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View view = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
-
+        mTextViewUserNameNavHeader = view.findViewById(R.id.TextView_UserName_NavHeaderMain);
+        mTextViewEmailNavHeader = view.findViewById(R.id.TextView_Email_NavHeaderMain);
         // start zhu
         // set username in nav header
-        mTextViewUserNameNavHeader = findViewById(R.id.TextView_UserName_NavHeaderMain);
-        if (mFirebaseAuth.getCurrentUser() != null)
-            mTextViewUserNameNavHeader.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
-        // end zhu
+
+
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -167,8 +170,21 @@ public class MainActivity extends AppCompatActivity
 //                || !mFirebaseAuth.getCurrentUser().isEmailVerified())
 //            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
 //                    REQUESTCODE_LOGIN);
+        if (mFirebaseAuth.getCurrentUser() != null) {
+            DatabaseUtils databaseUtils = new DatabaseUtils();
+            databaseUtils.getUser(mFirebaseAuth.getCurrentUser().getUid(), 3, new Interface.OnGetUserListener() {
+                @Override
+                public void onGetUser(User user, int ACTION_CODE, int RESULT_CODE) {
+                    if (RESULT_CODE == Constant.GET_USER_SUCCESS) {
+                        mTextViewUserNameNavHeader.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
+                        mTextViewEmailNavHeader.setText(mFirebaseAuth.getCurrentUser().getEmail());
+                    } else {
+                        startActivity(new Intent(MainActivity.this, EditProfileActivity.class));
+                    }
+                }
+            });
 
-    }
+        }
 
 
     //end by zhu
@@ -233,31 +249,39 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.My_Event: {
 
-        if (id == R.id.My_Event) {
-            // Handle the camera action
-            EventFragment eventFragment = new EventFragment();
-            getSupportFragmentManager().popBackStack();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, eventFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+                //TODO ERROR
+                // Handle the camera action
+                EventFragment eventFragment = new EventFragment();
+                getSupportFragmentManager().popBackStack();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, eventFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                break;
+            }
+            case R.id.nav_preference: {
+                fab.show();
+                PreferenceFragment preferenceFragment = new PreferenceFragment();
+                getSupportFragmentManager().popBackStack();
+                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, preferenceFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+                break;
+            }
 
+            case R.id.Nav_Logout_MainActivity: {
+                mFirebaseAuth.signOut();
+                startActivity(new Intent(this, LoginActivity.class));
+            }
 
-        } else if (id == R.id.nav_preference) {
-            fab.show();
-            PreferenceFragment preferenceFragment = new PreferenceFragment();
-            getSupportFragmentManager().popBackStack();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragment_container, preferenceFragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            case R.id.Nav_Profile_MainActivity: {
+                startActivity(new Intent(this, ShowProfileActivity.class));
+                break;
+            }
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

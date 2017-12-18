@@ -4,11 +4,13 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,6 +48,10 @@ public class MainFragment extends Fragment {
 
 //    private OnFragmentInteractionListener mListener;
 
+    //by tb
+    private final static String TAG = "Main Fragment";
+    List<PoolActivity> poolActivities;
+    //end by tb
 
     public MainFragment() {
         // Required empty public constructor
@@ -178,6 +184,31 @@ public class MainFragment extends Fragment {
             }
         });
 
+        //TEST CODE by tangbao
+        poolActivities = new ArrayList<PoolActivity>();
+        DatabaseUtils du = new DatabaseUtils();
+        du.findAllActivity(new Interface.OnFindAllActivityListener() {
+            @Override
+            public void onFindAllActivity(List<PoolActivity> lpa, int RESULT_CODE) {
+                for(int i = 0; i< lpa.size(); i++){
+                    Log.e(TAG, lpa.get(i).getId());
+                }
+
+                mAdapter = new AdapterRecyclerViewMainFragment(lpa, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(PoolActivity poolActivity) {
+                        EventFragment eventFragment = EventFragment.newInstance(poolActivity);
+                        getActivity().getSupportFragmentManager().popBackStack();
+                        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container, eventFragment);
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
+                    }
+                });
+                mRecyclerView.setAdapter(mAdapter);
+            }
+        });
+        //TEST CODE end
 
 
 
@@ -200,6 +231,10 @@ public class MainFragment extends Fragment {
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+
+
+
+
         return view;
     }
 
