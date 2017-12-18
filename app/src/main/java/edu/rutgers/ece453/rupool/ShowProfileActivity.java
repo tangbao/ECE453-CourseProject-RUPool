@@ -55,6 +55,44 @@ public class ShowProfileActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        if (mFirebaseAuth.getCurrentUser() != null) {
+            final DatabaseUtils databaseUtils = new DatabaseUtils();
+            databaseUtils.getUser(mFirebaseAuth.getCurrentUser().getUid(), 111111, new Interface.OnGetUserListener() {
+                @Override
+                public void onGetUser(final User user, int ACTION_CODE, int RESULT_CODE) {
+                    if (RESULT_CODE == Constant.GET_USER_SUCCESS) {
+                        databaseUtils.findAllActivity(new Interface.OnFindAllActivityListener() {
+                            @Override
+                            public void onFindAllActivity(List<PoolActivity> lpa, int RESULT_CODE) {
+                                Map<String, PoolActivity> stringPoolActivityMap = new HashMap<>();
+                                for (PoolActivity poolActivity : lpa)
+                                    stringPoolActivityMap.put(poolActivity.getId(), poolActivity);
+                                List<PoolActivity> toShow = new LinkedList<>();
+//                                                    if (!user.getActivities().isEmpty())
+                                for (String activityID : user.getActivities())
+                                    toShow.add(stringPoolActivityMap.get(activityID));
+                                mTextViewName.setText(user.getName());
+                                mTextViewGender.setText(user.getGender());
+                                mTextViewEmail.setText(user.getEmail());
+                                mAdapter = new AdapterRecyclerViewMainFragment(toShow, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(PoolActivity poolActivity) {
+                                        Intent intent = new Intent(ShowProfileActivity.this, EventActivity.class);
+                                        intent.putExtra(EventActivity.ARGS_POOLACTIVITY, poolActivity);
+                                        startActivity(intent);
+                                    }
+                                });
+                                mRecyclerView.setAdapter(mAdapter);
+                            }
+                        });
+                    } else
+                        startActivity(new Intent(ShowProfileActivity.this, EditProfileActivity.class));
+                }
+            });
+        }
+
+
         if (mFirebaseAuth.getCurrentUser() != null) {
             mFirebaseAuth.getCurrentUser().reload()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -65,33 +103,7 @@ public class ShowProfileActivity extends AppCompatActivity {
                                 databaseUtils.getUser(mFirebaseAuth.getCurrentUser().getUid(), 0, new Interface.OnGetUserListener() {
                                     @Override
                                     public void onGetUser(final User user, int ACTION_CODE, int RESULT_CODE) {
-                                        if (RESULT_CODE == Constant.GET_USER_SUCCESS) {
-                                            databaseUtils.findAllActivity(new Interface.OnFindAllActivityListener() {
-                                                @Override
-                                                public void onFindAllActivity(List<PoolActivity> lpa, int RESULT_CODE) {
-                                                    Map<String, PoolActivity> stringPoolActivityMap = new HashMap<>();
-                                                    for (PoolActivity poolActivity : lpa)
-                                                        stringPoolActivityMap.put(poolActivity.getId(), poolActivity);
-                                                    List<PoolActivity> toShow = new LinkedList<>();
-//                                                    if (!user.getActivities().isEmpty())
-                                                    for (String activityID : user.getActivities())
-                                                        toShow.add(stringPoolActivityMap.get(activityID));
-                                                    mTextViewName.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
-                                                    mTextViewGender.setText(user.getGender());
-                                                    mTextViewEmail.setText(mFirebaseAuth.getCurrentUser().getEmail());
-                                                    mAdapter = new AdapterRecyclerViewMainFragment(toShow, new AdapterRecyclerViewMainFragment.OnItemClickListener() {
-                                                        @Override
-                                                        public void onItemClick(PoolActivity poolActivity) {
-                                                            Intent intent = new Intent(ShowProfileActivity.this, EventActivity.class);
-                                                            intent.putExtra(EventActivity.ARGS_POOLACTIVITY, poolActivity);
-                                                            startActivity(intent);
-                                                        }
-                                                    });
-                                                    mRecyclerView.setAdapter(mAdapter);
-                                                }
-                                            });
-                                        } else
-                                            startActivity(new Intent(ShowProfileActivity.this, EditProfileActivity.class));
+
                                     }
                                 });
                             } else finish();

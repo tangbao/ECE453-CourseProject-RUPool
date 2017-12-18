@@ -53,6 +53,7 @@
         <activity
             android:name=".MyEventActivity"
             android:label="My Event" />
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>

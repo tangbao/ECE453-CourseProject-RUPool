@@ -18,6 +18,11 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import static edu.rutgers.ece453.rupool.Constant.GET_USER_SUCCESS;
 
 
@@ -95,7 +100,7 @@ public class EventFragment extends Fragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_event, container, false);
 
@@ -213,7 +218,25 @@ public class EventFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // TODO
+        databaseUtils.findAllUser(new Interface.OnFindAllUserListener() {
+            @Override
+            public void onFindAllUser(List<User> lu, int RESULT_CODE) {
+                Map<String, User> stringUserMap = new HashMap<>();
+                for (User user : lu)
+                    stringUserMap.put(user.getUid(), user);
+                List<User> users = new LinkedList<>();
+                for (String s : mPoolActivity.getMembers())
+                    users.add(stringUserMap.get(s));
+
+                mAdapter = new AdapterRecyclerViewUsers(users, new AdapterRecyclerViewUsers.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(User user) {
+                        mListener.startProfile(user);
+                    }
+                });
+                mRecyclerView.setAdapter(mAdapter);
+            }
+        });
 
 
         return view;
@@ -223,23 +246,23 @@ public class EventFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
+        mListener = null;
     }
 
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void startProfile(User user);
     }
 }

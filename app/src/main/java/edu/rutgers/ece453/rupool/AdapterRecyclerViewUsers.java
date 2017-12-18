@@ -40,8 +40,8 @@ public class AdapterRecyclerViewUsers extends RecyclerView.Adapter<AdapterRecycl
         User user = mData.get(position);
         holder.view.setTag(position);
         // TODO
-        holder.textViewName.setText(user.getUid());
-        holder.textViewEmail.setText(user.getUid());
+        holder.textViewName.setText(user.getName());
+        holder.textViewEmail.setText(user.getEmail());
     }
 
     @Override
