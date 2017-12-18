@@ -81,10 +81,7 @@ public class NewEventFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_new_event, container, false);
 
 
-        FloatingActionButton fab=((MainActivity) getActivity()).getFab();
-        if (fab != null) {
-            fab.hide();
-        }
+
 
 
         dest=view.findViewById(R.id.new_dest);
@@ -214,6 +211,15 @@ public class NewEventFragment extends Fragment {
 
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FloatingActionButton fab = ((MainActivity) getActivity()).getFab();
+        if (fab != null) {
+            fab.hide();
+        }
     }
 
     @Override
