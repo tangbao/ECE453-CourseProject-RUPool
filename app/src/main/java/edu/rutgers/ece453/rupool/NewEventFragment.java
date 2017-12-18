@@ -22,6 +22,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -160,7 +161,13 @@ public class NewEventFragment extends Fragment {
                     return;
                 }else{
                     //TODO 创建poolactivity并加入数据库中，获取到的place 变量名为place ，直接加进去就行
-
+                    //add by tb
+                    PoolActivity pa = new PoolActivity("name", FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                            inputDate,"Description", "startPoint", Integer.parseInt(inputNum), Double.parseDouble(inputPrice));
+                    pa.setPlace(place);
+                    DatabaseUtils du = new DatabaseUtils();
+                    du.addActivity(pa);
+                    //end by tb
                     onBackPressed();
                 }
             }

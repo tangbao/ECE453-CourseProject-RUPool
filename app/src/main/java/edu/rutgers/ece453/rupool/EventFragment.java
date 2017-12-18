@@ -56,8 +56,6 @@ public class EventFragment extends Fragment {
         // add by tangbao
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseUtils = new DatabaseUtils();
-        User a = new User(firebaseUser.getUid(), "F");
-        databaseUtils.addUser(a);
 
         databaseUtils.getUser(firebaseUser.getUid(), 1, new Interface.OnGetUserListener() {
             @Override

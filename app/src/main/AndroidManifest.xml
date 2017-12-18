@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCSJbs4ekFG_CiTRcr4jIVRWXZGPJ0JW30" />
+            android:value="AIzaSyCjIm5-AIaHuPNcRNJ_KunpkSnuywisApk" />
 
         <activity
             android:name=".MainActivity"
