@@ -21,7 +21,7 @@ public class DataTimeUtil {
 
         //mm/dd/yyyy
 
-        result = ddmmyy[2] + ddmmyy[0] + ddmmyy[1] + "T10:00:00-07:00";
+        result = ddmmyy[2] +"-"+ ddmmyy[0] +"-"+ ddmmyy[1] + "T10:00:00-07:00";
 
 
         return result;

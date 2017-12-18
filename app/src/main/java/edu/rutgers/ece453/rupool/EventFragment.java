@@ -636,7 +636,7 @@ public class EventFragment extends Fragment
         protected void onPreExecute() {
             //mOutputText.setText("");
             //mProgress.show();
-            Toast.makeText(getActivity(), "onPreExecute",Toast.LENGTH_LONG).show();
+            //Toast.makeText(getActivity(), "onPreExecute",Toast.LENGTH_LONG).show();
         }
 
 //        @Override
