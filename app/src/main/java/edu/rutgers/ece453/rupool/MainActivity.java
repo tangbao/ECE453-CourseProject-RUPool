@@ -36,7 +36,7 @@ import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         EventFragment.OnFragmentInteractionListener,
-//        MainFragment.OnFragmentInteractionListener,
+        MainFragment.OnFragmentInteractionListener,
         PreferenceFragment.OnFragmentInteractionListener,
         NewEventFragment.OnFragmentInteractionListener {
 
