@@ -11,9 +11,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static android.provider.LiveFolders.INTENT;
+import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
+import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -49,6 +55,8 @@ public class MainActivity extends AppCompatActivity
     private DatabaseUtils databaseUtils;
     private List<PoolActivity> allActivityList;
     private MainFragment mainFragment;
+    private ShareActionProvider mShareActionProvider;
+    private Intent sendIntent;
     // end by zhu
 
     @Override
@@ -56,6 +64,17 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         databaseUtils = new DatabaseUtils();
+
+        // start by sun
+        // for sharing
+        sendIntent=new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT,"Title");
+        sendIntent.putExtra(Intent.EXTRA_TEXT,"Sharing Content");
+        sendIntent.setType("text/plain");
+
+
+        // end by sun
 
         // start by zhu
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -192,7 +211,10 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-        //end by zhu
+    //end by zhu
+
+
+
 
 
 //        return super.onCreateOptionsMenu(menu);
@@ -225,8 +247,6 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.My_Event: {
-                Intent intent = new Intent(this, MyEventActivity.class);
-                startActivity(intent);
 
                 break;
             }
@@ -249,6 +269,13 @@ public class MainActivity extends AppCompatActivity
             case R.id.Nav_Profile_MainActivity: {
                 startActivity(new Intent(this, ShowProfileActivity.class));
                 break;
+
+
+            }
+
+            case R.id.nav_share:{
+                startActivity(Intent.createChooser(sendIntent, "TEST HERE"));
+
             }
         }
 
