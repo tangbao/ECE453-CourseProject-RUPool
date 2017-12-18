@@ -6,19 +6,25 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
+ *
  * Created by zhu_z on 2017/12/16.
+ *
+ * Convert by zhongze tang
  */
 
 public class DataTimeUtil {
 
-    static String dateToISO8601(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minute) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, monthOfYear - 1, dayOfMonth, hourOfDay, minute, 0);
-        calendar.setTimeZone(TimeZone.getTimeZone("EST"));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
-        String ret;
-        ret = simpleDateFormat.format(calendar.getTime());
-        return ret;
+    static String dateForDateTime(String date) {
+        String result = "";
+
+        String[] ddmmyy = date.split("/");
+
+        //dd/mm/yyyy
+
+        result = ddmmyy[2] + ddmmyy[0] + ddmmyy[1] + "T10:00:00-07:00";
+
+
+        return result;
     }
 
 }

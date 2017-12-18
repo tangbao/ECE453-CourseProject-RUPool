@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,13 +28,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.provider.LiveFolders.INTENT;
-import static edu.rutgers.ece453.rupool.Constant.GET_ACTIVITY_SUCCESS;
-import static edu.rutgers.ece453.rupool.Constant.GET_ALL_ACTIVITY_SUCCESS;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        EventFragment.OnFragmentInteractionListener,
+//        EventFragment.OnFragmentInteractionListener,
         MainFragment.OnFragmentInteractionListener,
         PreferenceFragment.OnFragmentInteractionListener,
         NewEventFragment.OnFragmentInteractionListener {
@@ -200,8 +195,8 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public void onGetUser(User user, int ACTION_CODE, int RESULT_CODE) {
                     if (RESULT_CODE == Constant.GET_USER_SUCCESS) {
-                        mTextViewUserNameNavHeader.setText(mFirebaseAuth.getCurrentUser().getDisplayName());
-                        mTextViewEmailNavHeader.setText(mFirebaseAuth.getCurrentUser().getEmail());
+                        mTextViewUserNameNavHeader.setText(user.getName());
+                        mTextViewEmailNavHeader.setText(user.getEmail());
                     } else {
                         startActivity(new Intent(MainActivity.this, EditProfileActivity.class));
                     }
@@ -303,6 +298,7 @@ public class MainActivity extends AppCompatActivity
         intent.putExtra(EventActivity.ARGS_POOLACTIVITY, poolActivity);
         startActivity(intent);
     }
+
 }
 
 

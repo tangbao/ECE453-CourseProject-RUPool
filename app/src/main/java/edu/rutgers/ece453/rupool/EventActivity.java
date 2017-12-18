@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-public class EventActivity extends AppCompatActivity {
+public class EventActivity extends AppCompatActivity
+        implements EventFragment.OnFragmentInteractionListener {
     public static final String ARGS_POOLACTIVITY = "edu.rutgers.ece453.rupool.EventActivity.ARGS.POOLACTIVITY";
 
     private PoolActivity mPoolActivity;
@@ -28,5 +29,12 @@ public class EventActivity extends AppCompatActivity {
 //        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
+    }
+
+    @Override
+    public void startProfile(User user) {
+        Intent intent = new Intent(this, ProfileActivity.class);
+        intent.putExtra(ProfileActivity.ARGS_USER, user);
+        startActivity(intent);
     }
 }
