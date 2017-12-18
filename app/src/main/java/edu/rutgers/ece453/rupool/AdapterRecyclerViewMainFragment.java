@@ -10,6 +10,8 @@ import java.util.List;
 
 /**
  * Created by zhu_z on 2017/12/16.
+ *
+ *
  */
 
 public class AdapterRecyclerViewMainFragment extends RecyclerView.Adapter<AdapterRecyclerViewMainFragment.ViewHolder> {
@@ -40,8 +42,8 @@ public class AdapterRecyclerViewMainFragment extends RecyclerView.Adapter<Adapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         PoolActivity poolActivity = mData.get(position);
         holder.view.setTag(position);
-        holder.textViewDateMonth.setText(poolActivity.getDate());
-        holder.textViewDateDay.setText(poolActivity.getDate());
+        holder.textViewDateMonth.setText(DataTimeUtil.getMonth(poolActivity.getDate()));
+        holder.textViewDateDay.setText(DataTimeUtil.getDay(poolActivity.getDate()));
         holder.textViewStartPoint.setText(poolActivity.getStartPoint());
         holder.textViewDestination.setText(poolActivity.getDestiName());
         holder.textViewDescription.setText(poolActivity.getDescription());

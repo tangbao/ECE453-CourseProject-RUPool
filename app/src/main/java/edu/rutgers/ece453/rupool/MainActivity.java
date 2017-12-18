@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.My_Event: {
-
+                startActivity(new Intent(this,MyEventActivity.class));
                 break;
             }
             case R.id.nav_preference: {
