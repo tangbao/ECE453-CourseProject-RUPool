@@ -53,6 +53,7 @@
             android:layout_weight="3"
             android:clickable="true"
             android:gravity="center_vertical|center_horizontal"
+            android:focusableInTouchMode="false"
             android:id="@+id/time_filter1"
             android:hint="From when"
             />
@@ -74,6 +75,7 @@
             android:layout_weight="3"
             android:gravity="center_horizontal|center_vertical"
             android:clickable="true"
+            android:focusableInTouchMode="false"
             android:hint="To when"
             android:id="@+id/time_filter2"
             />

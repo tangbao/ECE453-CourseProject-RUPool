@@ -46,6 +46,7 @@ public class NewEventFragment extends Fragment {
     private Calendar myCalendar;
     private DatePickerDialog.OnDateSetListener date;
     private Spinner spinner;
+    private EditText description;
     private String startLocation;
 
 
@@ -91,6 +92,7 @@ public class NewEventFragment extends Fragment {
         userNum=view.findViewById(R.id.new_num);
         button=view.findViewById(R.id.OK);
         spinner=view.findViewById(R.id.spinner);
+        description=view.findViewById(R.id.new_description);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.startPoint, android.R.layout.simple_spinner_item);
@@ -190,8 +192,11 @@ public class NewEventFragment extends Fragment {
                 String inputDest=dest.getText().toString();
                 String inputPrice=pricePerUser.getText().toString();
                 String inputNum=userNum.getText().toString();
+                String inputDescription=description.getText().toString();
+
                 if(inputDate.matches("")||inputDest.matches("")
-                        ||inputDest.matches("")||inputNum.matches("")){
+                        ||inputDest.matches("")||inputNum.matches("")
+                        ||inputPrice.matches("") ||inputDescription.matches("")){
                     Toast.makeText(getActivity(),"You have to input all the information",Toast.LENGTH_SHORT).show();
                     return;
                 }else{
