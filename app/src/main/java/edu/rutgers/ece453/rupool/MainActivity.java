@@ -225,15 +225,9 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.My_Event: {
+                Intent intent = new Intent(this, MyEventActivity.class);
+                startActivity(intent);
 
-                //TODO ERROR
-                // Handle the camera action
-                EventFragment eventFragment = new EventFragment();
-                getSupportFragmentManager().popBackStack();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.add(R.id.fragment_container, eventFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
                 break;
             }
             case R.id.nav_preference: {
