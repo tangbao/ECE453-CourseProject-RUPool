@@ -142,9 +142,9 @@ public class EventFragment extends Fragment {
         quitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(firebaseUser.getUid().equals(myUser.getUid())){
+                if (firebaseUser.getUid().equals(myUser.getUid())) {
                     Toast.makeText(getContext(), "You cannot quit the activity you created.", Toast.LENGTH_LONG).show();
-                }else{
+                } else {
 
                     myUser.quitActivity(mPoolActivity.getId());
                     mPoolActivity.removeMember(myUser.getUid());
@@ -197,7 +197,7 @@ public class EventFragment extends Fragment {
         mTextViewDescription = view.findViewById(R.id.event_description);
 
 
-        Log.d("getDest",mPoolActivity.getDestiName());
+        Log.d("getDest", mPoolActivity.getDestiName());
         mTextViewDestination.setText(mPoolActivity.getDestiName());
         mTextViewNumberOfPassenger.setText(String.valueOf(mPoolActivity.getMembers().size()));
         mTextViewDate.setText(mPoolActivity.getDate());
@@ -226,7 +226,8 @@ public class EventFragment extends Fragment {
                     stringUserMap.put(user.getUid(), user);
                 List<User> users = new LinkedList<>();
                 for (String s : mPoolActivity.getMembers())
-                    users.add(stringUserMap.get(s));
+                    if (stringUserMap.containsKey(s))
+                        users.add(stringUserMap.get(s));
 
                 mAdapter = new AdapterRecyclerViewUsers(users, new AdapterRecyclerViewUsers.OnItemClickListener() {
                     @Override

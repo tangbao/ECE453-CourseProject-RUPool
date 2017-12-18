@@ -3,6 +3,7 @@ package edu.rutgers.ece453.rupool;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +30,14 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        mTextViewName = findViewById(R.id.TextView_Name_ProfileActivity);
+        mTextViewGender = findViewById(R.id.TextView_Gender_ProfileActivity);
+        mTextViewEmail = findViewById(R.id.TextView_Email_ProfileActivity);
+        mRecyclerView = findViewById(R.id.RecyclerView_ProfileActivity);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         Intent intent = getIntent();
 
