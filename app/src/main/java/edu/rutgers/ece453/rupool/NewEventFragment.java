@@ -19,12 +19,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ErrorDialogFragment;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -145,7 +145,7 @@ public class NewEventFragment extends Fragment {
 
         myCalendar= Calendar.getInstance();
 
-        edittext= (EditText) view.findViewById(R.id.new_date);
+        edittext = view.findViewById(R.id.new_date);
         date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -200,9 +200,13 @@ public class NewEventFragment extends Fragment {
                     Toast.makeText(getActivity(),"You have to input all the information",Toast.LENGTH_SHORT).show();
                     return;
                 }else{
-                    //TODO 创建poolactivity并加入数据库中，获取到的place 变量名为place ，直接加进去就行,地点为startLocation (int类型), 0-busch
-                    // todo: 1-liv, 2-cook, 3- doug
-
+                    //add by tb
+                    PoolActivity pa = new PoolActivity("name", FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                            inputDate,inputDescription, startLocation, Integer.parseInt(inputNum), Double.parseDouble(inputPrice));
+                    pa.setPlace(place);
+                    DatabaseUtils du = new DatabaseUtils();
+                    du.addActivity(pa);
+                    //end by tb
                     onBackPressed();
                 }
             }
@@ -212,7 +216,14 @@ public class NewEventFragment extends Fragment {
         return view;
     }
 
-
+    @Override
+    public void onStop() {
+        super.onStop();
+        FloatingActionButton fab = ((MainActivity) getActivity()).getFab();
+        if (fab != null) {
+            fab.show();
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

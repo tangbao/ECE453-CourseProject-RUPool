@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        databaseUtils=new DatabaseUtils();
+        databaseUtils = new DatabaseUtils();
 
         // start by sun
         // for sharing
@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity
         ArrayList<String> searchContent = new ArrayList<>();
         searchContent.addAll(Arrays.asList(getResources().getStringArray(R.array.eventList)));
 
-        MainFragment mainFragment=new MainFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container,mainFragment, "MainFragment");
+        MainFragment mainFragment = MainFragment.newInstance();
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, mainFragment, "MainFragment");
         fragmentTransaction.commit();
 
 
@@ -105,14 +105,13 @@ public class MainActivity extends AppCompatActivity
                 NewEventFragment newEventFragmentventFragment = new NewEventFragment();
                 getSupportFragmentManager().popBackStack();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, newEventFragmentventFragment);
+                fragmentTransaction.add(R.id.fragment_container, newEventFragmentventFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
 
 
             }
         });
-
 
 
         final DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -128,7 +127,6 @@ public class MainActivity extends AppCompatActivity
         mTextViewEmailNavHeader = view.findViewById(R.id.TextView_Email_NavHeaderMain);
         // start zhu
         // set username in nav header
-
 
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
@@ -162,6 +160,14 @@ public class MainActivity extends AppCompatActivity
                 // TODO:Get info about the selected place.
 
                 Log.i("AUTO", "Place: " + place.getName());
+                DatabaseUtils databaseUtils = new DatabaseUtils();
+                databaseUtils.findActivityByLocation(place, 123, new Interface.OnFindActivityByPlaceListener() {
+                    @Override
+                    public void onFindActivityByPlace(List<PoolActivity> lpa, int ACTION_CODE, int RESULT_CODE) {
+                        MainFragment mainFragment1 = (MainFragment) getSupportFragmentManager().findFragmentByTag("MainFragment");
+                        mainFragment1.updateRecyclerView(lpa);
+                    }
+                });
             }
 
             @Override
@@ -184,10 +190,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-//        if (mFirebaseAuth.getCurrentUser() == null
-//                || !mFirebaseAuth.getCurrentUser().isEmailVerified())
-//            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
-//                    REQUESTCODE_LOGIN);
+        if (mFirebaseAuth.getCurrentUser() == null
+                || !mFirebaseAuth.getCurrentUser().isEmailVerified())
+            startActivityForResult(new Intent(MainActivity.this, LoginActivity.class),
+                    REQUESTCODE_LOGIN);
         if (mFirebaseAuth.getCurrentUser() != null) {
             DatabaseUtils databaseUtils = new DatabaseUtils();
             databaseUtils.getUser(mFirebaseAuth.getCurrentUser().getUid(), 3, new Interface.OnGetUserListener() {
@@ -204,22 +210,15 @@ public class MainActivity extends AppCompatActivity
 
         }
 
+
+    //end by zhu
+
+
+
+
+
+//        return super.onCreateOptionsMenu(menu);
     }
-
-
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        getMenuInflater().inflate(R.menu.activity_main_drawer,menu);
-//
-//        MenuItem item=menu.findItem(R.id.nav_share);
-//
-//        mShareActionProvider =(ShareActionProvider) item.getActionProvider();
-//
-//
-//        return true;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -249,14 +248,6 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.My_Event: {
 
-                //TODO ERROR
-                // Handle the camera action
-                EventFragment eventFragment = new EventFragment();
-                getSupportFragmentManager().popBackStack();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, eventFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
                 break;
             }
             case R.id.nav_preference: {
@@ -264,7 +255,7 @@ public class MainActivity extends AppCompatActivity
                 PreferenceFragment preferenceFragment = new PreferenceFragment();
                 getSupportFragmentManager().popBackStack();
                 android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, preferenceFragment);
+                fragmentTransaction.add(R.id.fragment_container, preferenceFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
@@ -293,9 +284,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    // Call to update the share intent
-
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
@@ -313,12 +301,17 @@ public class MainActivity extends AppCompatActivity
         return fab;
     }
 
-    public List<PoolActivity> getAllActivityList(){
+    public List<PoolActivity> getAllActivityList() {
         return allActivityList;
     }
 
 
-
+    @Override
+    public void startEventActivity(PoolActivity poolActivity) {
+        Intent intent = new Intent(this, EventActivity.class);
+        intent.putExtra(EventActivity.ARGS_POOLACTIVITY, poolActivity);
+        startActivity(intent);
+    }
 }
 
 
